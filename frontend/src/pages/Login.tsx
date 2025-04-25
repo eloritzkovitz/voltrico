@@ -19,8 +19,9 @@ const Login: FC = () => {
 
   // Submit form
   const onSubmit = (data: FormData) => {
-    const { request } = userService.login(data.email, data.password);
-    request
+    userService
+      .login(data.email, data.password)
+      .request
       .then((response: { data: { accessToken: string; refreshToken: string } }) => {
         login(response.data.accessToken, response.data.refreshToken); // Store tokens and update auth state
         navigate("/"); // Redirect to main page after successful login
@@ -86,9 +87,9 @@ const Login: FC = () => {
               </div>
             )}
           </div>
-          <a href="/register">Don't have an account? Sign up now!</a>
+          <a href="/signup">Don't have an account? Sign up now!</a>
         </div>
-      </main>      
+      </main>
     </div>
   );
 };
