@@ -1,4 +1,5 @@
-import userModel, { IUser } from '../modules/users/User';
+import { Request, Response } from 'express';
+import userModel, { IUser } from '../models/User';
 import jwt from 'jsonwebtoken';
 import { Document } from 'mongoose';
 
@@ -9,29 +10,24 @@ type tTokens = {
 
 // Generate token
 export const generateToken = (userId: string): tTokens | null => {
-    if (!process.env.TOKEN_SECRET || !process.env.TOKEN_EXPIRES || !process.env.REFRESH_TOKEN_EXPIRES) {
-        throw new Error("Environment variables TOKEN_SECRET, TOKEN_EXPIRES, or REFRESH_TOKEN_EXPIRES are not set");
+    if (!process.env.TOKEN_SECRET) {
+        return null;
     }
-
-    // Generate token
+    // generate token
     const random = Math.random().toString();
-    const accessToken = jwt.sign(
-        {
-            _id: userId,
-            random: random
-        },
-        process.env.TOKEN_SECRET as string, // Explicitly cast to string
-        { expiresIn: process.env.TOKEN_EXPIRES }
-    );
+    const accessToken = jwt.sign({
+        _id: userId,
+        random: random
+    },
+        process.env.TOKEN_SECRET,
+        { expiresIn: process.env.TOKEN_EXPIRES });
 
-    const refreshToken = jwt.sign(
-        {
-            _id: userId,
-            random: random
-        },
-        process.env.TOKEN_SECRET as string, // Explicitly cast to string
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRES }
-    );
+    const refreshToken = jwt.sign({
+        _id: userId,
+        random: random
+    },
+        process.env.TOKEN_SECRET,
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRES });    
 
     return {
         accessToken: accessToken,
