@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { IPurchase } from "./Purchase";
+import { IOrder } from "./Order";
 
 export interface IItem extends Document {
   name: string;
@@ -13,7 +13,7 @@ export interface IItem extends Document {
   distributor?: string;
   quality?: string;
   img?: string;
-  purchases: IPurchase["_id"][];
+  orders: IOrder["_id"][];
 }
 
 const itemSchema = new Schema<IItem>({
@@ -28,7 +28,7 @@ const itemSchema = new Schema<IItem>({
   distributor: { type: String },
   quality: { type: String },
   img: { type: String },
-  purchases: [{ type: Schema.Types.ObjectId, ref: "Purchase" }],
+  orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
 });
 
 const ItemModel = mongoose.model<IItem>("Item", itemSchema);

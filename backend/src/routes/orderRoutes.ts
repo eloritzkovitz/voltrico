@@ -1,21 +1,21 @@
 import express from "express";
-import purchaseController from "../controllers/purchaseController";
+import orderController from "../controllers/orderController";
 
 const router = express.Router();
 
 /**
  * @swagger
  * tags:
- *   name: Purchases
- *   description: API for managing purchases
+ *   name: Orders
+ *   description: API for managing orders
  */
 
 /**
  * @swagger
- * /purchases:
+ * /orders:
  *   post:
- *     summary: Create a new purchase
- *     tags: [Purchases]
+ *     summary: Create a new order
+ *     tags: [Orders]
  *     requestBody:
  *       required: true
  *       content:
@@ -23,7 +23,7 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             properties:
- *               purchaseId:
+ *               orderId:
  *                 type: string
  *               customerId:
  *                 type: string
@@ -34,21 +34,21 @@ const router = express.Router();
  *                 format: date-time
  *     responses:
  *       201:
- *         description: Purchase created successfully
+ *         description: Order created successfully
  *       400:
  *         description: Invalid input
  */
-router.post("/", purchaseController.createPurchase);
+router.post("/", orderController.createOrder);
 
 /**
  * @swagger
- * /purchases:
+ * /orders:
  *   get:
- *     summary: Get all purchases
- *     tags: [Purchases]
+ *     summary: Get all orders
+ *     tags: [Orders]
  *     responses:
  *       200:
- *         description: List of all purchases
+ *         description: List of all orders
  *         content:
  *           application/json:
  *             schema:
@@ -56,7 +56,7 @@ router.post("/", purchaseController.createPurchase);
  *               items:
  *                 type: object
  *                 properties:
- *                   purchaseId:
+ *                   orderId:
  *                     type: string
  *                   customerId:
  *                     type: string
@@ -66,6 +66,6 @@ router.post("/", purchaseController.createPurchase);
  *                     type: string
  *                     format: date-time
  */
-router.get("/", purchaseController.getAllPurchases);
+router.get("/", orderController.getAllOrders);
 
 export default router;

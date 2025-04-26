@@ -167,7 +167,7 @@ const Navbar: React.FC = () => {
             className="profile-dropdown"
             show={profileDropdown}
           >
-            <NavDropdown.Item as={Link} to={`/profile/${user._id}`} onClick={closeProfileDropdown}>
+            <NavDropdown.Item as={Link} to={`/account`} onClick={closeProfileDropdown}>
               <div className="dropdown-item-content">
                 <img
                   className="profile-picture-3 rounded-circle mr-10"
@@ -180,7 +180,7 @@ const Navbar: React.FC = () => {
               </div>
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to={`/profile/${user._id}`} onClick={closeProfileDropdown}>
+            <NavDropdown.Item as={Link} to={`/account`} onClick={closeProfileDropdown}>
               <FontAwesomeIcon className="mr-10" icon={faUser} />
               Profile
             </NavDropdown.Item>

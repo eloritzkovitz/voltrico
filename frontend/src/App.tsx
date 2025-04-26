@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import SearchResults from "./pages/SearchResults";
 import Items from "./pages/Items";
 import Statistics from "./pages/Statistics";
+import Account from "./pages/Account";
 
 const App: React.FC = () => {
   const googleClientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID || "";
@@ -31,7 +32,8 @@ const App: React.FC = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/search" element={<SearchResults />} />
                 <Route path="/items" element={<Items />} />
-                <Route path="/statistics" element={<Statistics />} />                
+                <Route path="/statistics" element={<Statistics />} />  
+                <Route path="/account" element={<Account />} />                            
               </Routes>
             </div>
             <Footer />
