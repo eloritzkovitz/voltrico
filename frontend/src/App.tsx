@@ -9,6 +9,7 @@ import MainPage from "./pages/MainPage";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import SearchResults from "./pages/SearchResults";
+import Orders from "./pages/Orders";
 import Items from "./pages/Items";
 import Statistics from "./pages/Statistics";
 import Account from "./pages/Account";
@@ -36,7 +37,8 @@ const App: React.FC = () => {
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/search" element={<SearchResults />} />
-                  <Route path="/items" element={<Items />} />
+                  <Route path="/orders" element={<Orders />} />
+                  <Route path="/items" element={<Items />} />                  
                   <Route path="/statistics" element={<Statistics />} />
                   <Route path="/account" element={<Account />} />
                   <Route path="/cart" element={<Cart />} />
