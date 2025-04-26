@@ -1,45 +1,62 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import "../styles/Navbar.css";
+import { Link, useNavigate } from "react-router-dom";
+import { NavDropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faChevronDown, faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { NavDropdown } from "react-bootstrap";
+import { useAuth } from "../context/AuthContext";
+import itemService from "../services/item-service";
+import "../styles/Navbar.css";
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [profileDropdown, setProfileDropdown] = useState(false);
+  const [profileDropdown, setProfileDropdown] = useState<boolean>(false);
+  const navigate = useNavigate();
 
+  // Handle logout and redirect to login page
   const handleLogout = () => {
     logout();
-    window.location.href = "/login"; // Redirect to login page after logout
+    window.location.href = "/login";
   };
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle search input change and fetch results
+  const handleSearchChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setSearchQuery(query);
 
-    // Simulate fetching search results
     if (query.trim()) {
-      setSearchResults([
-        { id: 1, name: "Sample Result 1" },
-        { id: 2, name: "Sample Result 2" },
-      ]);
-      setShowDropdown(true);
+      try {
+        const results = await itemService.getItemsByQuery(query);
+        setSearchResults(results);
+        setShowDropdown(true);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+        setSearchResults([]);
+        setShowDropdown(false);
+      }
     } else {
       setSearchResults([]);
       setShowDropdown(false);
     }
   };
 
-  // Handle search input blur event
+  // Handle search form submission
+  const handleSearchSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery("");
+      setShowDropdown(false);
+    }
+  };
+
+  // Handle search input blur to hide dropdown after a delay
   const handleSearchBlur = () => {
     setTimeout(() => setShowDropdown(false), 200);
   };
-  
+
   // Toggle profile dropdown visibility
   const toggleProfileDropdown = () => {
     setProfileDropdown((prev) => !prev);
@@ -61,7 +78,12 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Search Bar */}
-      <div role="search" aria-label="Site Search" className="search-bar">
+      <form
+        role="search"
+        aria-label="Site Search"
+        className="search-bar"
+        onSubmit={handleSearchSubmit}
+      >
         <FontAwesomeIcon icon={faSearch} className="search-icon" />
         <input
           type="text"
@@ -77,18 +99,18 @@ const Navbar: React.FC = () => {
         {showDropdown && searchResults.length > 0 && (
           <div className="search-dropdown">
             {searchResults.map((result) => (
-              <a
-                key={result.id}
-                href={`/search/${result.id}`}
+              <Link
+                key={result._id}
+                to={`/items/${result._id}`}
                 className="search-result-item"
                 onClick={() => setShowDropdown(false)}
               >
                 {result.name}
-              </a>
+              </Link>
             ))}
           </div>
         )}
-      </div>
+      </form>
 
       {/* Navigation Menu */}
       <ul className="nav-menu">
@@ -96,32 +118,32 @@ const Navbar: React.FC = () => {
         {isAuthenticated && isAdmin && (
           <>
             <li className="nav-item">
-              <a href="/orders">
+              <Link to="/orders">
                 <img src="/icons/orders.png" alt="Orders" />
                 Orders
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/items">
+              <Link to="/items">
                 <img src="/icons/items.png" alt="Items" />
                 Items
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/statistics">
+              <Link to="/statistics">
                 <img src="/icons/group.png" alt="Statistics" />
                 Statistics
-              </a>
+              </Link>
             </li>
           </>
         )}
 
         {/* Cart */}
         <li>
-          <a href="/cart">
+          <Link to="/cart">
             <img src="/icons/cart.png" alt="Cart" />
             Cart
-          </a>
+          </Link>
         </li>
 
         {/* Profile Dropdown */}
