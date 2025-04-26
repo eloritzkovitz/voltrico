@@ -8,7 +8,7 @@ import path from "path";
 import fs from "fs";
 import userRoutes from "./routes/userRoutes";
 import itemRoutes from "./routes/itemRoutes";
-import purchaseRoutes from "./routes/purchaseRoutes";
+import orderRoutes from "./routes/orderRoutes";
 
 const app = express();
 
@@ -37,9 +37,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/users", userRoutes);
+app.use("/api/auth", userRoutes);
 app.use("/api/items", itemRoutes);
-app.use("/api/purchases", purchaseRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.get("/about", (req, res) => {
   res.send("This is the API for Voltrico.");
@@ -59,7 +59,7 @@ const options = {
   apis: [
     "./src/routes/userRoutes.ts",
     "./src/routes/itemRoutes.ts",
-    "./src/routes/purchaseRoutes.ts"    
+    "./src/routes/orderRoutes.ts"    
   ],
 };
 const specs = swaggerJsDoc(options);

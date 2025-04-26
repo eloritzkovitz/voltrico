@@ -1,0 +1,56 @@
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .popup .AREAForm {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .popup .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .popup .form-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .popup .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .popup button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .popup button:hover {
+    background-color: #f0f0f0;
+  }
+
+  #noItemsMessage {
+    text-align: center;
+    color: gray;
+    font-size: 1.2rem;
+    margin-top: 20px;
+  }
+  
+  #loadingIndicator {
+    text-align: center;
+    color: blue;
+    font-size: 1.2rem;
+    margin-top: 20px;
+  }

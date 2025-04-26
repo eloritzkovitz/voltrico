@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import MainPage from "./pages/MainPage";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import SearchResults from "./pages/SearchResults";
+import Orders from "./pages/Orders";
+import Items from "./pages/Items";
+import Statistics from "./pages/Statistics";
+import Account from "./pages/Account";
+import Cart from "./pages/Cart";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const googleClientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID || "";
+
+  if (!googleClientId) {
+    console.error(
+      "Google Client ID is not defined. Please check your .env file."
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <GoogleOAuthProvider clientId={googleClientId}>
+      <AuthProvider>
+        <CartProvider>
+          <Router>
+            <div className="app-container">
+              <Navbar />
+              <div className="content">
+                <Routes>
+                  <Route path="/" element={<MainPage />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/search" element={<SearchResults />} />
+                  <Route path="/orders" element={<Orders />} />
+                  <Route path="/items" element={<Items />} />                  
+                  <Route path="/statistics" element={<Statistics />} />
+                  <Route path="/account" element={<Account />} />
+                  <Route path="/cart" element={<Cart />} />
+                </Routes>
+              </div>
+              <Footer />
+            </div>
+          </Router>
+        </CartProvider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
+  );
+};
 
-export default App
+export default App;

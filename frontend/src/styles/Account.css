@@ -1,0 +1,14 @@
+.menu-item {
+    color: black !important;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menu-item:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .active-tab {
+    background-color: #f0f0f0 !important;    
+  }
