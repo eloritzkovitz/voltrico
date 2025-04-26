@@ -9,7 +9,7 @@ type tTokens = {
 }
 
 // Generate token
-export const generateToken = (userId: string): tTokens | null => {
+export const generateToken = (userId: string, role: string): tTokens | null => {
     if (!process.env.TOKEN_SECRET) {
         return null;
     }
@@ -17,6 +17,7 @@ export const generateToken = (userId: string): tTokens | null => {
     const random = Math.random().toString();
     const accessToken = jwt.sign({
         _id: userId,
+        role: role,
         random: random
     },
         process.env.TOKEN_SECRET,
@@ -24,6 +25,7 @@ export const generateToken = (userId: string): tTokens | null => {
 
     const refreshToken = jwt.sign({
         _id: userId,
+        role: role,
         random: random
     },
         process.env.TOKEN_SECRET,

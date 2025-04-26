@@ -12,6 +12,7 @@ export interface Item {
   madeIn?: string;
   weight?: string;
   image?: string;
+  stock?: number;
 }
 
 // Get all items

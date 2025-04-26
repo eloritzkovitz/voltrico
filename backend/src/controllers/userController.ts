@@ -36,7 +36,7 @@ const googleSignIn = async (req: Request, res: Response) => {
       });
     }
 
-    const tokens = generateToken(user._id);
+    const tokens = generateToken(user._id, user.role);
     if (!tokens) {
       res.status(500).send("Server Error");
       return;
@@ -105,7 +105,7 @@ const login = async (req: Request, res: Response) => {
     }
 
     // generate token
-    const tokens = generateToken(user._id);
+    const tokens = generateToken(user._id, user.role);
     if (!tokens) {
       res.status(500).send("Server Error");
       return;
@@ -126,10 +126,10 @@ const login = async (req: Request, res: Response) => {
 };
 
 // Get user data
-const getUserData = async (req: Request, res: Response): Promise<void> => {
+const getUserData = async (req: Request & { user?: { _id: string } }, res: Response): Promise<void> => {
   try {
     const requestedUserId = req.params.id;
-    const authenticatedUserId = req.params.userId;
+    const authenticatedUserId = req.user?._id;
 
     // Use the requested ID if available, otherwise fallback to the authenticated user
     const userId = requestedUserId || authenticatedUserId;
@@ -179,12 +179,16 @@ interface UpdateUserRequestBody {
 }
 
 // Update user data
-const updateUser = async (
-  req: Request<{ id: string }, {}, UpdateUserRequestBody>,
-  res: Response
-): Promise<void> => {
+const updateUser = async (req: Request & { user?: { _id: string; role: string } }, res: Response): Promise<void> => {
   try {
     const userId = req.params.id;
+
+    // Ensure the authenticated user is the same as the user being updated or is an administrator
+    if (req.user?._id !== userId && req.user?.role !== "administrator") {
+      res.status(403).json({ message: "Unauthorized" });
+      return;
+    }
+
     const user = await userModel.findById(userId);
     if (!user) {
       res.status(404).json({ message: "User not found" });
@@ -205,7 +209,6 @@ const updateUser = async (
     if (req.file || req.body.profilePicture === "") {
       // Check if the old profile picture needs to be deleted
       if (user.profilePicture && user.profilePicture !== "") {
-        // Construct the absolute path to the file
         const filePath = path.resolve(
           __dirname,
           "../../uploads",
@@ -235,12 +238,16 @@ const updateUser = async (
 };
 
 // Delete user data
-const deleteUser = async (
-  req: Request<{ id: string }>,
-  res: Response
-): Promise<void> => {
+const deleteUser = async (req: Request & { user?: { _id: string; role: string } }, res: Response): Promise<void> => {
   try {
     const userId = req.params.id;
+
+    // Ensure the authenticated user is the same as the user being deleted or is an administrator
+    if (req.user?._id !== userId && req.user?.role !== "administrator") {
+      res.status(403).json({ message: "Unauthorized" });
+      return;
+    }
+
     const user = await userModel.findById(userId);
 
     if (!user) {
@@ -294,7 +301,7 @@ const refresh = async (req: Request, res: Response) => {
       res.status(400).send("fail");
       return;
     }
-    const tokens = generateToken(user._id);
+    const tokens = generateToken(user._id, user.role);
 
     if (!tokens) {
       res.status(500).send("Server Error");

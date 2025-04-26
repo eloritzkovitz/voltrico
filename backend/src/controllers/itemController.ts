@@ -70,7 +70,7 @@ const getItemsByQuery = async (req: Request, res: Response): Promise<void> => {
 
 // Create item
 const createItem = async (req: Request, res: Response): Promise<void> => {
-  const { publishToFacebook, ...itemData } = req.body;
+  const { ...itemData } = req.body;
   const newItem = new Item(itemData);
 
   try {

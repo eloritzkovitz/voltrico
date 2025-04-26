@@ -12,7 +12,7 @@ export interface IUser {
   joinDate?: string;  
   refreshToken?: string[];
   purchases: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Purchase' }];
-  role: 'customer' | 'admin';
+  role: 'customer' | 'administrator';
 }
 
 const userSchema = new mongoose.Schema({
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   joinDate: { type: String, required: true },  
   refreshToken: { type: [String], default: [] },
   purchases: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Purchase' }],
-  role: { type: String, enum: ['customer', 'admin'], default: 'customer' },
+  role: { type: String, enum: ['customer', 'administrator'], default: 'customer' },
 });
 
 const userModel = mongoose.model<IUser>("Users", userSchema);

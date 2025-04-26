@@ -16,7 +16,7 @@ export interface User {
   joinDate?: string;  
   refreshToken?: string[];
   purchases?: [{ type: string, ref: 'Purchase' }]
-  role?: 'customer' | 'admin';  
+  role?: 'customer' | 'administrator';  
 }
 
 // Register a new user

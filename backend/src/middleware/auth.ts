@@ -2,12 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 type Payload = {
-  _id: string;  
+  _id: string;
+  role: string; // Include the user's role in the payload type
 };
 
 // Middleware to check if the user is authenticated
 export const authMiddleware = (
-  req: Request,
+  req: Request & { user?: Payload }, // Add `user` to the request type
   res: Response,
   next: NextFunction
 ) => {
@@ -28,16 +29,23 @@ export const authMiddleware = (
       res.status(401).send("Access Denied");
       return;
     }
-    req.params.userId = (payload as Payload)._id;
+
+    // Attach the user object to the request
+    req.user = payload as Payload;
+
     next();
   });
 };
 
-// Middleware to check if the user is a manager
-export const checkAdminRole = (req: any, res: Response, next: NextFunction): void => {  
-  if (req.isAuthenticated() && req.user.role === "administrator") {
+// Middleware to check if the user is an administrator
+export const checkAdminRole = (
+  req: Request & { user?: { _id: string; role: string } },
+  res: Response,
+  next: NextFunction
+): void => {
+  if (req.user && req.user.role === "administrator") {    
     next();
-  } else {
+  } else {    
     res.status(403).json({ message: "Unauthorized" });
   }
 };
