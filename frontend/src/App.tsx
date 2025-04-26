@@ -8,6 +8,7 @@ import MainPage from "./pages/MainPage";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Items from "./pages/Items";
+import Statistics from "./pages/Statistics";
 
 const App: React.FC = () => {
   const googleClientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID || "";
@@ -28,6 +29,7 @@ const App: React.FC = () => {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/items" element={<Items />} />
+                <Route path="/statistics" element={<Statistics />} />                
               </Routes>
             </div>
             <Footer />
