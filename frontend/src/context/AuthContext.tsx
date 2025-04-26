@@ -25,8 +25,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (token) {
       userService
         .getUserData()
-        .then((fetchedUser) => {
-          console.log("Fetched User:", fetchedUser); // Debugging
+        .then((fetchedUser) => {          
           setUser(fetchedUser);
           setIsAuthenticated(true);
           setIsAdmin(fetchedUser.role === "administrator");
