@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { Item } from "../services/item-service";
+import "../styles/ShopItem.css";
 
 interface ShopItemProps {
   item: Item;
@@ -10,7 +11,7 @@ interface ShopItemProps {
 const ShopItem: React.FC<ShopItemProps> = ({ item, onAddToCart }) => {
   return (
     <div className="shop-item">
-      <img src={item.image || "https://via.placeholder.com/150"} alt={item.name} />
+      <img src={item.image || "/images/placeholder_image.png"} alt={item.name} />
       <h3>{item.name}</h3>
       <p>Category: {item.category}</p>
       <p>Price: ${item.price.toFixed(2)}</p>

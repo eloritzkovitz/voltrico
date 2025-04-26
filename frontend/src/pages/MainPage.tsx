@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import itemService, { Item } from "../services/item-service";
 import ShopItem from "../components/ShopItem";
-import { useCart } from "../context/CartContext"; // Import CartContext
+import { useCart } from "../context/CartContext";
 import "../styles/MainPage.css";
 
 const MainPage: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { addToCart } = useCart(); // Use CartContext to add items to the cart
+  const { addToCart } = useCart();
 
   // Fetch all items on component mount
   useEffect(() => {
@@ -48,7 +48,7 @@ const MainPage: React.FC = () => {
       return;
     }
 
-    addToCart({ ...item, quantity: 1, _id: item._id }); // Ensure _id is a string
+    addToCart({ ...item, quantity: 1, _id: item._id });
   };
 
   return (

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Spinner } from "react-bootstrap";
+import { useCart } from "../context/CartContext";
 import itemService, { Item } from "../services/item-service";
+import ShopItem from "../components/ShopItem";
 
 const SearchResults: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { addToCart } = useCart();
 
   const query = searchParams.get("query") || "";
 
@@ -35,6 +38,16 @@ const SearchResults: React.FC = () => {
     }
   }, [query]);
 
+  // Handle adding an item to the cart
+  const handleAddToCart = (item: Item) => {
+    if (!item._id) {
+      console.error("Item ID is missing. Cannot add to cart.");
+      return;
+    }
+
+    addToCart({ ...item, quantity: 1, _id: item._id });
+  };
+
   return (
     <Container className="mt-4">
       <header className="mb-4">
@@ -55,22 +68,7 @@ const SearchResults: React.FC = () => {
           <Row>
             {items.map((item) => (
               <Col key={item._id} md={4} className="mb-4">
-                <Card>
-                  <Card.Img
-                    variant="top"
-                    src={item.image || "https://via.placeholder.com/150"}
-                    alt={item.name}
-                    style={{ height: "200px", objectFit: "cover" }}
-                  />
-                  <Card.Body>
-                    <Card.Title>{item.name}</Card.Title>
-                    <Card.Text>{item.description}</Card.Text>
-                    <Card.Text>
-                      <strong>Price:</strong> ${item.price.toFixed(2)}
-                    </Card.Text>
-                    <Button variant="primary">View Details</Button>
-                  </Card.Body>
-                </Card>
+                <ShopItem item={item} onAddToCart={handleAddToCart} />
               </Col>
             ))}
           </Row>
