@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import itemService, { Item } from "../services/item-service";
+import ShopItem from "../components/ShopItem";
+import { useCart } from "../context/CartContext"; // Import CartContext
 import "../styles/MainPage.css";
 
 const MainPage: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { addToCart } = useCart(); // Use CartContext to add items to the cart
 
   // Fetch all items on component mount
   useEffect(() => {
@@ -38,13 +41,18 @@ const MainPage: React.FC = () => {
     }
   };
 
+  // Handle adding an item to the cart
+  const handleAddToCart = (item: Item) => {
+    if (!item._id) {
+      console.error("Item ID is missing. Cannot add to cart.");
+      return;
+    }
+
+    addToCart({ ...item, quantity: 1, _id: item._id }); // Ensure _id is a string
+  };
+
   return (
     <div className="page-container">
-      <header>
-        <div id="navbar"></div>
-        <div id="authStatus"></div>
-      </header>
-
       <main>
         <h1>Shop Items</h1>
         <div className="category-buttons">
@@ -71,15 +79,10 @@ const MainPage: React.FC = () => {
         <div className="shop-item-container" id="itemContainer">
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {items.map((item) => (
-            <div key={item._id} className="shop-item">
-              <img src={item.image} alt={item.name} />
-              <h3>{item.name}</h3>
-              <p>Category: {item.category}</p>
-              <p>Price: ${item.price.toFixed(2)}</p>
-            </div>
+            <ShopItem key={item._id} item={item} onAddToCart={handleAddToCart} />
           ))}
         </div>
-      </main>     
+      </main>
     </div>
   );
 };

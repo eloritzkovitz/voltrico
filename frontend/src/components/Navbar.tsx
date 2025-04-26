@@ -4,11 +4,13 @@ import { NavDropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faChevronDown, faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext"; // Import CartContext
 import itemService from "../services/item-service";
 import "../styles/Navbar.css";
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
+  const { cartCount } = useCart(); // Get cart count from CartContext
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -142,7 +144,7 @@ const Navbar: React.FC = () => {
         <li>
           <Link to="/cart">
             <img src="/icons/cart.png" alt="Cart" />
-            Cart
+            Cart <span className="cart-count">{cartCount}</span>
           </Link>
         </li>
 
