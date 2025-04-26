@@ -41,7 +41,7 @@ const login = (email: string, password: string) => {
 }
 
 // Get user data
-const getUserData = async (id?: string): Promise<User> => {
+const getUserData = async (): Promise<User> => {
     const token = Cookies.get("accessToken");
     if (!token) {
       throw new Error("No access token found.");
