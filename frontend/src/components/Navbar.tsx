@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faChevronDown, faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { NavDropdown } from "react-bootstrap";
 
 const Navbar: React.FC = () => {
-  const { isAuthenticated, isAdmin, user, logout } = useAuth(); // Use isAdmin from AuthContext
+  const { isAuthenticated, isAdmin, user, logout } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -33,26 +35,34 @@ const Navbar: React.FC = () => {
     }
   };
 
+  // Handle search input blur event
   const handleSearchBlur = () => {
-    setTimeout(() => setShowDropdown(false), 200); // Hide dropdown after a short delay
+    setTimeout(() => setShowDropdown(false), 200);
   };
-
+  
+  // Toggle profile dropdown visibility
   const toggleProfileDropdown = () => {
     setProfileDropdown((prev) => !prev);
+  };
+
+  // Close profile dropdown
+  const closeProfileDropdown = () => {
+    setProfileDropdown(false);
   };
 
   return (
     <nav className="navbar">
       {/* Logo */}
       <div className="nav-logo">
-        <a href="/">
+        <Link to="/">
           <img src="/icons/app/logo.png" alt="Home" />
-          oltrico
-        </a>
+          Voltrico
+        </Link>
       </div>
 
       {/* Search Bar */}
       <div role="search" aria-label="Site Search" className="search-bar">
+        <FontAwesomeIcon icon={faSearch} className="search-icon" />
         <input
           type="text"
           name="query"
@@ -64,9 +74,6 @@ const Navbar: React.FC = () => {
           onChange={handleSearchChange}
           onBlur={handleSearchBlur}
         />
-        <button className="searchButton">
-          <FontAwesomeIcon icon={faSearch} />
-        </button>
         {showDropdown && searchResults.length > 0 && (
           <div className="search-dropdown">
             {searchResults.map((result) => (
@@ -86,7 +93,7 @@ const Navbar: React.FC = () => {
       {/* Navigation Menu */}
       <ul className="nav-menu">
         {/* Admin Links */}
-        {isAuthenticated && isAdmin && ( // Use isAdmin to conditionally render admin menu items
+        {isAuthenticated && isAdmin && (
           <>
             <li className="nav-item">
               <a href="/orders">
@@ -118,57 +125,48 @@ const Navbar: React.FC = () => {
         </li>
 
         {/* Profile Dropdown */}
-        {isAuthenticated ? (
-          <li className="nav-item profile-dropdown">
-            <div
-              onClick={toggleProfileDropdown}
-              className="profile-dropdown-toggle"
-            >
-              <img
-                src={user?.profilePicture || "/icons/default-profile.png"}
-                alt="Profile"
-                className="profile-picture"
-              />
-              <FontAwesomeIcon icon={faChevronDown} className="dropdown-icon" />
-            </div>
-            {profileDropdown && (
-              <div className="dropdown-menu">
-                <div className="dropdown-header">
-                  <img
-                    src={user?.profilePicture || "/icons/default-profile.png"}
-                    alt="Profile"
-                    className="dropdown-profile-picture"
-                  />
-                  <div className="dropdown-user-info">
-                    <span className="dropdown-user-name">
-                      {user?.firstName} {user?.lastName}
-                    </span>
-                    <span className="dropdown-user-email">{user?.email}</span>
-                  </div>
-                </div>
-                <div className="dropdown-divider"></div>
-                <a href={`/profile/${user?._id}`} className="dropdown-item">
-                  <FontAwesomeIcon icon={faUser} className="dropdown-icon" />
-                  Profile
-                </a>
-                <div className="dropdown-divider"></div>
-                <button onClick={handleLogout} className="dropdown-item">
-                  <FontAwesomeIcon
-                    icon={faSignOutAlt}
-                    className="dropdown-icon"
-                  />
-                  Logout
-                </button>
+        {isAuthenticated && user && (
+          <NavDropdown
+            title={
+              <div
+                className="profile-dropdown-wrapper"
+                onClick={toggleProfileDropdown}
+              >
+                <img
+                  className="profile-picture-3 rounded-circle"
+                  src={user.profilePicture || "/images/default-profile.png"}
+                  alt="Profile"
+                />
+                <FontAwesomeIcon icon={faChevronDown} className="custom-caret" />
               </div>
-            )}
-          </li>
-        ) : (
-          <li className="nav-item">
-            <a href="/login">
-              <img src="/icons/login.png" alt="Login" />
-              Login
-            </a>
-          </li>
+            }
+            id="profile-dropdown"
+            align="end"
+            className="profile-dropdown"
+            show={profileDropdown}
+          >
+            <NavDropdown.Item as={Link} to={`/profile/${user._id}`} onClick={closeProfileDropdown}>
+              <div className="dropdown-item-content">
+                <img
+                  className="profile-picture-3 rounded-circle mr-10"
+                  src={user.profilePicture || "/images/default-profile.png"}
+                  alt="Profile"
+                />
+                <span className="fw-semibold">
+                  {user.firstName} {user.lastName}
+                </span>
+              </div>
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item as={Link} to={`/profile/${user._id}`} onClick={closeProfileDropdown}>
+              <FontAwesomeIcon className="mr-10" icon={faUser} />
+              Profile
+            </NavDropdown.Item>
+            <NavDropdown.Item onClick={() => { closeProfileDropdown(); handleLogout(); }}>
+              <FontAwesomeIcon className="mr-10" icon={faSignOutAlt} />
+              Logout
+            </NavDropdown.Item>
+          </NavDropdown>
         )}
       </ul>
     </nav>
