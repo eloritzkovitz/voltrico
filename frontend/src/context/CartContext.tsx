@@ -13,6 +13,7 @@ interface CartContextType {
   cartCount: number;
   addToCart: (item: CartItem) => void;
   removeFromCart: (itemId: string) => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -73,13 +74,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });    
   };
 
+  // Clear cart content
+  const clearCart = () => {
+    setCart([]);
+  };
+
   // Save the cart to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
   return (
-    <CartContext.Provider value={{ cart, cartCount, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, cartCount, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

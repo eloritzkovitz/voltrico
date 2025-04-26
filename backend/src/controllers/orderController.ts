@@ -23,6 +23,7 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
       orderId,
       customerId,
       itemId,
+      date: new Date(),
     });
 
     // Save the order to the database
@@ -34,8 +35,18 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
     // Update the orders array of the associated item
     await Item.findByIdAndUpdate(itemId, { $push: { orders: order._id } });
 
-    // Respond with the created order object
-    res.status(201).json(order);
+    // Fetch the related customer and item details
+    const customer = await Customer.findById(customerId).select("name email");
+    const item = await Item.findById(itemId).select("name description price image");
+
+    // Respond with the created order and related details
+    res.status(201).json({
+      id: order._id,
+      orderId: order.orderId,
+      customer: customer || null,
+      item: item || null,
+      date: order.date,
+    });
   } catch (error) {
     console.error("Error creating order:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -45,9 +56,21 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
 // Function to get all orders
 const getAllOrders = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Fetch all orders from the database
-    const orders = await Order.find();
-    res.json(orders);
+    // Fetch all orders from the database and populate related fields
+    const orders = await Order.find()
+      .populate("customerId", "name email")
+      .populate("itemId", "name description price image");
+
+    // Format the response to include necessary details
+    const formattedOrders = orders.map((order) => ({
+      id: order._id,
+      orderId: order.orderId,
+      customer: order.customerId, 
+      item: order.itemId, 
+      date: order.date,
+    }));
+
+    res.json(formattedOrders);
   } catch (error) {
     console.error("Error fetching orders:", error);
     res.status(500).json({ message: "Internal server error" });

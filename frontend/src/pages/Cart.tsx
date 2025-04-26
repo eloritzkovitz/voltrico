@@ -1,18 +1,42 @@
 import React from "react";
 import { Button, Table, Alert } from "react-bootstrap";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext"; // Import the AuthContext
+import orderService from "../services/order-service";
 
 const Cart: React.FC = () => {
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart, clearCart } = useCart();
+  const { user } = useAuth(); // Get the user from the AuthContext
 
-  const handlePurchaseAll = () => {
+  const handlePurchaseAll = async () => {
     if (cart.length === 0) {
       alert("Your cart is empty!");
       return;
     }
 
-    // Simulate purchase logic
-    alert("Thank you for your purchase!");
+    try {
+      if (!user || !user._id) {
+        alert("You must be logged in to make a purchase.");
+        return;
+      }
+
+      // Create orders for all items in the cart
+      for (const item of cart) {
+        await orderService.createOrder({
+          customerId: user._id ?? "",
+          itemId: item._id,
+          date: new Date().toISOString(),
+        });
+      }
+
+      // Clear the cart after successful purchase
+      clearCart();
+
+      alert("Thank you for your purchase!");
+    } catch (error) {
+      console.error("Error during purchase:", error);
+      alert("Failed to complete the purchase. Please try again.");
+    }
   };
 
   return (

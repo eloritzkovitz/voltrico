@@ -5,7 +5,7 @@ import userService, { User } from "../services/user-service";
 import orderService from "../services/order-service";
 import ProfileCard from "../components/ProfileCard";
 import OrdersCard from "../components/OrdersCard";
-import "../styles/Account.css"; // Import custom styles
+import "../styles/Account.css";
 
 const Account: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -17,9 +17,9 @@ const Account: React.FC = () => {
     address: "",
   });
   const [activeTab, setActiveTab] = useState<"account" | "orders">("orders");
-  const [orders, setorders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
   const [loadingUser, setLoadingUser] = useState<boolean>(true);
-  const [loadingorders, setLoadingorders] = useState<boolean>(false);
+  const [loadingOrders, setLoadingOrders] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -46,7 +46,7 @@ const Account: React.FC = () => {
 
   useEffect(() => {
     if (activeTab === "orders") {
-      fetchorderHistory();
+      fetchOrderHistory();
     }
   }, [activeTab]);
 
@@ -76,15 +76,24 @@ const Account: React.FC = () => {
     }
   };
 
-  const fetchorderHistory = async () => {
-    setLoadingorders(true);
+  const fetchOrderHistory = async () => {
+    setLoadingOrders(true);
     try {
       const data = await orderService.getOrderHistory();
-      setorders(data);
+      // Ensure the data is in the correct format
+      const formattedOrders = data.map((order: any) => ({
+        id: order._id, // Unique ID for the order
+        name: order.item?.name || "No name available", // Ensure item details are included
+        description: order.item?.description || "No description available",
+        date: order.date || new Date().toISOString(),
+        price: order.item?.price || 0,
+        image: order.item?.image || "/images/placeholder_image.png",
+      }));
+      setOrders(formattedOrders);
     } catch (error) {
       console.error("Error fetching order history:", error);
     } finally {
-      setLoadingorders(false);
+      setLoadingOrders(false);
     }
   };
 
@@ -123,7 +132,7 @@ const Account: React.FC = () => {
               />
             )}
             {activeTab === "orders" && (
-              <OrdersCard orders={orders} loading={loadingorders} />
+              <OrdersCard orders={orders} loading={loadingOrders} />
             )}
           </Col>
         </Row>
