@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faChevronDown, faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar: React.FC = () => {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, isAdmin, user, logout } = useAuth(); // Use isAdmin from AuthContext
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
       <div className="nav-logo">
         <a href="/">
           <img src="/icons/app/logo.png" alt="Home" />
-          AREA
+          oltrico
         </a>
       </div>
 
@@ -86,7 +86,7 @@ const Navbar: React.FC = () => {
       {/* Navigation Menu */}
       <ul className="nav-menu">
         {/* Admin Links */}
-        {isAuthenticated && user?.role === "admin" && (
+        {isAuthenticated && isAdmin && ( // Use isAdmin to conditionally render admin menu items
           <>
             <li className="nav-item">
               <a href="/orders">
@@ -109,20 +109,21 @@ const Navbar: React.FC = () => {
           </>
         )}
 
-        {/* Cart - Visible to all logged-in users */}
-        {isAuthenticated && (
-          <li>
-            <a href="/cart">
-              <img src="/icons/cart.png" alt="Cart" />
-              Cart
-            </a>
-          </li>
-        )}
+        {/* Cart */}
+        <li>
+          <a href="/cart">
+            <img src="/icons/cart.png" alt="Cart" />
+            Cart
+          </a>
+        </li>
 
         {/* Profile Dropdown */}
         {isAuthenticated ? (
           <li className="nav-item profile-dropdown">
-            <div onClick={toggleProfileDropdown} className="profile-dropdown-toggle">
+            <div
+              onClick={toggleProfileDropdown}
+              className="profile-dropdown-toggle"
+            >
               <img
                 src={user?.profilePicture || "/icons/default-profile.png"}
                 alt="Profile"
@@ -152,7 +153,10 @@ const Navbar: React.FC = () => {
                 </a>
                 <div className="dropdown-divider"></div>
                 <button onClick={handleLogout} className="dropdown-item">
-                  <FontAwesomeIcon icon={faSignOutAlt} className="dropdown-icon" />
+                  <FontAwesomeIcon
+                    icon={faSignOutAlt}
+                    className="dropdown-icon"
+                  />
                   Logout
                 </button>
               </div>

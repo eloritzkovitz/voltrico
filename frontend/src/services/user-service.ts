@@ -46,9 +46,8 @@ const getUserData = async (id?: string): Promise<User> => {
     if (!token) {
       throw new Error("No access token found.");
     }
-
-    // Determine the endpoint: if `id` is given, fetch that user; otherwise, fetch the authenticated user
-    const endpoint = id ? `/auth/user/${id}` : "/auth/user";
+        
+    const endpoint = "/auth/user";
 
     const response = await apiClient.get<User>(endpoint, {
       headers: {
