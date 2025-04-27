@@ -7,15 +7,39 @@
   font-style: normal;
 }
 
-html, body {
-  height: 100%;
-  margin: 0; 
+#root {
+  --font-family: 'AREAFont', sans-serif;
+  --bar-color: #23384d;
+  --nav-item-color: #ffc954;
+}
+
+html {
+  overflow-y: scroll;
 }
 
 .page-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-content {
+  flex: 1;
+}
+
+/* Footer styling */
+.footer {
+  background-color: var(--bar-color);
+  color: #f1f1f1;
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
 }
 
 main {

@@ -2,11 +2,23 @@ import React, { useEffect, useState } from "react";
 import itemService, { Item } from "../services/item-service";
 import ShopItem from "../components/ShopItem";
 import { useCart } from "../context/CartContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faThLarge,
+  faTv,
+  faLaptop,
+  faMobileAlt,
+  faBlender,
+  faUtensils,
+  faTools,
+  faLightbulb,
+} from "@fortawesome/free-solid-svg-icons";
 import "../styles/MainPage.css";
 
 const MainPage: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const { addToCart } = useCart();
 
   // Fetch all items on component mount
@@ -22,6 +34,7 @@ const MainPage: React.FC = () => {
 
   // Handle category button clicks
   const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
     if (category === "all") {
       itemService
         .getAllItems()
@@ -52,37 +65,37 @@ const MainPage: React.FC = () => {
   };
 
   return (
-    <div className="page-container">
-      <main>
-        <h1>Shop Items</h1>
-        <div className="category-buttons">
-          {[
-            { category: "all", label: "All", icon: "icons/category-all.png" },
-            { category: "TV", label: "TV", icon: "icons/category-tv.png" },
-            { category: "Computers", label: "Computers", icon: "icons/category-computers.png" },
-            { category: "Mobile", label: "Mobile", icon: "icons/category-mobile.png" },
-            { category: "Appliances", label: "Appliances", icon: "icons/category-appliances.png" },
-            { category: "Kitchen", label: "Kitchen", icon: "icons/category-kitchen.png" },
-            { category: "Tools", label: "Tools", icon: "icons/category-tools.png" },
-            { category: "Lighting", label: "Lighting", icon: "icons/category-lighting.png" },
-          ].map((button) => (
-            <button
-              key={button.category}
-              className="category-btn"
-              onClick={() => handleCategoryClick(button.category)}
-            >
-              <img src={button.icon} alt={`${button.label} Icon`} /> {button.label}
-            </button>
-          ))}
-        </div>
+    <div className="page-container mt-5">
+      <div className="category-buttons d-flex flex-wrap justify-content-center gap-3">
+        {[
+          { category: "all", label: "All", icon: faThLarge },
+          { category: "TV", label: "TV", icon: faTv },
+          { category: "Computers", label: "Computers", icon: faLaptop },
+          { category: "Mobile", label: "Mobile", icon: faMobileAlt },
+          { category: "Appliances", label: "Appliances", icon: faBlender },
+          { category: "Kitchen", label: "Kitchen", icon: faUtensils },
+          { category: "Tools", label: "Tools", icon: faTools },
+          { category: "Lighting", label: "Lighting", icon: faLightbulb },
+        ].map((button) => (
+          <button
+            key={button.category}
+            className={`category-btn rounded-pill d-flex align-items-center gap-2 ${
+              selectedCategory === button.category ? "active-category" : ""
+            }`}
+            onClick={() => handleCategoryClick(button.category)}
+          >
+            <FontAwesomeIcon icon={button.icon} className="category-icon" />
+            {button.label}
+          </button>
+        ))}
+      </div>
 
-        <div className="shop-item-container" id="itemContainer">
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-          {items.map((item) => (
-            <ShopItem key={item._id} item={item} onAddToCart={handleAddToCart} />
-          ))}
-        </div>
-      </main>
+      <div className="shop-item-container mt-4" id="itemContainer">
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {items.map((item) => (
+          <ShopItem key={item._id} item={item} onAddToCart={handleAddToCart} />
+        ))}
+      </div>
     </div>
   );
 };
