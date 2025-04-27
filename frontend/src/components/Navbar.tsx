@@ -118,17 +118,22 @@ const Navbar: React.FC = () => {
         </div>
         {showDropdown && searchResults.length > 0 && (
           <div className="search-dropdown">
-            {searchResults.map((result) => (
-              <Link
-                key={result._id}
-                to={`/items/${result._id}`}
-                className="search-result-item"
-                onClick={() => setShowDropdown(false)}
-              >
-                {result.name}
-              </Link>
-            ))}
-          </div>
+          {searchResults.map((result) => (
+            <Link
+              key={result._id}
+              to={`/items/${result._id}`}
+              className="search-result-item d-flex align-items-center gap-2"
+              onClick={() => setShowDropdown(false)}
+            >
+              <img
+                src={result.imageUrl || "/images/placeholder_image.png"}
+                alt={result.name}
+                className="search-result-image"
+              />
+              <span>{result.name}</span>
+            </Link>
+          ))}
+        </div>
         )}
       </form>
   
