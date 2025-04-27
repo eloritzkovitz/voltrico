@@ -14,6 +14,7 @@ import Items from "./pages/Items";
 import Statistics from "./pages/Statistics";
 import Account from "./pages/Account";
 import Cart from "./pages/Cart";
+import NotFoundPage from "./components/NotFoundPage";
 
 const App: React.FC = () => {
   const googleClientId = import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID || "";
@@ -31,7 +32,7 @@ const App: React.FC = () => {
           <Router>
             <div className="app-container">
               <Navbar />
-              <div className="content">
+              <div className="page-content">
                 <Routes>
                   <Route path="/" element={<MainPage />} />
                   <Route path="/signup" element={<Signup />} />
@@ -42,6 +43,7 @@ const App: React.FC = () => {
                   <Route path="/statistics" element={<Statistics />} />
                   <Route path="/account" element={<Account />} />
                   <Route path="/cart" element={<Cart />} />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </div>
               <Footer />

@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faChevronDown, faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faCartShopping, faUser, faSignOutAlt, faBox, faShoppingBag, faChartBar } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../context/AuthContext";
-import { useCart } from "../context/CartContext"; // Import CartContext
+import { useCart } from "../context/CartContext";
 import itemService from "../services/item-service";
 import "../styles/Navbar.css";
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
-  const { cartCount } = useCart(); // Get cart count from CartContext
+  const { cartCount } = useCart();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [profileDropdown, setProfileDropdown] = useState<boolean>(false);
-  const navigate = useNavigate();
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Handle logout and redirect to login page
   const handleLogout = () => {
@@ -24,7 +25,9 @@ const Navbar: React.FC = () => {
   };
 
   // Handle search input change and fetch results
-  const handleSearchChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const query = event.target.value;
     setSearchQuery(query);
 
@@ -48,7 +51,7 @@ const Navbar: React.FC = () => {
   const handleSearchSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+      window.location.href = `/search?query=${encodeURIComponent(searchQuery)}`;
       setSearchQuery("");
       setShowDropdown(false);
     }
@@ -69,13 +72,29 @@ const Navbar: React.FC = () => {
     setProfileDropdown(false);
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <nav className="navbar">
       {/* Logo */}
       <div className="nav-logo">
         <Link to="/">
-          <img src="/icons/app/logo.png" alt="Home" />
-          Voltrico
+          <img src="/icons/logo.png" alt="Home" className="logo-img" />
         </Link>
       </div>
 
@@ -86,28 +105,43 @@ const Navbar: React.FC = () => {
         className="search-bar"
         onSubmit={handleSearchSubmit}
       >
-        <FontAwesomeIcon icon={faSearch} className="search-icon" />
-        <input
-          type="text"
-          name="query"
-          placeholder="Search..."
-          aria-label="Search Input"
-          className="searchInput"
-          id="searchInput"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          onBlur={handleSearchBlur}
-        />
+        <div className="search-input-wrapper">
+          <FontAwesomeIcon icon={faSearch} className="search-icon" />
+          <input
+            type="text"
+            name="query"
+            placeholder="Search..."
+            aria-label="Search Input"
+            className="searchInput"
+            id="searchInput"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onBlur={handleSearchBlur}
+          />
+          <button
+            type="button"
+            className="search-button"
+            onClick={handleSearchSubmit}
+            aria-label="Search Button"
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </button>
+        </div>
         {showDropdown && searchResults.length > 0 && (
           <div className="search-dropdown">
             {searchResults.map((result) => (
               <Link
                 key={result._id}
                 to={`/items/${result._id}`}
-                className="search-result-item"
+                className="search-result-item d-flex align-items-center gap-2"
                 onClick={() => setShowDropdown(false)}
               >
-                {result.name}
+                <img
+                  src={result.imageUrl || "/images/placeholder_image.png"}
+                  alt={result.name}
+                  className="search-result-image"
+                />
+                <span>{result.name}</span>
               </Link>
             ))}
           </div>
@@ -116,82 +150,95 @@ const Navbar: React.FC = () => {
 
       {/* Navigation Menu */}
       <ul className="nav-menu">
-        {/* Admin Links */}
-        {isAuthenticated && isAdmin && (
-          <>
-            <li className="nav-item">
-              <Link to="/orders">
-                <img src="/icons/orders.png" alt="Orders" />
-                Orders
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/items">
-                <img src="/icons/items.png" alt="Items" />
-                Items
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/statistics">
-                <img src="/icons/group.png" alt="Statistics" />
-                Statistics
-              </Link>
-            </li>
-          </>
-        )}
-
-        {/* Cart */}
-        <li>
-          <Link to="/cart">
-            <img src="/icons/cart.png" alt="Cart" />
-            Cart <span className="cart-count">{cartCount}</span>
-          </Link>
-        </li>
-
-        {/* Profile Dropdown */}
-        {isAuthenticated && user && (
+        {/* Account Dropdown or Login */}
+        {isAuthenticated && user ? (
           <NavDropdown
             title={
               <div
-                className="profile-dropdown-wrapper"
+                className="account-dropdown-wrapper"
                 onClick={toggleProfileDropdown}
               >
-                <img
-                  className="profile-picture-3 rounded-circle"
-                  src={user.profilePicture || "/images/default-profile.png"}
-                  alt="Profile"
-                />
-                <FontAwesomeIcon icon={faChevronDown} className="custom-caret" />
+                <FontAwesomeIcon icon={faUser} className="me-2" />
+                Account
               </div>
             }
-            id="profile-dropdown"
+            id="account-dropdown"
             align="end"
-            className="profile-dropdown"
+            className="account-dropdown"
             show={profileDropdown}
+            ref={dropdownRef}
           >
-            <NavDropdown.Item as={Link} to={`/account`} onClick={closeProfileDropdown}>
-              <div className="dropdown-item-content">
-                <img
-                  className="profile-picture-3 rounded-circle mr-10"
-                  src={user.profilePicture || "/images/default-profile.png"}
-                  alt="Profile"
-                />
-                <span className="fw-semibold">
-                  {user.firstName} {user.lastName}
-                </span>
-              </div>
+            {/* Admin Links */}
+            {isAdmin && (
+              <>
+                <NavDropdown.Item
+                  as={Link}
+                  to="/orders"
+                  onClick={closeProfileDropdown}
+                  className="dropdown-item"
+                >
+                  <FontAwesomeIcon icon={faBox} className="me-2" />
+                  <strong>Orders</strong>
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  as={Link}
+                  to="/items"
+                  onClick={closeProfileDropdown}
+                  className="dropdown-item"
+                >
+                  <FontAwesomeIcon icon={faShoppingBag} className="me-2" />
+                  <strong>Items</strong>
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  as={Link}
+                  to="/statistics"
+                  onClick={closeProfileDropdown}
+                  className="dropdown-item"
+                >
+                  <FontAwesomeIcon icon={faChartBar} className="me-2" />
+                  <strong>Statistics</strong>
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+              </>
+            )}
+
+            {/* Profile and Logout */}
+            <NavDropdown.Item
+              as={Link}
+              to={`/account`}
+              onClick={closeProfileDropdown}
+              className="dropdown-item"
+            >
+              <FontAwesomeIcon icon={faUser} className="me-2" />
+              <strong>Profile</strong>
             </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to={`/account`} onClick={closeProfileDropdown}>
-              <FontAwesomeIcon className="mr-10" icon={faUser} />
-              Profile
-            </NavDropdown.Item>
-            <NavDropdown.Item onClick={() => { closeProfileDropdown(); handleLogout(); }}>
-              <FontAwesomeIcon className="mr-10" icon={faSignOutAlt} />
-              Logout
+            <NavDropdown.Item
+              onClick={() => {
+                closeProfileDropdown();
+                handleLogout();
+              }}
+              className="dropdown-item"
+            >
+              <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
+              <strong>Logout</strong>
             </NavDropdown.Item>
           </NavDropdown>
+        ) : (
+          <li className="nav-item">
+            <Link to="/login" className="nav-link">
+              <FontAwesomeIcon icon={faUser} className="me-2" />
+              Login
+            </Link>
+          </li>
         )}
+
+        {/* Cart */}
+        <li className="nav-item">
+          <Link to="/cart" className="nav-link">
+            <FontAwesomeIcon icon={faCartShopping} className="me-2" />
+            Cart <span className="cart-count">({cartCount})</span>
+          </Link>
+        </li>
       </ul>
     </nav>
   );
