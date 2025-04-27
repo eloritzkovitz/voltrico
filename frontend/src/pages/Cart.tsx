@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Table, Alert } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import orderService from "../services/order-service";
@@ -42,9 +42,16 @@ const Cart: React.FC = () => {
 
   return (
     <div className="cart-container">
-      <h1>Your Shopping Cart</h1>
+      <h4>Your Shopping Cart</h4>
       {cart.length === 0 ? (
-        <Alert variant="info">Your cart is empty.</Alert>
+        <div className="empty-cart text-center mt-4">
+          <img
+            src="/images/empty_cart.png"
+            alt="Empty Cart"
+            style={{ width: "80px", height: "80px" }}
+          />
+          <h2>Your cart is empty</h2>
+        </div>
       ) : (
         <>
           <Table striped bordered hover responsive>
@@ -65,7 +72,11 @@ const Cart: React.FC = () => {
                     <img
                       src={item.imageURL || "/images/placeholder_image.png"}
                       alt={item.name}
-                      style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "cover",
+                      }}
                     />
                   </td>
                   <td>{item.name}</td>

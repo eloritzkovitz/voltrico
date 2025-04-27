@@ -50,10 +50,7 @@ const SearchResults: React.FC = () => {
 
   return (
     <Container className="mt-4">
-      <header className="mb-4">
-        <h1 className="text-center">Search Results</h1>
-        {query && <p className="text-center">Results for: "{query}"</p>}
-      </header>
+       {query && <h4 className="mb-4">Showing search results for "{query}"</h4>}      
 
       <main>
         {loading ? (

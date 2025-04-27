@@ -68,7 +68,10 @@ const Account: React.FC = () => {
           formDataToSend.append(key, value);
         }
       });
-      const updatedUser = await userService.updateUser(user._id, formDataToSend);
+      const updatedUser = await userService.updateUser(
+        user._id,
+        formDataToSend
+      );
       console.log("User updated successfully:", updatedUser);
       setUser(updatedUser);
     } catch (error) {
@@ -83,7 +86,7 @@ const Account: React.FC = () => {
       // Ensure the data is in the correct format
       const formattedOrders = data.map((order: any) => ({
         id: order._id, // Unique ID for the order
-        name: order.item?.name || "No name available", // Ensure item details are included
+        name: order.item?.name || "No name available",
         description: order.item?.description || "No description available",
         date: order.date || new Date().toISOString(),
         price: order.item?.price || 0,
@@ -99,44 +102,43 @@ const Account: React.FC = () => {
 
   return (
     <Container className="mt-4">
-      <header className="mb-4">
-        <h1 className="text-center">My Account</h1>
-      </header>
+      <Row>
+        <Col md={3}>
+          <h4 className="mb-4">My Account</h4>
+          <Nav className="flex-column">
+            <Nav.Link
+              className={`menu-item ${
+                activeTab === "account" ? "active-tab" : ""
+              }`}
+              onClick={() => setActiveTab("account")}
+            >
+              <FaUser className="me-2" /> Personal Information
+            </Nav.Link>
+            <Nav.Link
+              className={`menu-item ${
+                activeTab === "orders" ? "active-tab" : ""
+              }`}
+              onClick={() => setActiveTab("orders")}
+            >
+              <FaWallet className="me-2" /> My Orders
+            </Nav.Link>
+          </Nav>
+        </Col>
 
-      <main>
-        <Row>
-          <Col md={3}>
-            <Nav className="flex-column">
-              <Nav.Link
-                className={`menu-item ${activeTab === "account" ? "active-tab" : ""}`}
-                onClick={() => setActiveTab("account")}
-              >
-                <FaUser className="me-2" /> Personal Information
-              </Nav.Link>
-              <Nav.Link
-                className={`menu-item ${activeTab === "orders" ? "active-tab" : ""}`}
-                onClick={() => setActiveTab("orders")}
-              >
-                <FaWallet className="me-2" /> My Orders
-              </Nav.Link>
-            </Nav>
-          </Col>
-
-          <Col md={9}>
-            {activeTab === "account" && (
-              <ProfileCard
-                formData={formData}
-                loading={loadingUser}
-                onInputChange={handleInputChange}
-                onSave={handleSaveProfile}
-              />
-            )}
-            {activeTab === "orders" && (
-              <OrdersCard orders={orders} loading={loadingOrders} />
-            )}
-          </Col>
-        </Row>
-      </main>
+        <Col md={9}>
+          {activeTab === "account" && (
+            <ProfileCard
+              formData={formData}
+              loading={loadingUser}
+              onInputChange={handleInputChange}
+              onSave={handleSaveProfile}
+            />
+          )}
+          {activeTab === "orders" && (
+            <OrdersCard orders={orders} loading={loadingOrders} />
+          )}
+        </Col>
+      </Row>
     </Container>
   );
 };

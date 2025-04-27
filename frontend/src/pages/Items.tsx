@@ -53,9 +53,7 @@ const Items: React.FC = () => {
 
   return (
     <div className="page-container">
-      <header>
-        <h2>Manage Items</h2>
-      </header>
+      <h4>Manage Items</h4>
 
       <main>
         {/* Search Bar */}

@@ -133,9 +133,7 @@ const Statistics: React.FC = () => {
 
   return (
     <Container className="mt-4">
-      <header className="mb-4">
-        <h1 className="text-center">Show Statistics</h1>
-      </header>
+      <h4 className="text-center">Show Statistics</h4>
 
       <main>
         {/* Group By Dropdown */}

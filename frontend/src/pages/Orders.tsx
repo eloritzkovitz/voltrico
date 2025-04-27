@@ -42,9 +42,7 @@ const Orders: React.FC = () => {
 
   return (
     <div className="page-container">
-      <header>
-        <h2>Manage Orders</h2>
-      </header>
+      <h4>Manage Orders</h4>
 
       <main>
         {/* Search Bar */}

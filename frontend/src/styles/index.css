@@ -42,10 +42,6 @@ html {
   width: 100%;
 }
 
-main {
-  flex: 1;
-}
-
 aside {
   width: fit-content;
   padding: 10px;
