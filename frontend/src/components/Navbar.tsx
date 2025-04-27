@@ -75,7 +75,10 @@ const Navbar: React.FC = () => {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setProfileDropdown(false);
       }
     };
@@ -94,7 +97,7 @@ const Navbar: React.FC = () => {
           <img src="/icons/logo.png" alt="Home" className="logo-img" />
         </Link>
       </div>
-  
+
       {/* Search Bar */}
       <form
         role="search"
@@ -115,35 +118,46 @@ const Navbar: React.FC = () => {
             onChange={handleSearchChange}
             onBlur={handleSearchBlur}
           />
+          <button
+            type="button"
+            className="search-button"
+            onClick={handleSearchSubmit}
+            aria-label="Search Button"
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </button>
         </div>
         {showDropdown && searchResults.length > 0 && (
           <div className="search-dropdown">
-          {searchResults.map((result) => (
-            <Link
-              key={result._id}
-              to={`/items/${result._id}`}
-              className="search-result-item d-flex align-items-center gap-2"
-              onClick={() => setShowDropdown(false)}
-            >
-              <img
-                src={result.imageUrl || "/images/placeholder_image.png"}
-                alt={result.name}
-                className="search-result-image"
-              />
-              <span>{result.name}</span>
-            </Link>
-          ))}
-        </div>
+            {searchResults.map((result) => (
+              <Link
+                key={result._id}
+                to={`/items/${result._id}`}
+                className="search-result-item d-flex align-items-center gap-2"
+                onClick={() => setShowDropdown(false)}
+              >
+                <img
+                  src={result.imageUrl || "/images/placeholder_image.png"}
+                  alt={result.name}
+                  className="search-result-image"
+                />
+                <span>{result.name}</span>
+              </Link>
+            ))}
+          </div>
         )}
       </form>
-  
+
       {/* Navigation Menu */}
       <ul className="nav-menu">
         {/* Account Dropdown or Login */}
         {isAuthenticated && user ? (
           <NavDropdown
             title={
-              <div className="account-dropdown-wrapper" onClick={toggleProfileDropdown}>
+              <div
+                className="account-dropdown-wrapper"
+                onClick={toggleProfileDropdown}
+              >
                 <FontAwesomeIcon icon={faUser} className="me-2" />
                 Account
               </div>
@@ -187,7 +201,7 @@ const Navbar: React.FC = () => {
                 <NavDropdown.Divider />
               </>
             )}
-  
+
             {/* Profile and Logout */}
             <NavDropdown.Item
               as={Link}
@@ -217,7 +231,7 @@ const Navbar: React.FC = () => {
             </Link>
           </li>
         )}
-  
+
         {/* Cart */}
         <li className="nav-item">
           <Link to="/cart" className="nav-link">
@@ -228,6 +242,6 @@ const Navbar: React.FC = () => {
       </ul>
     </nav>
   );
-}
+};
 
 export default Navbar;

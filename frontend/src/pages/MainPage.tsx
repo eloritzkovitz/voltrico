@@ -3,17 +3,7 @@ import itemService, { Item } from "../services/item-service";
 import ShopItem from "../components/ShopItem";
 import { useCart } from "../context/CartContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faThLarge,
-  faTv,
-  faLaptop,
-  faMobileAlt,
-  faBlender,
-  faUtensils,
-  faTools,
-  faLightbulb,
-} from "@fortawesome/free-solid-svg-icons";
-import "../styles/MainPage.css";
+import { faThLarge, faTv, faLaptop, faMobileAlt, faBlender, faUtensils, faTools, faLightbulb } from "@fortawesome/free-solid-svg-icons";
 
 const MainPage: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
