@@ -11,7 +11,7 @@ export interface Item {
   color?: string;
   madeIn?: string;
   weight?: string;
-  image?: string;
+  imageURL?: string;
   stock?: number;
 }
 

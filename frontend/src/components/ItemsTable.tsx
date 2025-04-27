@@ -6,7 +6,7 @@ import EditItemModal from "./EditItem";
 interface ItemsTableProps {
   items: Item[];
   onDelete: (id: string) => void;
-  onEdit: () => void; // Callback to refresh items after editing
+  onEdit: () => void;
 }
 
 const ItemsTable: React.FC<ItemsTableProps> = ({ items, onDelete, onEdit }) => {
@@ -39,7 +39,7 @@ const ItemsTable: React.FC<ItemsTableProps> = ({ items, onDelete, onEdit }) => {
               <td>{item._id}</td>
               <td>
                 <img
-                  src={item.image || "https://via.placeholder.com/50"}
+                  src={item.imageURL || "/images/placeholder_image.png"}
                   alt={item.name}
                   className="img-thumbnail"
                   style={{ width: "50px", height: "50px", objectFit: "cover" }}

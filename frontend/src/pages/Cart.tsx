@@ -1,13 +1,14 @@
 import React from "react";
 import { Button, Table, Alert } from "react-bootstrap";
+import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext"; // Import the AuthContext
 import orderService from "../services/order-service";
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart, clearCart } = useCart();
-  const { user } = useAuth(); // Get the user from the AuthContext
+  const { user } = useAuth();
 
+  // Handle purchase of all items in the cart
   const handlePurchaseAll = async () => {
     if (cart.length === 0) {
       alert("Your cart is empty!");

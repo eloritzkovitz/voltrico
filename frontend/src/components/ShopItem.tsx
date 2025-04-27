@@ -11,7 +11,7 @@ interface ShopItemProps {
 const ShopItem: React.FC<ShopItemProps> = ({ item, onAddToCart }) => {
   return (
     <div className="shop-item">
-      <img src={item.image || "/images/placeholder_image.png"} alt={item.name} />
+      <img src={item.imageURL || "/images/placeholder_image.png"} alt={item.name} />
       <h3>{item.name}</h3>
       <p>Category: {item.category}</p>
       <p>Price: ${item.price.toFixed(2)}</p>
