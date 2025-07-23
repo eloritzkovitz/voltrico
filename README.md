@@ -1,6 +1,5 @@
 # Voltrico
 
-# Overview
 Voltrico is an online appliances store, allowing users to browse products, add them to cart, perform orders and view them. Administrators can also add, edit and delete items, as well as view order history and statistics.
 
 ## Features
