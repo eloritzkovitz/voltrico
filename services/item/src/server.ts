@@ -5,24 +5,22 @@ import bodyParser from "body-parser";
 import path from "path";
 import fs from "fs";
 import itemRoutes from "./routes/itemRoutes";
+import { rabbitMQService } from "../../../libs/communicator/rabbitMQService";
 
 const app = express();
 
 dotenv.config();
 
 // Ensure the uploads directory exists
-const uploadDir = path.join(__dirname, "../dist/uploads");
+const uploadDir = path.join(process.cwd(), "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 // Serve static files from the "uploads" directory
-app.use('/uploads', express.static(path.join(__dirname, '../dist/uploads')));
+app.use("/uploads", express.static(uploadDir));
 
-const db = mongoose.connection;
-db.on("error", (error) => console.error(error));
-db.once("open", () => console.log("Connected to Database"));
-
+// Middleware setup
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, res, next) => {
@@ -32,21 +30,28 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serve the API routes
 app.use("/api/items", itemRoutes);
 
 app.get("/about", (req, res) => {
   res.send("This is the Item Service API for Voltrico.");
 });
 
-const initApp = () => {
-  return new Promise<Express>(async (resolve, reject) => {
-    if (process.env.DB_CONNECTION == undefined) {
-      reject("DB_CONNECTION is not defined");
-    } else {
-      await mongoose.connect(process.env.DB_CONNECTION);
-      resolve(app);
-    }
-  });
+// --- App Initialization ---
+const initApp = async (): Promise<Express> => {
+  if (!process.env.DB_CONNECTION) {
+    throw new Error("DB_CONNECTION is not defined");
+  }
+  try {
+    await mongoose.connect(process.env.DB_CONNECTION);
+    console.log("Connected to MongoDB");
+    await rabbitMQService.init();
+    console.log("Connected to RabbitMQ");
+    return app;
+  } catch (err) {
+    console.error("Failed to connect to MongoDB or RabbitMQ:", err);
+    throw err;
+  }
 };
 
 export default initApp;

@@ -22,6 +22,7 @@ const AppDataSource = new DataSource({
   synchronize: true,
 });
 
+// Middleware setup
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, res, next) => {
@@ -31,12 +32,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serve the API routes
 app.use("/api/orders", orderRoutes);
 
 app.get("/about", (req, res) => {
   res.send("This is the Order Service API for Voltrico.");
 });
 
+// --- App Initialization ---
 const initApp = async (): Promise<Express> => {
   try {
     await AppDataSource.initialize();
