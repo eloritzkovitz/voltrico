@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"log"
 	"os"
-	"sync"
 
+	"github.com/jmoiron/sqlx"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 // Expects inventory and mutex to be defined in main.go
-func StartRabbitMQConsumer(inventory map[string]int, mutex *sync.Mutex) {
+func StartRabbitMQConsumer(db *sqlx.DB) {
 	rabbitURL := os.Getenv("RABBITMQ_URL")
 	if rabbitURL == "" {
 		rabbitURL = "amqp://rabbitmq"
@@ -47,10 +47,12 @@ func StartRabbitMQConsumer(inventory map[string]int, mutex *sync.Mutex) {
 				log.Printf("Failed to parse order message: %v", err)
 				continue
 			}
-			mutex.Lock()
-			inventory[order.ItemID] -= order.Quantity
-			mutex.Unlock()
-			log.Printf("Inventory updated for item %s: -%d", order.ItemID, order.Quantity)
+			_, err := db.Exec("UPDATE inventory SET stock = stock - $1 WHERE item_id = $2", order.Quantity, order.ItemID)
+			if err != nil {
+				log.Printf("Failed to update inventory for item %s: %v", order.ItemID, err)
+			} else {
+				log.Printf("Inventory updated for item %s: -%d", order.ItemID, order.Quantity)
+			}
 		}
 	}()
 }

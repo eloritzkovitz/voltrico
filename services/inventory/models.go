@@ -1,6 +1,6 @@
 package main
 
 type InventoryItem struct {
-	ItemID string `json:"itemId"`
-	Stock  int    `json:"stock"`
+	ItemID string `db:"item_id" json:"itemId"`
+	Stock  int    `db:"stock" json:"stock"`
 }

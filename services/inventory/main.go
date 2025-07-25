@@ -4,19 +4,32 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"sync"
 
 	"github.com/gorilla/mux"
+	"github.com/jmoiron/sqlx"
 )
 
-var (
-	inventory = make(map[string]int)
-	mutex     = &sync.Mutex{}
-)
+var db *sqlx.DB
 
 // Main function to start the server
 func main() {
-	StartRabbitMQConsumer(inventory, mutex)
+	var err error
+	db, err = ConnectDB()
+	if err != nil {
+		log.Fatalf("Failed to connect to DB: %v", err)
+	}
+	log.Println("Connected to PostgreSQL")
+
+	// Create inventory table if it doesn't exist
+	schema := `CREATE TABLE IF NOT EXISTS inventory (
+        item_id TEXT PRIMARY KEY,
+        stock INTEGER NOT NULL
+    );`
+	db.MustExec(schema)
+
+	// Start RabbitMQ consumer
+	StartRabbitMQConsumer(db)
+
 	r := mux.NewRouter()
 	r.HandleFunc("/api/inventory/{id}", getStock).Methods("GET")
 	r.HandleFunc("/api/inventory/{id}", setStock).Methods("PUT")

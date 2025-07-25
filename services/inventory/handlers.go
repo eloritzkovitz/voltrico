@@ -11,14 +11,13 @@ import (
 // Get stock for an item
 func getStock(w http.ResponseWriter, r *http.Request) {
 	itemId := mux.Vars(r)["id"]
-	mutex.Lock()
-	stock, exists := inventory[itemId]
-	mutex.Unlock()
-	if !exists {
+	var item InventoryItem
+	err := db.Get(&item, "SELECT item_id, stock FROM inventory WHERE item_id=$1", itemId)
+	if err != nil {
 		http.Error(w, "Item not found", http.StatusNotFound)
 		return
 	}
-	json.NewEncoder(w).Encode(map[string]int{"stock": stock})
+	json.NewEncoder(w).Encode(item)
 }
 
 // Set stock for an item
@@ -31,9 +30,11 @@ func setStock(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
-	mutex.Lock()
-	inventory[itemId] = req.Stock
-	mutex.Unlock()
+	_, err := db.Exec("INSERT INTO inventory (item_id, stock) VALUES ($1, $2) ON CONFLICT (item_id) DO UPDATE SET stock=$2", itemId, req.Stock)
+	if err != nil {
+		http.Error(w, "DB error", http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -46,8 +47,10 @@ func updateStock(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid change value", http.StatusBadRequest)
 		return
 	}
-	mutex.Lock()
-	inventory[itemId] += change
-	mutex.Unlock()
+	_, err = db.Exec("UPDATE inventory SET stock = stock + $1 WHERE item_id = $2", change, itemId)
+	if err != nil {
+		http.Error(w, "DB error", http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }
