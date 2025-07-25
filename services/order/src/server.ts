@@ -4,11 +4,13 @@ import bodyParser from "body-parser";
 import { DataSource } from "typeorm";
 import { Order } from "./models/Order";
 import orderRoutes from "./routes/orderRoutes";
+import { rabbitMQService } from "../../../libs/communicator/rabbitMQService";
 
 const app = express();
 
 dotenv.config();
 
+// Define the PostgreSQL data source
 const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.DB_HOST,
@@ -39,6 +41,8 @@ const initApp = async (): Promise<Express> => {
   try {
     await AppDataSource.initialize();
     console.log("Connected to PostgreSQL");
+    await rabbitMQService.init();
+    console.log("Connected to RabbitMQ");
     return app;
   } catch (err) {
     console.error("Failed to connect to PostgreSQL:", err);
