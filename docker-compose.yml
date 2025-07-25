@@ -31,6 +31,13 @@ services:
       RABBITMQ_URL: amqp://rabbitmq
     depends_on:
       - rabbitmq
+  
+  inventory-service:
+    build: ./services/inventory
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq
+    depends_on:
+      - rabbitmq
 
   api-gateway:
     build: ./api-gateway
