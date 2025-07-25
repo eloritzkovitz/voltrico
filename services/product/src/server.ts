@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import path from "path";
 import fs from "fs";
-import itemRoutes from "./routes/itemRoutes";
+import productRoutes from "./routes/productRoutes";
 import { rabbitMQService } from "../../../libs/communicator/rabbitMQService";
 
 const app = express();
@@ -31,10 +31,10 @@ app.use((req, res, next) => {
 });
 
 // Serve the API routes
-app.use("/api/items", itemRoutes);
+app.use("/api/products", productRoutes);
 
 app.get("/about", (req, res) => {
-  res.send("This is the Item Service API for Voltrico.");
+  res.send("This is the Product Service API for Voltrico.");
 });
 
 // --- App Initialization ---

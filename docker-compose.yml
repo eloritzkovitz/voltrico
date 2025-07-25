@@ -18,8 +18,8 @@ services:
     depends_on:
       - rabbitmq
 
-  item-service:
-    build: ./services/item
+  product-service:
+    build: ./services/product
     environment:
       RABBITMQ_URL: amqp://rabbitmq
     depends_on:

@@ -22,6 +22,6 @@ const port = process.env.PORT || 3002;
 
 initApp().then((app) => {
   app.listen(port, () => {
-    console.log(`Item service running on port ${port} (Environment: ${env})`);
+    console.log(`Product service running on port ${port} (Environment: ${env})`);
   });
 });

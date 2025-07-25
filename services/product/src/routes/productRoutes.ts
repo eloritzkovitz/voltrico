@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import itemController from "../controllers/itemController";
+import productController from "../controllers/productController";
 import { authenticate, requireAdmin } from "../../../../libs/middleware/auth";
 
 const upload = multer().none();
@@ -10,34 +10,34 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Items
- *   description: API for managing items
+ *   name: Products
+ *   description: API for managing products
  */
 
 /**
  * @swagger
- * /items:
+ * /products:
  *   get:
- *     summary: Get all items
- *     tags: [Items]
+ *     summary: Get all products
+ *     tags: [Products]
  *     responses:
  *       200:
- *         description: List of all items
+ *         description: List of all products
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Item'
+ *                 $ref: '#/components/schemas/Product'
  */
-router.get("/", itemController.getAllItems);
+router.get("/", productController.getAllProducts);
 
 /**
  * @swagger
- * /items/search:
+ * /products/search:
  *   get:
- *     summary: Search items by query
- *     tags: [Items]
+ *     summary: Search products by query
+ *     tags: [Products]
  *     parameters:
  *       - in: query
  *         name: query
@@ -46,22 +46,22 @@ router.get("/", itemController.getAllItems);
  *         description: Search query
  *     responses:
  *       200:
- *         description: List of matching items
+ *         description: List of matching products
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Item'
+ *                 $ref: '#/components/schemas/Product'
  */
-router.get("/search", itemController.getItemsByQuery);
+router.get("/search", productController.getProductsByQuery);
 
 /**
  * @swagger
- * /items/category:
+ * /products/category:
  *   get:
- *     summary: Get items by category
- *     tags: [Items]
+ *     summary: Get products by category
+ *     tags: [Products]
  *     parameters:
  *       - in: query
  *         name: category
@@ -70,22 +70,22 @@ router.get("/search", itemController.getItemsByQuery);
  *         description: Category name
  *     responses:
  *       200:
- *         description: List of items in the category
+ *         description: List of products in the category
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Item'
+ *                 $ref: '#/components/schemas/Product'
  */
-router.get("/category", itemController.getItemsByCategory);
+router.get("/category", productController.getProductsByCategory);
 
 /**
  * @swagger
- * /items/criteria:
+ * /products/criteria:
  *   get:
- *     summary: Get items by criteria
- *     tags: [Items]
+ *     summary: Get products by criteria
+ *     tags: [Products]
  *     parameters:
  *       - in: query
  *         name: color
@@ -104,47 +104,47 @@ router.get("/category", itemController.getItemsByCategory);
  *         description: Filter by weight
  *     responses:
  *       200:
- *         description: List of items matching the criteria
+ *         description: List of products matching the criteria
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Item'
+ *                 $ref: '#/components/schemas/Product'
  */
-router.get("/criteria", itemController.getItemsByCriteria);
+router.get("/criteria", productController.getProductsByCriteria);
 
 /**
  * @swagger
- * /items/{id}:
+ * /products/{id}:
  *   get:
- *     summary: Get item by ID
- *     tags: [Items]
+ *     summary: Get product by ID
+ *     tags: [Products]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: Item ID
+ *         description: Product ID
  *     responses:
  *       200:
- *         description: Item details
+ *         description: Product details
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Item'
+ *               $ref: '#/components/schemas/Product'
  *       404:
- *         description: Item not found
+ *         description: Product not found
  */
-router.get("/:id", itemController.getItemById);
+router.get("/:id", productController.getProductById);
 
 /**
  * @swagger
- * /items:
+ * /products:
  *   post:
- *     summary: Create a new item
- *     tags: [Items]
+ *     summary: Create a new product
+ *     tags: [Products]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -152,21 +152,21 @@ router.get("/:id", itemController.getItemById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Item'
+ *             $ref: '#/components/schemas/Product'
  *     responses:
  *       201:
- *         description: Item created successfully
+ *         description: Product created successfully
  *       400:
  *         description: Invalid input
  */
-router.post("/", authenticate, requireAdmin, upload, itemController.createItem);
+router.post("/", authenticate, requireAdmin, upload, productController.createProduct);
 
 /**
  * @swagger
- * /items/{id}:
+ * /products/{id}:
  *   put:
- *     summary: Update an item
- *     tags: [Items]
+ *     summary: Update a product
+ *     tags: [Products]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -175,27 +175,27 @@ router.post("/", authenticate, requireAdmin, upload, itemController.createItem);
  *         required: true
  *         schema:
  *           type: string
- *         description: Item ID
+ *         description: Product ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Item'
+ *             $ref: '#/components/schemas/Product'
  *     responses:
  *       200:
- *         description: Item updated successfully
+ *         description: Product updated successfully
  *       404:
- *         description: Item not found
+ *         description: Product not found
  */
-router.put("/:id", authenticate, requireAdmin, upload, itemController.updateItem);
+router.put("/:id", authenticate, requireAdmin, upload, productController.updateProduct);
 
 /**
  * @swagger
- * /items/{id}:
+ * /products/{id}:
  *   delete:
- *     summary: Delete an item
- *     tags: [Items]
+ *     summary: Delete a product
+ *     tags: [Products]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -204,13 +204,13 @@ router.put("/:id", authenticate, requireAdmin, upload, itemController.updateItem
  *         required: true
  *         schema:
  *           type: string
- *         description: Item ID
+ *         description: Product ID
  *     responses:
  *       200:
- *         description: Item deleted successfully
+ *         description: Product deleted successfully
  *       404:
- *         description: Item not found
+ *         description: Product not found
  */
-router.delete("/:id", authenticate, requireAdmin, itemController.deleteItem);
+router.delete("/:id", authenticate, requireAdmin, productController.deleteProduct);
 
 export default router;

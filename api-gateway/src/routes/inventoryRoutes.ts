@@ -6,10 +6,9 @@ const router = express.Router();
 router.use(
   "/",
   createProxyMiddleware({
-    target: process.env.ITEM_SERVICE_URL || "http://localhost:3002",
+    target: process.env.INVENTORY_SERVICE_URL || "http://localhost:3004",
     changeOrigin: true,
-    pathRewrite: { "^/api/items": "" },
-    ws: true,
+    pathRewrite: { "^/api/inventory": "/" },
   })
 );
 
