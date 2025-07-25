@@ -1,67 +1,67 @@
 import axios from "axios";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import Order from "../models/Order";
+import { AppDataSource } from "../server";
+import { Order } from "../models/Order";
 
-// Controller function for creating a new order
+// Create a new order
 const createOrder = async (req: Request, res: Response): Promise<void> => {
   try {
     const { customerId, itemId } = req.body;
-
-    // Validate input data
     if (!customerId || !itemId) {
       res.status(400).json({ message: "Customer ID and Item ID are required" });
       return;
     }
-
-    // Generate a unique orderId using UUID
-    const orderId = uuidv4();
-
-    // Create a new order instance
-    const order = new Order({
-      orderId,
+    const orderRepo = AppDataSource.getRepository(Order);
+    const order = orderRepo.create({
+      orderId: uuidv4(),
       customerId,
       itemId,
       date: new Date(),
     });
-
-    // Save the order to the database
-    await order.save();
-
-    // Fetch related data via API calls
-    const customerRes = await axios.get(`http://user-service/api/users/${customerId}`);
-    const itemRes = await axios.get(`http://item-service/api/items/${itemId}`);    
-
-    // Respond with the created order and related details
-    res.status(201).json({
-      id: order._id,
-      orderId: order.orderId,
-      customer: customerRes.data || null,
-      item: itemRes.data || null,
-      date: order.date,
-    });
+    await orderRepo.save(order);
+    res.status(201).json(order);
   } catch (error) {
     console.error("Error creating order:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
-// Function to get all orders
+// Get all orders with customer and item details
 const getAllOrders = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Fetch all orders from the database and populate related fields
-    const orders = await Order.find()
-      .populate("customerId", "name email")
-      .populate("itemId", "name description price image");
+    const orderRepo = AppDataSource.getRepository(Order);
+    const orders = await orderRepo.find();
 
-    // Format the response to include necessary details
-    const formattedOrders = orders.map((order) => ({
-      id: order._id,
-      orderId: order.orderId,
-      customer: order.customerId, 
-      item: order.itemId, 
-      date: order.date,
-    }));
+    // Optionally fetch customer and item details via API calls
+    const formattedOrders = await Promise.all(
+      orders.map(async (order) => {
+        let customer = null;
+        let item = null;
+
+        try {
+          const customerRes = await axios.get(`http://user-service/api/users/${order.customerId}`);
+          customer = customerRes.data;
+        } catch (err) {
+          customer = { id: order.customerId, error: "Could not fetch customer" };
+        }
+
+        try {
+          const itemRes = await axios.get(`http://item-service/api/items/${order.itemId}`);
+          item = itemRes.data;
+        } catch (err) {
+          item = { id: order.itemId, error: "Could not fetch item" };
+        }
+
+        return {
+          id: order.id,
+          orderId: order.orderId,
+          customer,
+          item,
+          date: order.date,
+        };
+      })
+    );
 
     res.json(formattedOrders);
   } catch (error) {

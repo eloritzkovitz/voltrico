@@ -1,20 +1,19 @@
-import mongoose, { Schema, Document } from "mongoose";
-import { IUser } from "./User";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-export interface IOrder extends Document {
-  orderId: string;
-  customerId: IUser["_id"];
-  itemId: mongoose.Schema.Types.ObjectId;
-  date: Date;
+@Entity()
+export class Order {
+  @PrimaryGeneratedColumn("uuid")
+  id!: string;
+
+  @Column()
+  orderId!: string;
+
+  @Column()
+  customerId!: string;
+
+  @Column()
+  itemId!: string;
+
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  date!: Date;
 }
-
-const orderSchema = new Schema<IOrder>({
-  orderId: { type: String, required: true, unique: true },
-  customerId: { type: Schema.Types.ObjectId, ref: "Users", required: true },
-  itemId: { type: Schema.Types.ObjectId, ref: "Item", required: true },
-  date: { type: Date, default: Date.now },
-});
-
-const OrderModel = mongoose.model<IOrder>("Order", orderSchema);
-
-export default OrderModel;
