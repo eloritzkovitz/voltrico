@@ -1,7 +1,5 @@
-import { Request, Response } from 'express';
-import userModel, { IUser } from '../models/User';
+
 import jwt from 'jsonwebtoken';
-import { Document } from 'mongoose';
 
 type tTokens = {
     accessToken: string,
@@ -37,15 +35,12 @@ export const generateToken = (userId: string, role: string): tTokens | null => {
     };
 };
 
-type tUser = Document<unknown, {}, IUser> & IUser & Required<{
-    _id: string;
-}> & {
-    __v: number;
-}
-
 // Verify refresh token
-export const verifyRefreshToken = (refreshToken: string | undefined) => {
-    return new Promise<tUser>((resolve, reject) => {
+export const verifyRefreshToken = async (
+    refreshToken: string | undefined,
+    userModel: any
+) => {
+    return new Promise<any>((resolve, reject) => {
         if (!refreshToken) {
             reject("Refresh token is required");
             return;

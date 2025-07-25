@@ -1,8 +1,7 @@
 import express from "express";
+import authController from "../controllers/authController";
+
 const router = express.Router();
-import usersController from "../controllers/userController";
-import { authMiddleware } from "../middleware/auth";
-import upload from "../middleware/upload";
 
 /**
 * @swagger
@@ -39,7 +38,7 @@ import upload from "../middleware/upload";
 
 /**
  * @swagger
- * /auth/google:
+ * /api/auth/google:
  *   post:
  *     summary: Google sign-in
  *     tags: [Auth]
@@ -75,11 +74,11 @@ import upload from "../middleware/upload";
  *       500:
  *         description: Server error
  */
-router.post("/google", usersController.googleSignIn);
+router.post("/google", authController.googleSignIn);
 
 /**
  * @swagger
- * /auth/register:
+ * /api/auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
@@ -101,11 +100,11 @@ router.post("/google", usersController.googleSignIn);
  *       500:
  *         description: Server error
  */
-router.post("/register", usersController.register);
+router.post("/register", authController.register);
 
 /**
  * @swagger
- * /auth/login:
+ * /api/auth/login:
  *   post:
  *     summary: Log in a user
  *     tags: [Auth]
@@ -137,11 +136,11 @@ router.post("/register", usersController.register);
  *       500:
  *         description: Server error
  */
-router.post("/login", usersController.login);
+router.post("/login", authController.login);
 
 /**
  * @swagger
- * /auth/refresh:
+ * /api/auth/refresh:
  *   post:
  *     summary: Refresh tokens
  *     tags: [Auth]
@@ -174,159 +173,11 @@ router.post("/login", usersController.login);
  *       500:
  *         description: Server error
  */
-router.post("/refresh", usersController.refresh);
+router.post("/refresh", authController.refresh);
 
 /**
  * @swagger
- * /auth/user:
- *   get:
- *     summary: Get user data
- *     description: Retrieve the user data
- *     tags:
- *       - Auth
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: The user data
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       401:
- *         description: Unauthorized
- *       500:
- *         description: Server error
- */
-router.get("/user", authMiddleware, usersController.getUserData);
-
-/**
- * @swagger
- * /auth/users:
- *   get:
- *     summary: Search users by name
- *     description: Retrieve a list of users whose first or last name matches the query.
- *     tags:
- *       - Auth
- *     parameters:
- *       - in: query
- *         name: query
- *         schema:
- *           type: string
- *         required: true
- *         description: The search query (part of the first or last name)
- *     responses:
- *       200:
- *         description: List of matching users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                     example: 60d21b4667d0d8992e610c85
- *                   firstName:
- *                     type: string
- *                     example: John
- *                   lastName:
- *                     type: string
- *                     example: Doe
- *                   profilePicture:
- *                     type: string
- *                     example: https://example.com/profile/john.jpg
- *       400:
- *         description: Query parameter is required
- *       500:
- *         description: Server error
- */
-router.get("/users", authMiddleware, usersController.getUserByName);
-
-/**
- * @swagger
- * /auth/user/{userId}:
- *   put:
- *     summary: Update user data
- *     description: Update user details including first name, last name, password, and profile picture
- *     tags:
- *       - Auth
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *         required: true
- *         description: The user ID
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               firstName:
- *                 type: string
- *               lastName:
- *                 type: string
- *               password:
- *                 type: string
- *               profilePicture:
- *                 type: string
- *                 format: binary
- *     responses:
- *       200:
- *         description: User updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       400:
- *         description: Invalid input
- *       401:
- *         description: Unauthorized
- *       404:
- *         description: User not found
- *       500:
- *         description: Server error
- */
-router.put("/user/:id", authMiddleware, upload.single("profilePicture"), usersController.updateUser);
-
-/**
- * @swagger
- * /auth/user/{userId}:
- *   delete:
- *     summary: Delete a user
- *     description: Delete a user by their ID, including their profile picture and associated data.
- *     tags:
- *       - Auth
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *         required: true
- *         description: The user ID
- *     responses:
- *       200:
- *         description: User deleted successfully
- *       401:
- *         description: Unauthorized
- *       404:
- *         description: User not found
- *       500:
- *         description: Server error
- */
-router.delete("/user/:id", authMiddleware, usersController.deleteUser);
-
-/**
- * @swagger
- * /auth/logout:
+ * /api/auth/logout:
  *   post:
  *     summary: Log out a user
  *     tags: [Auth]
@@ -348,6 +199,6 @@ router.delete("/user/:id", authMiddleware, usersController.deleteUser);
  *       500:
  *         description: Server error
  */
-router.post("/logout", usersController.logout);
+router.post("/logout", authController.logout);
 
 export default router;

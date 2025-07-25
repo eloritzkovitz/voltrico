@@ -1,8 +1,7 @@
+import axios from "axios";
 import { Request, Response } from "express";
-import Order from "../models/Order";
-import Customer from "../models/User";
-import Item from "../models/Item";
 import { v4 as uuidv4 } from "uuid";
+import Order from "../models/Order";
 
 // Controller function for creating a new order
 const createOrder = async (req: Request, res: Response): Promise<void> => {
@@ -29,22 +28,16 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
     // Save the order to the database
     await order.save();
 
-    // Update the orders array of the associated customer
-    await Customer.findByIdAndUpdate(customerId, { $push: { orders: order._id } });
-
-    // Update the orders array of the associated item
-    await Item.findByIdAndUpdate(itemId, { $push: { orders: order._id } });
-
-    // Fetch the related customer and item details
-    const customer = await Customer.findById(customerId).select("name email");
-    const item = await Item.findById(itemId).select("name description price image");
+    // Fetch related data via API calls
+    const customerRes = await axios.get(`http://user-service/api/users/${customerId}`);
+    const itemRes = await axios.get(`http://item-service/api/items/${itemId}`);    
 
     // Respond with the created order and related details
     res.status(201).json({
       id: order._id,
       orderId: order.orderId,
-      customer: customer || null,
-      item: item || null,
+      customer: customerRes.data || null,
+      item: itemRes.data || null,
       date: order.date,
     });
   } catch (error) {

@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import itemController from "../controllers/itemController";
-import { authMiddleware, checkAdminRole } from "../middleware/auth";
+import { authenticate, requireAdmin } from "../../../../libs/middleware/auth";
 
 const upload = multer().none();
 
@@ -159,7 +159,7 @@ router.get("/:id", itemController.getItemById);
  *       400:
  *         description: Invalid input
  */
-router.post("/", authMiddleware, checkAdminRole, upload, itemController.createItem);
+router.post("/", authenticate, requireAdmin, upload, itemController.createItem);
 
 /**
  * @swagger
@@ -188,7 +188,7 @@ router.post("/", authMiddleware, checkAdminRole, upload, itemController.createIt
  *       404:
  *         description: Item not found
  */
-router.put("/:id", authMiddleware, checkAdminRole, upload, itemController.updateItem);
+router.put("/:id", authenticate, requireAdmin, upload, itemController.updateItem);
 
 /**
  * @swagger
@@ -211,6 +211,6 @@ router.put("/:id", authMiddleware, checkAdminRole, upload, itemController.update
  *       404:
  *         description: Item not found
  */
-router.delete("/:id", authMiddleware, checkAdminRole, itemController.deleteItem);
+router.delete("/:id", authenticate, requireAdmin, itemController.deleteItem);
 
 export default router;

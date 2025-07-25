@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { IOrder } from "./Order";
+import { IOrder } from "../../../services/order/src/models/Order";
 
 export interface IItem extends Document {
   name: string;
