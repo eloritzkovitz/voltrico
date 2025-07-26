@@ -67,7 +67,7 @@ export const verifyRefreshToken = async (
                     reject("fail");
                     return;
                 }
-                const tokens = user.refreshToken!.filter((token) => token !== refreshToken);
+                const tokens = user.refreshToken!.filter((token: string) => token !== refreshToken);
                 user.refreshToken = tokens;
 
                 resolve(user);
