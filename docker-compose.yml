@@ -97,7 +97,7 @@ services:
       - order-service
       - inventory-service
 
-  volumes:
-    mongo-db-data:
-    order-db-data:
-    inventory-db-data:  
+volumes:
+  mongo-db-data:
+  order-db-data:
+  inventory-db-data:  
