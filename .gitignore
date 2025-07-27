@@ -27,6 +27,7 @@ app.*.map.json
 *.class
 *.log
 *.pyc
+*.tgz
 *.swp
 .DS_Store
 .atom/
