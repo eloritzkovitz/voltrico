@@ -22,7 +22,8 @@
     "node": "^23.11.0",
     "path-to-regexp": "^8.2.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "voltrico-libs": "file:../../libs"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1",

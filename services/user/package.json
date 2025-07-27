@@ -23,7 +23,8 @@
     "multer": "^1.4.5-lts.2",
     "node": "^23.11.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",    
+    "voltrico-libs": "file:../../libs"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
@@ -32,7 +33,7 @@
     "@types/node": "^22.14.1",
     "@types/supertest": "^6.0.3",
     "@types/swagger-jsdoc": "^6.0.4",
-    "@types/swagger-ui-express": "^4.1.8",
+    "@types/swagger-ui-express": "^4.1.8",    
     "copyfiles": "^2.4.1",
     "jest": "^29.7.0",
     "nodemon": "^3.1.9",

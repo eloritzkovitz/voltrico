@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
-import { rabbitMQService } from "../../../libs/communicator/rabbitMQService";
+import { rabbitMQService } from "voltrico-libs";
 
 const app = express();
 

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import path from "path";
 import bcrypt from "bcrypt";
 import userModel from "../models/User";
-import { deleteFile } from "../../../../libs/utils/fileService";
+import { deleteFile } from "voltrico-libs";
 
 // Get user data
 const getUserData = async (req: Request & { user?: { _id: string } }, res: Response): Promise<void> => {
