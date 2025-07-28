@@ -1,0 +1,28 @@
+run:
+  timeout: 2m
+
+linters:
+  enable:
+    - govet         # Go's vet tool for suspicious constructs
+    - staticcheck   # Advanced static analysis
+    - gofmt         # Checks code formatting
+    - goimports     # Checks import formatting
+    - errcheck      # Checks for unchecked errors
+    - unused        # Checks for unused variables/constants/functions
+    - deadcode      # Finds unused code
+    - structcheck   # Finds unused struct fields
+    - varcheck      # Finds unused global variables and constants
+    - ineffassign   # Detects ineffectual assignments
+    - gosimple      # Suggests simpler code
+    - typecheck     # Like 'go typecheck'
+    - misspell      # Finds commonly misspelled English words
+    - revive        # Style, documentation, and best practices
+
+issues:
+  exclude-use-default: false
+
+gofmt:
+  simplify: true
+
+revive:
+  config: ""
