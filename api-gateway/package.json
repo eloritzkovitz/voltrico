@@ -4,7 +4,8 @@
   "main": "app.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "lint": "eslint . --ext .ts"
   },
   "dependencies": {
     "dotenv": "^16.5.0",
@@ -12,9 +13,12 @@
     "http-proxy-middleware": "^3.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "9.32.0",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
+    "eslint": "9.32.0",
     "nodemon": "^3.1.9",
-    "typescript": "^5.8.3"
+    "typescript": "5.8.3",
+    "typescript-eslint": "8.38.0"
   }
 }
