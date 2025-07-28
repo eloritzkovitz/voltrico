@@ -1,55 +1,52 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import itemService from "../services/item-service";
+import productService, { Product } from "../services/product-service";
 
-interface CreateItemModalProps {
+interface EditProductModalProps {
   show: boolean;
   onClose: () => void;
-  onCreate: () => void;
+  product: Product;
+  onEdit: () => void; // Callback to refresh products after editing
 }
 
-const CreateItemModal: React.FC<CreateItemModalProps> = ({
+const EditProductModal: React.FC<EditProductModalProps> = ({
   show,
   onClose,
-  onCreate,
+  product,
+  onEdit,
 }) => {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
+  const [name, setName] = useState(product.name);
+  const [category, setCategory] = useState(product.category);
+  const [description, setDescription] = useState(product.description || "");
+  const [price, setPrice] = useState(product.price.toString());
+  const [stock, setStock] = useState(product.stock?.toString() || "");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
     try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("category", category);
-      formData.append("description", description);
-      formData.append("price", price);
-      formData.append("stock", stock);
+      const updatedProduct = new FormData();
+      updatedProduct.append("name", name);
+      updatedProduct.append("category", category);
+      updatedProduct.append("description", description);
+      updatedProduct.append("price", price);
+      updatedProduct.append("stock", stock);
 
-      // Call the create item service directly
-      await itemService.createItem(formData);
+      if (product._id) {
+        updatedProduct.append("_id", product._id);
+      }
 
-      // Reset form fields after successful item creation
-      setName("");
-      setCategory("");
-      setDescription("");
-      setPrice("");
-      setStock("");
+      await productService.updateProduct(product._id!, updatedProduct);
 
-      onCreate(); // Notify parent to refresh items
+      onEdit(); // Notify parent to refresh products
       onClose(); // Close the modal
     } catch (error) {
-      console.error("Error creating item:", error);
-      setError("Failed to create item");
+      console.error("Error updating product:", error);
+      setError("Failed to update product");
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +55,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Create Item</Modal.Title>
+        <Modal.Title>Edit Product</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
@@ -67,7 +64,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter item name"
+              placeholder="Enter product name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -101,7 +98,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
             <Form.Control
               as="textarea"
               rows={3}
-              placeholder="Enter item description"
+              placeholder="Enter product description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
@@ -113,7 +110,7 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
             <Form.Label>Price</Form.Label>
             <Form.Control
               type="number"
-              placeholder="Enter item price"
+              placeholder="Enter product price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               min="0"
@@ -142,10 +139,10 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
           {/* Action Buttons */}
           <div className="d-flex justify-content-end">
             <Button variant="secondary" onClick={onClose} className="me-2">
-              Close
+              Cancel
             </Button>
             <Button variant="primary" type="submit" disabled={isLoading}>
-              {isLoading ? "Creating..." : "Create Item"}
+              {isLoading ? "Updating..." : "Update Product"}
             </Button>
           </div>
         </Form>
@@ -154,4 +151,4 @@ const CreateItemModal: React.FC<CreateItemModalProps> = ({
   );
 };
 
-export default CreateItemModal;
+export default EditProductModal;

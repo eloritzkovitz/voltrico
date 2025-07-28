@@ -10,7 +10,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import SearchResults from "./pages/SearchResults";
 import Orders from "./pages/Orders";
-import Items from "./pages/Items";
+import Items from "./pages/Products";
 import Statistics from "./pages/Statistics";
 import Account from "./pages/Account";
 import Cart from "./pages/Cart";

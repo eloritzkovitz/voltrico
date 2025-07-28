@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCartShopping, faUser, faSignOutAlt, faBox, faShoppingBag, faChartBar } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import itemService from "../services/item-service";
+import productService from "../services/product-service";
 import "../styles/Navbar.css";
 
 const Navbar: React.FC = () => {
@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
 
     if (query.trim()) {
       try {
-        const results = await itemService.getItemsByQuery(query);
+        const results = await productService.getProductsByQuery(query);
         setSearchResults(results);
         setShowDropdown(true);
       } catch (error) {

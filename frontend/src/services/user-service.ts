@@ -16,7 +16,16 @@ export interface User {
   joinDate?: string;  
   refreshToken?: string[];
   purchases?: [{ type: string, ref: 'Purchase' }]
-  role?: 'customer' | 'administrator';  
+  role?: 'customer' | 'admin';  
+}
+
+// Google sign in
+const signInWithGoogle = (idToken: string) => {
+  const abortController = new AbortController();
+  const request = apiClient.post<{ accessToken: string, refreshToken: string }>('/auth/google', { idToken }, {
+    signal: abortController.signal
+  });
+  return { request, abort: () => abortController.abort() };
 }
 
 // Register a new user
@@ -40,59 +49,45 @@ const login = (email: string, password: string) => {
     return { request, abort: () => abortController.abort() };
 }
 
-// Get user data
+// Get current user data
 const getUserData = async (): Promise<User> => {
-    const token = Cookies.get("accessToken");
-    if (!token) {
-      throw new Error("No access token found.");
-    }
-        
-    const endpoint = "/auth/user";
+  const token = Cookies.get("accessToken");
+  if (!token) throw new Error("No access token found.");
+  const response = await apiClient.get<User>("/users/me", {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  return response.data;
+}
 
-    const response = await apiClient.get<User>(endpoint, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    return response.data;
-};
-
-// Get user by name
+// Get users by name (search)
 const getUsersByName = async (query: string): Promise<User[]> => {
-    const token = Cookies.get("accessToken");
-    if (!token) {
-      throw new Error("No access token found.");
-    }
-    const response = await apiClient.get<User[]>('/auth/users', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-      params: { query }
-    });
-    return response.data;
+  const token = Cookies.get("accessToken");
+  if (!token) throw new Error("No access token found.");
+  const response = await apiClient.get<User[]>('/users', {
+    headers: { 'Authorization': `Bearer ${token}` },
+    params: { query }
+  });
+  return response.data;
 }
 
-// Update user data
-const updateUser = async (id: string, formData: FormData): Promise<User> => {
-    const token = Cookies.get("accessToken");
-    if (!token) {
-      throw new Error("No access token found.");
-    }
-    const response = await apiClient.put<User>(`/auth/user/${id}`, formData, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    return response.data;
-};
-
-// Google sign in
-const signInWithGoogle = (idToken: string) => {
-    const abortController = new AbortController();
-    const request = apiClient.post<{ accessToken: string, refreshToken: string }>('/auth/google', { idToken }, {
-        signal: abortController.signal
-    });
-    return { request, abort: () => abortController.abort() };
+// Update current user data
+const updateUser = async (formData: FormData): Promise<User> => {
+  const token = Cookies.get("accessToken");
+  if (!token) throw new Error("No access token found.");
+  const response = await apiClient.put<User>("/users/me", formData, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  return response.data;
 }
 
-export default { register, login, signInWithGoogle, getUserData, getUsersByName, updateUser };
+// Delete current user
+const deleteUser = async (): Promise<{ message: string }> => {
+  const token = Cookies.get("accessToken");
+  if (!token) throw new Error("No access token found.");
+  const response = await apiClient.delete<{ message: string }>("/users/me", {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  return response.data;
+}
+
+export default { signInWithGoogle, register, login,  getUserData, getUsersByName, updateUser, deleteUser };

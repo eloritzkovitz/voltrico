@@ -27,7 +27,7 @@ const router = express.Router();
  *                 type: string
  *               customerId:
  *                 type: string
- *               itemId:
+ *               productId:
  *                 type: string
  *               date:
  *                 type: string
@@ -60,7 +60,7 @@ router.post("/", orderController.createOrder);
  *                     type: string
  *                   customerId:
  *                     type: string
- *                   itemId:
+ *                   productId:
  *                     type: string
  *                   date:
  *                     type: string

@@ -12,7 +12,7 @@ export class Order {
   customerId!: string;
 
   @Column()
-  itemId!: string;
+  productId!: string;
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   date!: Date;

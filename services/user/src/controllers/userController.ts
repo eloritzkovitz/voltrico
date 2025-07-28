@@ -63,7 +63,7 @@ const updateUser = async (req: Request & { user?: { _id: string; role: string } 
     const userId = req.params.id;
 
     // Ensure the authenticated user is the same as the user being updated or is an administrator
-    if (req.user?._id !== userId && req.user?.role !== "administrator") {
+    if (req.user?._id !== userId && req.user?.role !== "admin") {
       res.status(403).json({ message: "Unauthorized" });
       return;
     }
@@ -122,7 +122,7 @@ const deleteUser = async (req: Request & { user?: { _id: string; role: string } 
     const userId = req.params.id;
 
     // Ensure the authenticated user is the same as the user being deleted or is an administrator
-    if (req.user?._id !== userId && req.user?.role !== "administrator") {
+    if (req.user?._id !== userId && req.user?.role !== "admin") {
       res.status(403).json({ message: "Unauthorized" });
       return;
     }

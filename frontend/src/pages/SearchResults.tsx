@@ -15,13 +15,13 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../context/CartContext";
-import itemService, { Item } from "../services/item-service";
+import itemService, { Product } from "../services/product-service";
 import ShopItem from "../components/ShopItem";
 
 const SearchResults: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const [items, setItems] = useState<Item[]>([]);
-  const [filteredItems, setFilteredItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<Product[]>([]);
+  const [filteredItems, setFilteredItems] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [sortOption, setSortOption] = useState<string>("relevance");
@@ -39,7 +39,7 @@ const SearchResults: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const results = await itemService.getItemsByQuery(query);
+        const results = await itemService.getProductsByQuery(query);
         setItems(results);
         setFilteredItems(results);
       } catch (err) {
@@ -59,10 +59,10 @@ const SearchResults: React.FC = () => {
     }
   }, [query]);
 
-  // Handle adding an item to the cart
-  const handleAddToCart = (item: Item) => {
+  // Handle adding a product to the cart
+  const handleAddToCart = (item: Product) => {
     if (!item._id) {
-      console.error("Item ID is missing. Cannot add to cart.");
+      console.error("Product ID is missing. Cannot add to cart.");
       return;
     }
 
@@ -261,7 +261,7 @@ const SearchResults: React.FC = () => {
                     md={viewMode === "grid" ? 4 : 12}
                     className="mb-4"
                   >
-                    <ShopItem item={item} onAddToCart={handleAddToCart} />
+                    <ShopItem product={item} onAddToCart={handleAddToCart} />
                   </Col>
                 ))}
               </Row>

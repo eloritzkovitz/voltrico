@@ -8,16 +8,16 @@ import { rabbitMQService } from "voltrico-libs";
 // Create a new order
 const createOrder = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { customerId, itemId } = req.body;
-    if (!customerId || !itemId) {
-      res.status(400).json({ message: "Customer ID and Item ID are required" });
+    const { customerId, productId } = req.body;
+    if (!customerId || !productId) {
+      res.status(400).json({ message: "Customer ID and Product ID are required" });
       return;
     }
     const orderRepo = AppDataSource.getRepository(Order);
     const order = orderRepo.create({
       orderId: uuidv4(),
       customerId,
-      itemId,
+      productId,
       date: new Date(),
     });
     await orderRepo.save(order);
@@ -37,17 +37,17 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// Get all orders with customer and item details
+// Get all orders with customer and product details
 const getAllOrders = async (req: Request, res: Response): Promise<void> => {
   try {
     const orderRepo = AppDataSource.getRepository(Order);
     const orders = await orderRepo.find();
 
-    // Fetch customer and item details
+    // Fetch customer and product details
     const formattedOrders = await Promise.all(
       orders.map(async (order) => {
         let customer = null;
-        let item = null;
+        let product = null;
 
         try {
           const customerRes = await axios.get(
@@ -62,19 +62,19 @@ const getAllOrders = async (req: Request, res: Response): Promise<void> => {
         }
 
         try {
-          const itemRes = await axios.get(
-            `http://item-service/api/items/${order.itemId}`
+          const productRes = await axios.get(
+            `http://product-service/api/products/${order.productId}`
           );
-          item = itemRes.data;
+          product = productRes.data;
         } catch (err) {
-          item = { id: order.itemId, error: "Could not fetch item" };
+          product = { id: order.productId, error: "Could not fetch product" };
         }
 
         return {
           id: order.id,
           orderId: order.orderId,
           customer,
-          item,
+          product,
           date: order.date,
         };
       })

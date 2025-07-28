@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import itemService, { Item } from "../services/item-service";
-import CreateItemModal from "../components/CreateItem";
-import ItemsTable from "../components/ItemsTable";
-import "../styles/Items.css";
+import productService, { Product } from "../services/product-service";
+import CreateProductModal from "../components/CreateProduct";
+import ProductsTable from "../components/ProductsTable";
+import "../styles/Products.css";
 
-const Items: React.FC = () => {
-  const [items, setItems] = useState<Item[]>([]);
+const Products: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showCreatePopup, setShowCreatePopup] = useState<boolean>(false);
 
-  // Fetch all items
-  const fetchItems = async () => {
+  // Fetch all products
+  const fetchProducts = async () => {
     try {
       setLoading(true);
-      const data = await itemService.getAllItems();
-      setItems(data);
+      const data = await productService.getAllProducts();
+      setProducts(data);
     } catch (error) {
-      console.error("Error fetching items:", error);
+      console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
     }
@@ -28,32 +28,32 @@ const Items: React.FC = () => {
   const handleSearch = async () => {
     try {
       setLoading(true);
-      const data = await itemService.getItemsByQuery(searchQuery);
-      setItems(data);
+      const data = await productService.getProductsByQuery(searchQuery);
+      setProducts(data);
     } catch (error) {
-      console.error("Error searching items:", error);
+      console.error("Error searching products:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle delete item
-  const handleDeleteItem = async (id: string) => {
+  // Handle delete product
+  const handleDeleteProduct = async (id: string) => {
     try {
-      await itemService.deleteItem(id);
-      fetchItems(); // Refresh items
+      await productService.deleteProduct(id);
+      fetchProducts(); // Refresh products
     } catch (error) {
-      console.error("Error deleting item:", error);
+      console.error("Error deleting product:", error);
     }
   };
 
   useEffect(() => {
-    fetchItems();
+    fetchProducts();
   }, []);
 
   return (
     <div className="page-container">
-      <h4>Manage Items</h4>
+      <h4>Manage Products</h4>
 
       <main>
         {/* Search Bar */}
@@ -68,34 +68,34 @@ const Items: React.FC = () => {
           <Button onClick={handleSearch} variant="primary" className="mx-2">
             Search
           </Button>
-          <Button onClick={fetchItems} variant="secondary">
+          <Button onClick={fetchProducts} variant="secondary">
             Reset
           </Button>
         </div>
 
-        {/* Create Item Button */}
+        {/* Create Product Button */}
         <Button onClick={() => setShowCreatePopup(true)} variant="primary" className="my-3">
-          Create Item
+          Create Product
         </Button>
 
-        {/* Items Table or No Items Message */}
+        {/* Products Table or No Products Message */}
         {loading ? (
           <div id="loadingIndicator">Loading data...</div>
-        ) : items.length > 0 ? (
-          <ItemsTable items={items} onDelete={handleDeleteItem} onEdit={fetchItems} />
+        ) : products.length > 0 ? (
+          <ProductsTable products={products} onDelete={handleDeleteProduct} onEdit={fetchProducts} />
         ) : (
-          <div id="noItemsMessage">No items available</div>
+          <div id="noProductsMessage">No products available</div>
         )}
 
-        {/* Create Item Modal */}
-        <CreateItemModal
+        {/* Create Product Modal */}
+        <CreateProductModal
           show={showCreatePopup}
           onClose={() => setShowCreatePopup(false)}
-          onCreate={fetchItems}
+          onCreate={fetchProducts}
         />
       </main>
     </div>
   );
 };
 
-export default Items;
+export default Products;

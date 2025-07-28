@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { Item } from "../services/item-service";
+import { Product } from "../services/product-service";
 import { Button, Table } from "react-bootstrap";
-import EditItemModal from "./EditItem";
+import EditProductModal from "./EditProduct";
 
-interface ItemsTableProps {
-  items: Item[];
+interface ProductTableProps {
+  products: Product[];
   onDelete: (id: string) => void;
   onEdit: () => void;
 }
 
-const ItemsTable: React.FC<ItemsTableProps> = ({ items, onDelete, onEdit }) => {
+const ProductsTable: React.FC<ProductTableProps> = ({ products, onDelete, onEdit }) => {
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const handleEditClick = (item: Item) => {
-    setSelectedItem(item);
+  const handleEditClick = (product: Product) => {
+    setSelectedProduct(product);
     setShowEditModal(true);
   };
 
@@ -34,35 +34,35 @@ const ItemsTable: React.FC<ItemsTableProps> = ({ items, onDelete, onEdit }) => {
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
-            <tr key={item._id}>
-              <td>{item._id}</td>
+          {products.map((product) => (
+            <tr key={product._id}>
+              <td>{product._id}</td>
               <td>
                 <img
-                  src={item.imageURL || "/images/placeholder_image.png"}
-                  alt={item.name}
+                  src={product.img || "/images/placeholder_image.png"}
+                  alt={product.name}
                   className="img-thumbnail"
                   style={{ width: "50px", height: "50px", objectFit: "cover" }}
                 />
               </td>
-              <td>{item.category}</td>
-              <td>{item.name}</td>
-              <td>{item.description}</td>
-              <td>${item.price.toFixed(2)}</td>
-              <td>{item.stock}</td>
+              <td>{product.category}</td>
+              <td>{product.name}</td>
+              <td>{product.description}</td>
+              <td>${product.price.toFixed(2)}</td>
+              <td>{product.stock}</td>
               <td>
                 <Button
                   variant="warning"
                   size="sm"
                   className="me-2"
-                  onClick={() => handleEditClick(item)}
+                  onClick={() => handleEditClick(product)}
                 >
                   Edit
                 </Button>
                 <Button
                   variant="danger"
                   size="sm"
-                  onClick={() => onDelete(item._id!)}
+                  onClick={() => onDelete(product._id!)}
                 >
                   Delete
                 </Button>
@@ -72,12 +72,12 @@ const ItemsTable: React.FC<ItemsTableProps> = ({ items, onDelete, onEdit }) => {
         </tbody>
       </Table>
 
-      {/* Edit Item Modal */}
-      {selectedItem && (
-        <EditItemModal
+      {/* Edit Product Modal */}
+      {selectedProduct && (
+        <EditProductModal
           show={showEditModal}
           onClose={() => setShowEditModal(false)}
-          item={selectedItem}
+          product={selectedProduct}
           onEdit={onEdit}
         />
       )}
@@ -85,4 +85,4 @@ const ItemsTable: React.FC<ItemsTableProps> = ({ items, onDelete, onEdit }) => {
   );
 };
 
-export default ItemsTable;
+export default ProductsTable;

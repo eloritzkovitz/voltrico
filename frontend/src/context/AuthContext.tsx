@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         .then((fetchedUser) => {          
           setUser(fetchedUser);
           setIsAuthenticated(true);
-          setIsAdmin(fetchedUser.role === "administrator");
+          setIsAdmin(fetchedUser.role === "admin");
         })
         .catch(() => {
           setIsAuthenticated(false);
@@ -50,7 +50,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setIsAuthenticated(true);
     userService.getUserData().then((fetchedUser) => {
       setUser(fetchedUser);
-      setIsAdmin(fetchedUser.role === "administrator");
+      setIsAdmin(fetchedUser.role === "admin");
     });
   };
 

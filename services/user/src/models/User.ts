@@ -11,7 +11,7 @@ export interface IUser {
   profilePicture?: string;
   joinDate?: string;  
   refreshToken?: string[];
-  role: 'customer' | 'administrator';
+  role: 'customer' | 'admin';
 }
 
 const userSchema = new mongoose.Schema({
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
   profilePicture: { type: String, default: "" },
   joinDate: { type: String, required: true },  
   refreshToken: { type: [String], default: [] },
-  role: { type: String, enum: ['customer', 'administrator'], default: 'customer' },
+  role: { type: String, enum: ['customer', 'admin'], default: 'customer' },
 });
 
 const userModel = mongoose.model<IUser>("Users", userSchema);
