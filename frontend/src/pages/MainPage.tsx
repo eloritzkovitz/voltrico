@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
-import itemService, { Item } from "../services/item-service";
+import productService, { Product } from "../services/product-service";
 import ShopItem from "../components/ShopItem";
 import { useCart } from "../context/CartContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThLarge, faTv, faLaptop, faMobileAlt, faBlender, faUtensils, faTools, faLightbulb } from "@fortawesome/free-solid-svg-icons";
 
 const MainPage: React.FC = () => {
-  const [items, setItems] = useState<Item[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const { addToCart } = useCart();
 
-  // Fetch all items on component mount
+  // Fetch all products on component mount
   useEffect(() => {
-    itemService
-      .getAllItems()
-      .then((data) => setItems(data))
+    productService
+      .getAllProducts()
+      .then((data) => setProducts(data))
       .catch((error) => {
         console.error(error);
-        setErrorMessage("Failed to fetch items. Please try again later.");
+        setErrorMessage("Failed to fetch products. Please try again later.");
       });
   }, []);
 
@@ -26,32 +26,32 @@ const MainPage: React.FC = () => {
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
     if (category === "all") {
-      itemService
-        .getAllItems()
-        .then((data) => setItems(data))
+      productService
+        .getAllProducts()
+        .then((data) => setProducts(data))
         .catch((error) => {
           console.error(error);
-          setErrorMessage("Failed to fetch items. Please try again later.");
+          setErrorMessage("Failed to fetch products. Please try again later.");
         });
     } else {
-      itemService
-        .getItemsByCategory(category)
-        .then((data) => setItems(data))
+      productService
+        .getProductsByCategory(category)
+        .then((data) => setProducts(data))
         .catch((error) => {
           console.error(error);
-          setErrorMessage("Failed to fetch items by category. Please try again later.");
+          setErrorMessage("Failed to fetch products by category. Please try again later.");
         });
     }
   };
 
-  // Handle adding an item to the cart
-  const handleAddToCart = (item: Item) => {
-    if (!item._id) {
-      console.error("Item ID is missing. Cannot add to cart.");
+  // Handle adding a product to the cart
+  const handleAddToCart = (product: Product) => {
+    if (!product._id) {
+      console.error("Product ID is missing. Cannot add to cart.");
       return;
     }
 
-    addToCart({ ...item, quantity: 1, _id: item._id });
+    addToCart({ ...product, quantity: 1, _id: product._id });
   };
 
   return (
@@ -82,8 +82,8 @@ const MainPage: React.FC = () => {
 
       <div className="shop-item-container mt-4" id="itemContainer">
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-        {items.map((item) => (
-          <ShopItem key={item._id} item={item} onAddToCart={handleAddToCart} />
+        {products.map((product) => (
+          <ShopItem key={product._id} product={product} onAddToCart={handleAddToCart} />
         ))}
       </div>
     </div>

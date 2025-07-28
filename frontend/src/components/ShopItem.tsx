@@ -1,26 +1,26 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { Item } from "../services/item-service";
+import { Product } from "../services/product-service";
 import "../styles/ShopItem.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 interface ShopItemProps {
-  item: Item;
-  onAddToCart: (item: Item) => void;
+  product: Product;
+  onAddToCart: (product: Product) => void;
 }
 
-const ShopItem: React.FC<ShopItemProps> = ({ item, onAddToCart }) => {
+const ShopItem: React.FC<ShopItemProps> = ({ product, onAddToCart }) => {
   return (
     <div className="shop-item">
       <img
-        src={item.imageURL || "/images/placeholder_image.png"}
-        alt={item.name}
+        src={product.img || "/images/placeholder_image.png"}
+        alt={product.name}
       />
-      <h3>{item.name}</h3>
-      <p>Category: {item.category}</p>
-      <p>Price: ${item.price.toFixed(2)}</p>
-      <Button variant="primary" onClick={() => onAddToCart(item)}>
+      <h3>{product.name}</h3>
+      <p>Category: {product.category}</p>
+      <p>Price: ${product.price.toFixed(2)}</p>
+      <Button variant="primary" onClick={() => onAddToCart(product)}>
         <FontAwesomeIcon icon={faShoppingCart} className="me-2" />
         Add to Cart
       </Button>

@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Form, Container, Row, Col } from "react-bootstrap";
-import itemService, { Item } from "../services/item-service";
+import itemService, { Product } from "../services/product-service";
 import * as d3 from "d3";
 
 const Statistics: React.FC = () => {
   const [groupByOption, setGroupByOption] = useState<string>("category");
   const [loading, setLoading] = useState<boolean>(false);
-  const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<Product[]>([]);
 
   // Fetch all items on component mount
   useEffect(() => {
     const fetchAllItems = async () => {
       setLoading(true);
       try {
-        const data = await itemService.getAllItems();
+        const data = await itemService.getAllProducts();
         setItems(data);
       } catch (error) {
-        console.error("Error fetching items:", error);
+        console.error("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
@@ -32,7 +32,7 @@ const Statistics: React.FC = () => {
     }
   }, [items, groupByOption]);
 
-  const renderCharts = (data: Item[], groupBy: string) => {
+  const renderCharts = (data: Product[], groupBy: string) => {
     // Group data by the selected option
     const groupedData = d3.group(data, (d: any) => d[groupBy]);
 

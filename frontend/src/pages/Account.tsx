@@ -68,8 +68,7 @@ const Account: React.FC = () => {
           formDataToSend.append(key, value);
         }
       });
-      const updatedUser = await userService.updateUser(
-        user._id,
+      const updatedUser = await userService.updateUser(       
         formDataToSend
       );
       console.log("User updated successfully:", updatedUser);

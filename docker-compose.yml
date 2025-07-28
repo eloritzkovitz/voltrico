@@ -1,0 +1,107 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+  
+  mongo-db:
+    image: mongo:6
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-db-data:/data/db
+  
+  order-db:
+    image: postgres:16
+    container_name: order-db
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: orderuser
+      POSTGRES_PASSWORD: orderpass
+    ports:
+      - "5434:5432"
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+
+  inventory-db:
+    image: postgres:16
+    container_name: inventory-db
+    environment:
+      POSTGRES_DB: inventory
+      POSTGRES_USER: inventoryuser
+      POSTGRES_PASSWORD: inventorypass
+    ports:
+      - "5435:5432"
+    volumes:
+      - inventory-db-data:/var/lib/postgresql/data
+
+  user-service:
+    build:
+      context: .
+      dockerfile: services/user/Dockerfile
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq
+      DB_CONNECTION: mongodb://mongo-db:27017/voltrico-users
+    depends_on:
+      - rabbitmq
+      - mongo-db
+
+  product-service:
+    build:
+      context: .
+      dockerfile: services/product/Dockerfile
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq
+      DB_CONNECTION: mongodb://mongo-db:27017/voltrico-products
+    depends_on:
+      - rabbitmq
+      - mongo-db
+
+  order-service:
+    build:
+      context: .
+      dockerfile: services/order/Dockerfile
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq
+      DB_HOST: order-db
+      DB_PORT: 5432
+      DB_USER: orderuser
+      DB_PASSWORD: orderpass
+      DB_NAME: orders
+    depends_on:
+      - rabbitmq
+      - order-db 
+  
+  inventory-service:
+    build: ./services/inventory
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq
+      DB_HOST: inventory-db
+      DB_PORT: 5432
+      DB_USER: inventoryuser
+      DB_PASSWORD: inventorypass
+      DB_NAME: inventory
+    depends_on:
+      - rabbitmq
+      - inventory-db
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+      - inventory-service
+
+volumes:
+  mongo-db-data:
+  order-db-data:
+  inventory-db-data:  

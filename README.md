@@ -1,6 +1,6 @@
 # Voltrico
 
-Voltrico is an online appliances store, allowing users to browse products, add them to cart, perform orders and view them. Administrators can also add, edit and delete items, as well as view order history and statistics.
+Voltrico is an online appliances store built with a microservices architecture. Users can browse and search for products, add them to their cart, place orders, and view their order history. Administrators have access to advanced management features, including product and order management as well as analytics.
 
 ## Features
 
@@ -20,11 +20,20 @@ Voltrico is an online appliances store, allowing users to browse products, add t
 - **Search and Filter Options:** Tailor your search according to your needs. 
 - **Cart:** Add and review items in the cart before making a purchase.
 
-## **Technology Stack**
+### **Architecture**
+- **API Gateway:** Central entry point for all client requests, routing to backend services.
+- **Microservices:** Separate services for users, products, orders, and inventory.
+- **Asynchronous Messaging:** RabbitMQ enables reliable inter-service communication.
+- **Polyglot Persistence:** Uses both MongoDB (for users/products) and PostgreSQL (for orders/inventory).
+
+## **Technologies Used**
 
 ### **Backend**
 - **Node.js & Express.js** - Scalable backend framework.
-- **MongoDB** - NoSQL database for efficient data handling.
+- **Go** - High-performance inventory microservice.
+- **MongoDB** - NoSQL database for user and product data.
+- **PostgreSQL** - Relational database for orders and inventory.
+- **RabbitMQ** - Asynchronous messaging between services.
 - **JWT** - Secure user authentication.
 - **Swagger** - API documentation.
 
@@ -35,3 +44,18 @@ Voltrico is an online appliances store, allowing users to browse products, add t
 ## API Documentation
 
 - [Swagger API Documentation](http://localhost:3000/api-docs)
+
+## **Development & Deployment**
+
+- **Docker Compose** is used to orchestrate all services, databases, and RabbitMQ.
+- Each service has its own Dockerfile and can be scaled independently.
+- Environment variables are used for configuration.
+
+---
+
+**To run locally:**
+1. Clone the repository.
+2. Run `docker compose up --build` from the project root.
+3. Access the API Gateway at [http://localhost:3000](http://localhost:3000).
+
+---

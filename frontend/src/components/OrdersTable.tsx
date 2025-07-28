@@ -13,8 +13,8 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => {
         <tr>
           <th>Order ID</th>
           <th>Customer ID</th>
-          <th>Item ID</th>
-          <th>Item Name</th>
+          <th>Product ID</th>
+          <th>Product Name</th>
           <th>Date</th>
         </tr>
       </thead>
@@ -23,8 +23,8 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => {
           <tr key={order.orderId}>
             <td>{order.orderId}</td>
             <td>{order.customerId}</td>
-            <td>{order.itemId}</td>
-            <td>{order.item?.name || "No name available"}</td>
+            <td>{order.productId}</td>
+            <td>{order.product?.name || "No name available"}</td>
             <td>{new Date(order.date).toLocaleDateString()}</td>
           </tr>
         ))}

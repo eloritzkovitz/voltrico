@@ -3,9 +3,9 @@ import apiClient from "./api-client";
 export interface Order {
   orderId: string;
   customerId: string;
-  itemId: string;
+  productId: string;
   date: string;
-  item?: {
+  product?: {
     name: string;
   };
 }

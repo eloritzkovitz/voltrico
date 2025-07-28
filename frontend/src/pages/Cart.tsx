@@ -25,7 +25,7 @@ const Cart: React.FC = () => {
       for (const item of cart) {
         await orderService.createOrder({
           customerId: user._id ?? "",
-          itemId: item._id,
+          productId: item._id,
           date: new Date().toISOString(),
         });
       }
