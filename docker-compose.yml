@@ -79,7 +79,9 @@ services:
       - order-db 
   
   inventory-service:
-    build: ./services/inventory
+    build:
+      context: .
+      dockerfile: services/inventory/Dockerfile
     environment:
       RABBITMQ_URL: amqp://rabbitmq
       DB_HOST: inventory-db
