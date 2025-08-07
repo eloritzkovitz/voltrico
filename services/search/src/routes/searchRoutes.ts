@@ -7,7 +7,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Search
- *   description: API for searching products
+ *   description: API for searching products and orders
  */
 
 /**
@@ -81,5 +81,78 @@ const router = express.Router();
  *         description: Server error
  */
 router.get("/products", searchController.searchProducts);
+
+/**
+ * @swagger
+ * /search/orders:
+ *   get:
+ *     summary: Search and filter orders
+ *     tags: [Search]
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: Filter by order status
+ *       - in: query
+ *         name: customerId
+ *         schema:
+ *           type: string
+ *         description: Filter by customer ID
+ *       - in: query
+ *         name: dateFrom
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: Start date (ISO format)
+ *       - in: query
+ *         name: dateTo
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: End date (ISO format)
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Results per page
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *           default: date
+ *         description: Field to sort by
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *           default: desc
+ *         description: Sort order
+ *     responses:
+ *       200:
+ *         description: List of matching orders
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: integer
+ *                 orders:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Order'
+ *       500:
+ *         description: Server error
+ */
+router.get("/orders", searchController.searchOrders);
 
 export default router;
