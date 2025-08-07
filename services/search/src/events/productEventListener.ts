@@ -1,5 +1,5 @@
 import { elasticClient } from "../elastic/elasticClient";
-import { IProduct } from "../models/Product";
+import { IProduct } from "voltrico-libs";
 import { rabbitMQService } from "voltrico-libs";
 
 export async function listenForProductEvents() {
