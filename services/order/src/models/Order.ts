@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { IOrder } from "voltrico-libs";
 
 @Entity()
-export class Order {
+export class Order implements IOrder {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 

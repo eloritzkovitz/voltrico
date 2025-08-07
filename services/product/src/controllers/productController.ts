@@ -25,49 +25,6 @@ const getProductById = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// Get products by category
-const getProductsByCategory = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const category = req.query.category as string;
-    const products = category && category !== 'all'
-      ? await Product.find({ category })
-      : await Product.find({});
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ message: (err as Error).message });
-  }
-};
-
-// Get products by criteria
-const getProductsByCriteria = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { color, madeIn, weight } = req.query;
-    const query: Record<string, any> = {};
-
-    if (color) query.color = color;
-    if (madeIn) query.madeIn = madeIn;
-    if (weight) query.weight = weight;
-
-    const products = await Product.find(query);
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ message: (err as Error).message });
-  }
-};
-
-// Get products by query
-const getProductsByQuery = async (req: Request, res: Response): Promise<void> => {
-  const query = req.query.query as string || '';
-  try {
-    const products = await Product.find({
-      name: { $regex: new RegExp(query, 'i') }
-    });
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ message: (err as Error).message });
-  }
-};
-
 // Create product
 const createProduct = async (req: Request, res: Response): Promise<void> => {
   const { ...productData } = req.body;
@@ -113,10 +70,7 @@ const deleteProduct = async (req: Request, res: Response): Promise<void> => {
 // Export all controllers as default
 export default {
   getAllProducts,
-  getProductById,
-  getProductsByCategory,
-  getProductsByCriteria,
-  getProductsByQuery,
+  getProductById,  
   createProduct,
   updateProduct,
   deleteProduct

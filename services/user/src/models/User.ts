@@ -1,20 +1,7 @@
 import mongoose from "mongoose";
+import { IUser } from "voltrico-libs";
 
-export interface IUser {
-  _id?: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  phone: string;
-  address: string;  
-  profilePicture?: string;
-  joinDate?: string;  
-  refreshToken?: string[];
-  role: 'customer' | 'admin';
-}
-
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<IUser>({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },

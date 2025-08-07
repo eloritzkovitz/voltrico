@@ -13,4 +13,13 @@ router.use(
   })
 );
 
+router.get(
+  "/search",
+  createProxyMiddleware({
+    target: process.env.SEARCH_SERVICE_URL || "http://localhost:3005",
+    changeOrigin: true,
+    pathRewrite: { "^/api/products/search": "/api/search/products" },
+  })
+);
+
 export default router;
