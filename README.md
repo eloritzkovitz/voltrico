@@ -22,9 +22,9 @@ Voltrico is an online appliances store built with a microservices architecture. 
 
 ### **Architecture**
 - **API Gateway:** Central entry point for all client requests, routing to backend services.
-- **Microservices:** Separate services for users, products, orders, and inventory.
+- **Microservices:** Separate services for users, products, orders, inventory and search.
 - **Asynchronous Messaging:** RabbitMQ enables reliable inter-service communication.
-- **Polyglot Persistence:** Uses both MongoDB (for users/products) and PostgreSQL (for orders/inventory).
+- **Polyglot Persistence:** Uses both MongoDB (for users/products), PostgreSQL (for orders/inventory) and Elasticsearch (for search).
 
 ## **Technologies Used**
 
@@ -33,6 +33,7 @@ Voltrico is an online appliances store built with a microservices architecture. 
 - **Go** - High-performance inventory microservice.
 - **MongoDB** - NoSQL database for user and product data.
 - **PostgreSQL** - Relational database for orders and inventory.
+- **Elasticsearch** - Distributed search and analytics engine for the search service.
 - **RabbitMQ** - Asynchronous messaging between services.
 - **JWT** - Secure user authentication.
 - **Swagger** - API documentation.
@@ -47,7 +48,7 @@ Voltrico is an online appliances store built with a microservices architecture. 
 
 ## **Development & Deployment**
 
-- **Docker Compose** is used to orchestrate all services, databases, and RabbitMQ.
+- **Docker Compose** is used to orchestrate all services, databases, RabbitMQ and Elasticsearch.
 - Each service has its own Dockerfile and can be scaled independently.
 - Environment variables are used for configuration.
 
