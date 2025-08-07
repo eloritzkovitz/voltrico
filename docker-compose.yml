@@ -8,6 +8,18 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
   
   mongo-db:
     image: mongo:6
@@ -92,6 +104,17 @@ services:
     depends_on:
       - rabbitmq
       - inventory-db
+  
+  search-service:
+    build:
+      context: .
+      dockerfile: services/search/Dockerfile
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq
+      ELASTIC_URL: http://elasticsearch:9200
+    depends_on:
+      - rabbitmq
+      - elasticsearch
 
   api-gateway:
     build: ./api-gateway
@@ -114,3 +137,4 @@ volumes:
   mongo-db-data:
   order-db-data:
   inventory-db-data:  
+  elasticsearch-data:
