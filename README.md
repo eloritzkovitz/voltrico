@@ -1,6 +1,6 @@
 # Voltrico
 
-Voltrico is an online appliances store built with a microservices architecture. Users can browse and search for products, add them to their cart, place orders, and view their order history. Administrators have access to advanced management features, including product and order management as well as analytics.
+Voltrico is a microservices-based e-commerce platform. Users can browse and search for products, add them to their cart, place orders, and view their order history. Administrators have access to advanced management features, including product and order management as well as analytics.
 
 ## Features
 
@@ -15,16 +15,10 @@ Voltrico is an online appliances store built with a microservices architecture. 
 - **Order History:** View all posts created by the user.
 - **Admin Panel:** Administrators can view and manage items, orders and statistics.
 
-## **Shop**
+### **Shop**
 - **Browse Items:** Browse the store and find your desired items, grouped into to various categories.
 - **Search and Filter Options:** Tailor your search according to your needs. 
 - **Cart:** Add and review items in the cart before making a purchase.
-
-### **Architecture**
-- **API Gateway:** Central entry point for all client requests, routing to backend services.
-- **Microservices:** Separate services for users, products, orders, inventory and search.
-- **Asynchronous Messaging:** RabbitMQ enables reliable inter-service communication.
-- **Polyglot Persistence:** Uses both MongoDB (for users/products), PostgreSQL (for orders/inventory) and Elasticsearch (for search).
 
 ## **Technologies Used**
 
@@ -42,13 +36,13 @@ Voltrico is an online appliances store built with a microservices architecture. 
 - **React.js** - Modern UI library for dynamic user interfaces.
 - **Bootstrap** - Responsive styling for sleek design.
 
-## API Documentation
+## Documentation
 
-- [Swagger API Documentation](http://localhost:3000/api-docs)
+- [Architecture Overview](docs/architecture.md)
 
 ## **Development & Deployment**
 
-- **Docker Compose** is used to orchestrate all services, databases, RabbitMQ and Elasticsearch.
+- **Docker Compose** is used to orchestrate all services, databases, Elasticsearch and RabbitMQ.
 - Each service has its own Dockerfile and can be scaled independently.
 - Environment variables are used for configuration.
 
