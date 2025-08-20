@@ -33,8 +33,9 @@ Voltrico is a microservices-based e-commerce platform. Users can browse and sear
 - **Swagger** - API documentation.
 
 ### **Frontend**
-- **React.js** - Modern UI library for dynamic user interfaces.
-- **Bootstrap** - Responsive styling for sleek design.
+- **Next.js** - React framework for server-side rendering and routing.
+- **Tailwind CSS** - Utility-first CSS framework for modern styling.
+- **Recharts** - Charting library for analytics.
 
 ## Documentation
 
