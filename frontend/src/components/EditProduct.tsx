@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
-import productService, { Product } from "../services/product-service";
+"use client";
+import { useState } from "react";
+import { categories } from "@/constants/categories";
+import productService, { Product } from "@/services/product-service";
 
 interface EditProductModalProps {
   show: boolean;
   onClose: () => void;
   product: Product;
-  onEdit: () => void; // Callback to refresh products after editing
+  onEdit: () => void;
 }
 
 const EditProductModal: React.FC<EditProductModalProps> = ({
@@ -42,8 +43,8 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
 
       await productService.updateProduct(product._id!, updatedProduct);
 
-      onEdit(); // Notify parent to refresh products
-      onClose(); // Close the modal
+      onEdit();
+      onClose();
     } catch (error) {
       console.error("Error updating product:", error);
       setError("Failed to update product");
@@ -52,63 +53,67 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
     }
   };
 
+  if (!show) return null;
+
   return (
-    <Modal show={show} onHide={onClose} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Edit Product</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={handleSubmit}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+        <button
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <h2 className="text-xl font-semibold mb-4 text-center">Edit Product</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name Input */}
-          <Form.Group className="mb-3">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
+          <div>
+            <label className="block text-sm font-medium mb-1">Name</label>
+            <input
               type="text"
               placeholder="Enter product name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-blue-500"
             />
-          </Form.Group>
-
+          </div>
           {/* Category Input */}
-          <Form.Group className="mb-3">
-            <Form.Label>Category</Form.Label>
-            <Form.Select
+          <div>
+            <label className="block text-sm font-medium mb-1">Category</label>
+            <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               required
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-blue-500"
             >
               <option value="" disabled>
                 Select a category
               </option>
-              <option value="TV">TV</option>
-              <option value="Computers">Computers</option>
-              <option value="Mobile">Mobile</option>
-              <option value="Appliances">Appliances</option>
-              <option value="Kitchen">Kitchen</option>
-              <option value="Tools">Tools</option>
-              <option value="Lighting">Lighting</option>
-            </Form.Select>
-          </Form.Group>
-
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
           {/* Description Input */}
-          <Form.Group className="mb-3">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              as="textarea"
+          <div>
+            <label className="block text-sm font-medium mb-1">Description</label>
+            <textarea
               rows={3}
               placeholder="Enter product description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-blue-500"
             />
-          </Form.Group>
-
+          </div>
           {/* Price Input */}
-          <Form.Group className="mb-3">
-            <Form.Label>Price</Form.Label>
-            <Form.Control
+          <div>
+            <label className="block text-sm font-medium mb-1">Price</label>
+            <input
               type="number"
               placeholder="Enter product price"
               value={price}
@@ -116,13 +121,13 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
               min="0"
               step="0.01"
               required
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-blue-500"
             />
-          </Form.Group>
-
+          </div>
           {/* Stock Input */}
-          <Form.Group className="mb-3">
-            <Form.Label>Stock Count</Form.Label>
-            <Form.Control
+          <div>
+            <label className="block text-sm font-medium mb-1">Stock Count</label>
+            <input
               type="number"
               placeholder="Enter stock count"
               value={stock}
@@ -130,24 +135,33 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
               min="1"
               step="1"
               required
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-blue-500"
             />
-          </Form.Group>
-
-          {/* Error Message */}
-          {error && <div className="alert alert-danger">{error}</div>}
-
-          {/* Action Buttons */}
-          <div className="d-flex justify-content-end">
-            <Button variant="secondary" onClick={onClose} className="me-2">
-              Cancel
-            </Button>
-            <Button variant="primary" type="submit" disabled={isLoading}>
-              {isLoading ? "Updating..." : "Update Product"}
-            </Button>
           </div>
-        </Form>
-      </Modal.Body>
-    </Modal>
+          {/* Error Message */}
+          {error && (
+            <div className="text-red-600 text-center font-medium">{error}</div>
+          )}
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 transition-colors"
+            >
+              {isLoading ? "Updating..." : "Update Product"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

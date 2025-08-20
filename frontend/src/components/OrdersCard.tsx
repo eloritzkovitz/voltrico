@@ -1,5 +1,4 @@
 import React from "react";
-import { Card, Spinner, Row, Col } from "react-bootstrap";
 import { FaWallet } from "react-icons/fa";
 
 interface Order {
@@ -18,51 +17,45 @@ interface OrderCardProps {
 
 const OrdersCard: React.FC<OrderCardProps> = ({ orders, loading }) => {
   return (
-    <Card className="shadow-sm">
-      <Card.Body>
-        <Card.Title className="mb-4">
-          <FaWallet className="me-2" /> My Orders
-        </Card.Title>
-        {loading ? (
-          <div className="text-center">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-          </div>
-        ) : orders.length > 0 ? (
-          <Row className="g-4">
-            {orders.map((order, index) => (
-              <Col key={order.id || `${order.date}-${index}`} md={6} lg={4}>
-                <Card className="h-100 shadow-sm">
-                  <Card.Img
-                    variant="top"
-                    src={order.image || "/images/placeholder_image.png"}
-                    alt={order.name || "No name available"}
-                    style={{ height: "200px", objectFit: "cover" }}
-                  />
-                  <Card.Body>
-                    <Card.Title>{order.name || "No name available"}</Card.Title>
-                    <Card.Text>
-                      {order.description || "No description available"}
-                    </Card.Text>
-                    <Card.Text>
-                      <small className="text-muted">
-                        Date: {new Date(order.date).toLocaleDateString()}
-                      </small>
-                    </Card.Text>
-                    <Card.Text>
-                      <strong>Price: ${order.price.toFixed(2)}</strong>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <div className="text-center">No order history available.</div>
-        )}
-      </Card.Body>
-    </Card>
+    <div className="bg-white rounded-lg shadow p-6">
+      <div className="flex items-center mb-4">
+        <FaWallet className="text-blue-600 mr-2" />
+        <h2 className="text-xl font-semibold">My Orders</h2>
+      </div>
+      {loading ? (
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
+          <span className="ml-2 text-gray-500">Loading...</span>
+        </div>
+      ) : orders.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {orders.map((order, index) => (
+            <div
+              key={order.id || `${order.date}-${index}`}
+              className="bg-gray-50 rounded-lg shadow h-full flex flex-col"
+            >
+              <img
+                src={order.image || "/images/placeholder_image.png"}
+                alt={order.name || "No name available"}
+                className="w-full h-48 object-cover rounded-t"
+              />
+              <div className="p-4 flex-1 flex flex-col">
+                <h3 className="text-lg font-semibold mb-2">{order.name || "No name available"}</h3>
+                <p className="text-gray-600 mb-2">{order.description || "No description available"}</p>
+                <p className="text-sm text-gray-500 mb-1">
+                  Date: {new Date(order.date).toLocaleDateString()}
+                </p>
+                <p className="font-bold text-blue-700 mt-auto">
+                  Price: ${order.price.toFixed(2)}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8 text-gray-500">No order history available.</div>
+      )}
+    </div>
   );
 };
 

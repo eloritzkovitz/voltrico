@@ -1,4 +1,4 @@
-import userService from "../services/user-service";
+import userService from "@/services/user-service";
 import { CredentialResponse } from "@react-oauth/google";
 
 // Handle Google OAuth response

@@ -1,9 +1,20 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import productService, { Product } from "../services/product-service";
 import ShopItem from "../components/ShopItem";
 import { useCart } from "../context/CartContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThLarge, faTv, faLaptop, faMobileAlt, faBlender, faUtensils, faTools, faLightbulb } from "@fortawesome/free-solid-svg-icons";
+import { FaThLarge, FaTv, FaLaptop, FaMobileAlt, FaBlender, FaUtensils, FaTools, FaLightbulb } from "react-icons/fa";
+
+const categories = [
+  { category: "all", label: "All", icon: <FaThLarge /> },
+  { category: "TV", label: "TV", icon: <FaTv /> },
+  { category: "Computers", label: "Computers", icon: <FaLaptop /> },
+  { category: "Mobile", label: "Mobile", icon: <FaMobileAlt /> },
+  { category: "Appliances", label: "Appliances", icon: <FaBlender /> },
+  { category: "Kitchen", label: "Kitchen", icon: <FaUtensils /> },
+  { category: "Tools", label: "Tools", icon: <FaTools /> },
+  { category: "Lighting", label: "Lighting", icon: <FaLightbulb /> },
+];
 
 const MainPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -55,35 +66,38 @@ const MainPage: React.FC = () => {
   };
 
   return (
-    <div className="page-container mt-5">
-      <div className="category-buttons d-flex flex-wrap justify-content-center gap-3">
-        {[
-          { category: "all", label: "All", icon: faThLarge },
-          { category: "TV", label: "TV", icon: faTv },
-          { category: "Computers", label: "Computers", icon: faLaptop },
-          { category: "Mobile", label: "Mobile", icon: faMobileAlt },
-          { category: "Appliances", label: "Appliances", icon: faBlender },
-          { category: "Kitchen", label: "Kitchen", icon: faUtensils },
-          { category: "Tools", label: "Tools", icon: faTools },
-          { category: "Lighting", label: "Lighting", icon: faLightbulb },
-        ].map((button) => (
+    <div className="container mx-auto mt-8 px-4">
+      {/* Category Buttons */}
+      <div className="flex flex-wrap justify-center gap-3 mb-6">
+        {categories.map((button) => (
           <button
             key={button.category}
-            className={`category-btn rounded-pill d-flex align-items-center gap-2 ${
-              selectedCategory === button.category ? "active-category" : ""
-            }`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-colors
+              ${
+                selectedCategory === button.category
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-blue-100"
+              }`}
             onClick={() => handleCategoryClick(button.category)}
           >
-            <FontAwesomeIcon icon={button.icon} className="category-icon" />
+            <span className="text-lg">{button.icon}</span>
             {button.label}
           </button>
         ))}
       </div>
 
-      <div className="shop-item-container mt-4" id="itemContainer">
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {/* Shop Items */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
+        {errorMessage && (
+          <p className="col-span-full text-center text-red-600 font-medium">{errorMessage}</p>
+        )}
         {products.map((product) => (
-          <ShopItem key={product._id} product={product} onAddToCart={handleAddToCart} />
+          <ShopItem
+            key={product._id}
+            product={product}
+            onAddToCart={handleAddToCart}
+            viewMode="grid"
+          />
         ))}
       </div>
     </div>

@@ -1,22 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Container, Row, Col, Spinner, Button, Form } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+"use client";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
-  faThLarge,
-  faTv,
-  faLaptop,
-  faMobileAlt,
-  faBlender,
-  faUtensils,
-  faTools,
-  faLightbulb,
-  faTh,
-  faBars,
-} from "@fortawesome/free-solid-svg-icons";
-import { useCart } from "../context/CartContext";
-import itemService, { Product } from "../services/product-service";
-import ShopItem from "../components/ShopItem";
+  FaThLarge,
+  FaTv,
+  FaLaptop,
+  FaMobileAlt,
+  FaBlender,
+  FaUtensils,
+  FaTools,
+  FaLightbulb,
+  FaTh,
+  FaBars,
+} from "react-icons/fa";
+import ShopItem from "@/components/ShopItem";
+import { useCart } from "@/context/CartContext";
+import itemService, { Product } from "@/services/product-service";
+
+const categories = [
+  { category: "all", label: "All", icon: <FaThLarge /> },
+  { category: "TV", label: "TV", icon: <FaTv /> },
+  { category: "Computers", label: "Computers", icon: <FaLaptop /> },
+  { category: "Mobile", label: "Mobile", icon: <FaMobileAlt /> },
+  { category: "Appliances", label: "Appliances", icon: <FaBlender /> },
+  { category: "Kitchen", label: "Kitchen", icon: <FaUtensils /> },
+  { category: "Tools", label: "Tools", icon: <FaTools /> },
+  { category: "Lighting", label: "Lighting", icon: <FaLightbulb /> },
+];
 
 const SearchResults: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -31,7 +41,7 @@ const SearchResults: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const { addToCart } = useCart();
 
-  const query = searchParams.get("query") || "";
+  const query = searchParams[1] || "";
 
   // Fetch items based on the search query
   useEffect(() => {
@@ -106,172 +116,155 @@ const SearchResults: React.FC = () => {
   };
 
   return (
-    <Container className="mt-4">
-      {query && <h4 className="mb-4">Showing search results for: {query}</h4>}
+    <div className="container mx-auto mt-8 px-4">
+      {query && (
+        <h4 className="mb-4 text-xl font-semibold">
+          Showing search results for: <span className="font-normal">{query}</span>
+        </h4>
+      )}
 
-      <Row>
+      <div className="flex flex-col md:flex-row gap-8">
         {/* Side Menu */}
-        <Col md={3}>
-          <div className="side-menu">
-            {/* Price Range Selector */}
-            <h5>Price Range</h5>
-            <div className="price-range d-flex align-items-center gap-2 mb-4">
-              <Form.Control
+        <aside className="md:w-1/4">
+          <div className="mb-8">
+            <h5 className="font-semibold mb-2">Price Range</h5>
+            <div className="flex items-center gap-2 mb-4">
+              <input
                 type="number"
                 value={minPrice}
                 onChange={(e) => {
                   const value = Number(e.target.value);
                   setMinPrice(value);
-                  // Ensure maxPrice is not less than minPrice
-                  if (value > maxPrice) {
-                    setMaxPrice(value);
-                  }
+                  if (value > maxPrice) setMaxPrice(value);
                 }}
                 placeholder="Min"
-                className="w-50"
+                className="w-20 border border-gray-300 rounded px-2 py-1"
               />
               <span>-</span>
-              <Form.Control
+              <input
                 type="number"
                 value={maxPrice}
                 onChange={(e) => {
                   const value = Number(e.target.value);
-                  // Ensure minPrice is not greater than maxPrice
-                  if (value >= minPrice) {
-                    setMaxPrice(value);
-                  }
+                  if (value >= minPrice) setMaxPrice(value);
                 }}
                 placeholder="Max"
-                className="w-50"
+                className="w-20 border border-gray-300 rounded px-2 py-1"
               />
-              <Button
-                variant="primary"
-                size="sm"
+              <button
                 onClick={handlePriceRangeChange}
+                className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm"
               >
                 Apply
-              </Button>
+              </button>
             </div>
+          </div>
 
-            {/* Categories */}
-            <h5>Categories</h5>
-            <div className="d-flex flex-column gap-2">
-              {[
-                { category: "all", label: "All", icon: faThLarge },
-                { category: "TV", label: "TV", icon: faTv },
-                { category: "Computers", label: "Computers", icon: faLaptop },
-                { category: "Mobile", label: "Mobile", icon: faMobileAlt },
-                {
-                  category: "Appliances",
-                  label: "Appliances",
-                  icon: faBlender,
-                },
-                { category: "Kitchen", label: "Kitchen", icon: faUtensils },
-                { category: "Tools", label: "Tools", icon: faTools },
-                { category: "Lighting", label: "Lighting", icon: faLightbulb },
-              ].map((button) => {
-                // Calculate the count of items in each category
+          <div>
+            <h5 className="font-semibold mb-2">Categories</h5>
+            <div className="flex flex-col gap-2">
+              {categories.map((button) => {
                 const count =
                   button.category === "all"
                     ? items.length
-                    : items.filter((item) => item.category === button.category)
-                        .length;
+                    : items.filter((item) => item.category === button.category).length;
 
                 return (
                   <button
                     key={button.category}
-                    className={`category-btn d-flex align-items-center gap-2 ${
+                    className={`flex items-center gap-2 px-3 py-2 rounded transition-colors ${
                       selectedCategory === button.category
-                        ? "active-category"
-                        : ""
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-blue-100"
                     }`}
                     onClick={() => handleCategoryChange(button.category)}
                   >
-                    <FontAwesomeIcon
-                      icon={button.icon}
-                      className="category-icon"
-                    />
-                    {button.label} ({count})
+                    <span className="text-lg">{button.icon}</span>
+                    {button.label} <span className="ml-auto text-xs">({count})</span>
                   </button>
                 );
               })}
             </div>
           </div>
-        </Col>
+        </aside>
 
         {/* Search Results */}
-        <Col md={9}>
+        <section className="md:w-3/4">
           {/* Sorting and View Mode Controls */}
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <Form.Select
+          <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
+            <select
               value={sortOption}
               onChange={handleSortChange}
-              className="w-auto"
+              className="w-full md:w-auto border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="relevance">Sort by Relevance</option>
               <option value="price-asc">Sort by Price: Low to High</option>
               <option value="price-desc">Sort by Price: High to Low</option>
               <option value="name">Sort by Name</option>
-            </Form.Select>
-            <div className="card d-flex flex-row align-items-center">
-              <Button
-                variant="link"
-                className={`view-toggle-btn ${
-                  viewMode === "grid" ? "active" : ""
+            </select>
+            <div className="flex gap-2">
+              <button
+                className={`p-2 rounded ${
+                  viewMode === "grid"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-blue-100"
                 }`}
                 onClick={() => setViewMode("grid")}
               >
-                <FontAwesomeIcon icon={faTh} />
-              </Button>
-              <Button
-                variant="link"
-                className={`view-toggle-btn ${
-                  viewMode === "list" ? "active" : ""
+                <FaTh />
+              </button>
+              <button
+                className={`p-2 rounded ${
+                  viewMode === "list"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-blue-100"
                 }`}
                 onClick={() => setViewMode("list")}
               >
-                <FontAwesomeIcon icon={faBars} />
-              </Button>
+                <FaBars />
+              </button>
             </div>
           </div>
 
           <main>
             {loading ? (
-              <div className="text-center">
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
+              <div className="text-center py-8 text-gray-500">
+                <span className="animate-spin inline-block mr-2">&#9696;</span>
+                Loading...
               </div>
             ) : error ? (
-              <div className="text-center text-danger">
+              <div className="text-center text-red-600 py-8">
                 {error}
-                <Button variant="link" onClick={() => window.location.reload()}>
+                <button
+                  className="ml-2 text-blue-600 underline"
+                  onClick={() => window.location.reload()}
+                >
                   Retry
-                </Button>
+                </button>
               </div>
             ) : filteredItems.length > 0 ? (
-              <Row
+              <div
                 className={`${
-                  viewMode === "grid" ? "g-3" : "flex-column"
-                } justify-content-center`}
+                  viewMode === "grid"
+                    ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+                    : "flex flex-col gap-4"
+                }`}
               >
                 {filteredItems.map((item) => (
-                  <Col
-                    key={item._id}
-                    md={viewMode === "grid" ? 4 : 12}
-                    className="mb-4"
-                  >
-                    <ShopItem product={item} onAddToCart={handleAddToCart} />
-                  </Col>
+                  <div key={item._id} className="mb-4">
+                    <ShopItem product={item} onAddToCart={handleAddToCart} viewMode={viewMode} />
+                  </div>
                 ))}
-              </Row>
+              </div>
             ) : (
-              <div className="text-center">No items found for your search.</div>
+              <div className="text-center py-8 text-gray-500">
+                No items found for your search.
+              </div>
             )}
           </main>
-        </Col>
-      </Row>
-    </Container>
+        </section>
+      </div>
+    </div>
   );
 };
 
