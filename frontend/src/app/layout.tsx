@@ -8,6 +8,9 @@ import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "Voltrico",
+  icons: {
+    icon: "/favicon.ico",
+  },
   description: "A microservices-based e-commerce platform",
 };
 
