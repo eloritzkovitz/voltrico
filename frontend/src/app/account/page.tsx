@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Nav } from "react-bootstrap";
+"use client";
+import { useState, useEffect } from "react";
 import { FaUser, FaWallet } from "react-icons/fa";
-import userService, { User } from "../services/user-service";
-import orderService from "../services/order-service";
-import ProfileCard from "../components/ProfileCard";
-import OrdersCard from "../components/OrdersCard";
+import userService, { User } from "@/services/user-service";
+import orderService from "@/services/order-service";
+import ProfileCard from "@/components/ProfileCard";
+import OrdersCard from "@/components/OrdersCard";
 import "../styles/Account.css";
 
 const Account: React.FC = () => {
@@ -50,11 +50,13 @@ const Account: React.FC = () => {
     }
   }, [activeTab]);
 
+  // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle saving profile changes
   const handleSaveProfile = async () => {
     if (!user?._id) {
       console.error("User ID is missing.");
@@ -78,6 +80,7 @@ const Account: React.FC = () => {
     }
   };
 
+  // Fetch order history
   const fetchOrderHistory = async () => {
     setLoadingOrders(true);
     try {
@@ -100,31 +103,37 @@ const Account: React.FC = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <Row>
-        <Col md={3}>
-          <h4 className="mb-4">My Account</h4>
-          <Nav className="flex-column">
-            <Nav.Link
-              className={`menu-item ${
-                activeTab === "account" ? "active-tab" : ""
+    <div className="container mx-auto mt-8 px-4">
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Sidebar */}
+        <div className="md:w-1/4">
+          <h4 className="mb-6 text-xl font-semibold">My Account</h4>
+          <nav className="flex flex-col gap-2">
+            <button
+              className={`flex items-center px-4 py-2 rounded transition-colors ${
+                activeTab === "account"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-blue-100"
               }`}
               onClick={() => setActiveTab("account")}
             >
-              <FaUser className="me-2" /> Personal Information
-            </Nav.Link>
-            <Nav.Link
-              className={`menu-item ${
-                activeTab === "orders" ? "active-tab" : ""
+              <FaUser className="mr-2" /> Personal Information
+            </button>
+            <button
+              className={`flex items-center px-4 py-2 rounded transition-colors ${
+                activeTab === "orders"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-blue-100"
               }`}
               onClick={() => setActiveTab("orders")}
             >
-              <FaWallet className="me-2" /> My Orders
-            </Nav.Link>
-          </Nav>
-        </Col>
+              <FaWallet className="mr-2" /> My Orders
+            </button>
+          </nav>
+        </div>
 
-        <Col md={9}>
+        {/* Main Content */}
+        <div className="md:w-3/4">
           {activeTab === "account" && (
             <ProfileCard
               formData={formData}
@@ -136,9 +145,9 @@ const Account: React.FC = () => {
           {activeTab === "orders" && (
             <OrdersCard orders={orders} loading={loadingOrders} />
           )}
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 };
 

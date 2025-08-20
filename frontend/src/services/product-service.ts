@@ -24,22 +24,37 @@ export interface Product {
 
 // Get all products
 const getAllProducts = async (): Promise<Product[]> => {
-  const response = await apiClient.get<Product[]>("/products");
-  return response.data;
+  try {
+    const response = await apiClient.get<Product[]>("/products");
+    return response.data;
+  } catch (error: any) {
+    console.error("Failed to fetch products:", error?.message || error);
+    return [];
+  }
 };
 
 // Get product by ID
-const getProductById = async (id: string): Promise<Product> => {
-  const response = await apiClient.get<Product>(`/products/${id}`);
-  return response.data;
+const getProductById = async (id: string): Promise<Product | null> => {
+  try {
+    const response = await apiClient.get<Product>(`/products/${id}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Failed to fetch product by ID:", error?.message || error);
+    return null;
+  }
 };
 
 // Get products by category
 const getProductsByCategory = async (category: string): Promise<Product[]> => {
-  const response = await apiClient.get<Product[]>("/products/category", {
-    params: { category },
-  });
-  return response.data;
+  try {
+    const response = await apiClient.get<Product[]>("/products/category", {
+      params: { category },
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error("Failed to fetch products by category:", error?.message || error);
+    return [];
+  }
 };
 
 // Get products by criteria
@@ -48,18 +63,28 @@ const getProductsByCriteria = async (criteria: {
   madeIn?: string;
   weight?: string;
 }): Promise<Product[]> => {
-  const response = await apiClient.get<Product[]>("/products/criteria", {
-    params: criteria,
-  });
-  return response.data;
+  try {
+    const response = await apiClient.get<Product[]>("/products/criteria", {
+      params: criteria,
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error("Failed to fetch products by criteria:", error?.message || error);
+    return [];
+  }
 };
 
 // Get products by query
 const getProductsByQuery = async (query: string): Promise<Product[]> => {
-  const response = await apiClient.get<Product[]>("/products/search", {
-    params: { query },
-  });
-  return response.data;
+  try {
+    const response = await apiClient.get<Product[]>("/products/search", {
+      params: { query },
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error("Failed to fetch products by query:", error?.message || error);
+    return [];
+  }
 };
 
 // Create a new product

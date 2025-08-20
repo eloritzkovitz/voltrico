@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+"use client";
+import { useState } from "react";
 import { Product } from "../services/product-service";
-import { Button, Table } from "react-bootstrap";
 import EditProductModal from "./EditProduct";
 
 interface ProductTableProps {
@@ -20,57 +20,56 @@ const ProductsTable: React.FC<ProductTableProps> = ({ products, onDelete, onEdit
 
   return (
     <>
-      <Table striped bordered hover responsive className="items-table">
-        <thead className="table-dark">
-          <tr>
-            <th>ID</th>
-            <th>Image</th>
-            <th>Category</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price (USD)</th>
-            <th>In Stock</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product._id}>
-              <td>{product._id}</td>
-              <td>
-                <img
-                  src={product.img || "/images/placeholder_image.png"}
-                  alt={product.name}
-                  className="img-thumbnail"
-                  style={{ width: "50px", height: "50px", objectFit: "cover" }}
-                />
-              </td>
-              <td>{product.category}</td>
-              <td>{product.name}</td>
-              <td>{product.description}</td>
-              <td>${product.price.toFixed(2)}</td>
-              <td>{product.stock}</td>
-              <td>
-                <Button
-                  variant="warning"
-                  size="sm"
-                  className="me-2"
-                  onClick={() => handleEditClick(product)}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => onDelete(product._id!)}
-                >
-                  Delete
-                </Button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border border-gray-300 rounded-lg shadow">
+          <thead className="bg-gray-800 text-white">
+            <tr>
+              <th className="py-2 px-4">ID</th>
+              <th className="py-2 px-4">Image</th>
+              <th className="py-2 px-4">Category</th>
+              <th className="py-2 px-4">Name</th>
+              <th className="py-2 px-4">Description</th>
+              <th className="py-2 px-4">Price (USD)</th>
+              <th className="py-2 px-4">In Stock</th>
+              <th className="py-2 px-4">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {products.map((product) => (
+              <tr key={product._id} className="border-t">
+                <td className="py-2 px-4">{product._id}</td>
+                <td className="py-2 px-4">
+                  <img
+                    src={product.img || "/images/placeholder_image.png"}
+                    alt={product.name}
+                    className="rounded object-cover"
+                    style={{ width: "50px", height: "50px" }}
+                  />
+                </td>
+                <td className="py-2 px-4">{product.category}</td>
+                <td className="py-2 px-4">{product.name}</td>
+                <td className="py-2 px-4">{product.description}</td>
+                <td className="py-2 px-4">${product.price.toFixed(2)}</td>
+                <td className="py-2 px-4">{product.stock}</td>
+                <td className="py-2 px-4">
+                  <button
+                    className="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 text-sm mr-2"
+                    onClick={() => handleEditClick(product)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm"
+                    onClick={() => onDelete(product._id!)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Edit Product Modal */}
       {selectedProduct && (

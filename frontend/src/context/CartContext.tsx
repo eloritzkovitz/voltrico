@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+"use client"
+import { createContext, useContext, useState, useEffect } from "react";
 
 interface CartItem {
   _id: string;
@@ -19,10 +20,17 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    const storedCart = localStorage.getItem("cart");
-    return storedCart ? JSON.parse(storedCart) : [];
-  });
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load cart from localStorage on client only
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedCart = localStorage.getItem("cart");
+      setCart(storedCart ? JSON.parse(storedCart) : []);
+      setIsInitialized(true);
+    }
+  }, []);
 
   // Calculate the total number of items in the cart
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
@@ -31,7 +39,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const addToCart = (item: CartItem) => {
     setCart((prevCart) => {
       const existingItemIndex = prevCart.findIndex((cartItem) => cartItem._id === item._id);
-  
+
       if (existingItemIndex !== -1) {
         // Increment the quantity of the existing item by 1
         const updatedCart = [...prevCart];
@@ -50,28 +58,28 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Remove an item from the cart
   const removeFromCart = (itemId: string) => {
     setCart((prevCart) => {
-        const existingItemIndex = prevCart.findIndex((cartItem) => cartItem._id === itemId);
-    
-        if (existingItemIndex !== -1) {
-          const updatedCart = [...prevCart];
-          const existingItem = updatedCart[existingItemIndex];
-    
-          if (existingItem.quantity > 1) {
-            // Decrease the quantity by 1
-            updatedCart[existingItemIndex] = {
-              ...existingItem,
-              quantity: existingItem.quantity - 1,
-            };
-          } else {
-            // Remove the item if the quantity is 1
-            updatedCart.splice(existingItemIndex, 1);
-          }
-    
-          return updatedCart;
+      const existingItemIndex = prevCart.findIndex((cartItem) => cartItem._id === itemId);
+
+      if (existingItemIndex !== -1) {
+        const updatedCart = [...prevCart];
+        const existingItem = updatedCart[existingItemIndex];
+
+        if (existingItem.quantity > 1) {
+          // Decrease the quantity by 1
+          updatedCart[existingItemIndex] = {
+            ...existingItem,
+            quantity: existingItem.quantity - 1,
+          };
+        } else {
+          // Remove the item if the quantity is 1
+          updatedCart.splice(existingItemIndex, 1);
         }
-    
-        return prevCart;
-      });    
+
+        return updatedCart;
+      }
+
+      return prevCart;
+    });
   };
 
   // Clear cart content
@@ -79,10 +87,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCart([]);
   };
 
-  // Save the cart to localStorage whenever it changes
+  // Save the cart to localStorage whenever it changes (client only)
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+    if (typeof window !== "undefined" && isInitialized) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart, isInitialized]);
 
   return (
     <CartContext.Provider value={{ cart, cartCount, addToCart, removeFromCart, clearCart }}>

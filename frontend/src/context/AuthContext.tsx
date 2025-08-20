@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
+"use client"
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import Cookies from "js-cookie";
-import userService, { User } from "../services/user-service";
+import userService, { User } from "@/services/user-service";
 
 interface AuthContextType {
   isAuthenticated: boolean;

@@ -1,7 +1,7 @@
+"use client";
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import orderService, { Order } from "../services/order-service";
-import OrdersTable from "../components/OrdersTable";
+import orderService, { Order } from "@/services/order-service";
+import OrdersTable from "@/components/OrdersTable";
 
 const Orders: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -41,34 +41,40 @@ const Orders: React.FC = () => {
   }, []);
 
   return (
-    <div className="page-container">
-      <h4>Manage Orders</h4>
+    <div className="page-container mx-auto max-w-4xl py-8 px-4">
+      <h4 className="text-2xl font-semibold mb-6">Manage Orders</h4>
 
       <main>
         {/* Search Bar */}
-        <div className="search-bar">
+        <div className="flex items-center gap-2 mb-6">
           <input
             type="text"
             placeholder="Search by Customer ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="searchInput"
+            className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <Button onClick={handleSearch} variant="primary" className="mx-2">
+          <button
+            onClick={handleSearch}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+          >
             Search
-          </Button>
-          <Button onClick={fetchOrders} variant="secondary">
+          </button>
+          <button
+            onClick={fetchOrders}
+            className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
+          >
             Reset
-          </Button>
+          </button>
         </div>
 
         {/* Orders Table or No Orders Message */}
         {loading ? (
-          <div id="loadingIndicator">Loading data...</div>
+          <div className="text-center text-gray-500">Loading data...</div>
         ) : orders.length > 0 ? (
           <OrdersTable orders={orders} />
         ) : (
-          <div id="noOrdersMessage">No orders available</div>
+          <div className="text-center text-gray-500">No orders available</div>
         )}
       </main>
     </div>

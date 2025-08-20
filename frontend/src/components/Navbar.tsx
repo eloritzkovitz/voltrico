@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { NavDropdown } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCartShopping, faUser, faSignOutAlt, faBox, faShoppingBag, faChartBar } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from "../context/AuthContext";
-import { useCart } from "../context/CartContext";
-import productService from "../services/product-service";
+"use client";
+import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+import { FaSearch, FaShoppingCart, FaUser, FaSignOutAlt, FaBox, FaShoppingBag, FaChartBar } from "react-icons/fa";
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
+import productService from "@/services/product-service";
 import "../styles/Navbar.css";
 
 const Navbar: React.FC = () => {
@@ -16,7 +15,7 @@ const Navbar: React.FC = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [profileDropdown, setProfileDropdown] = useState<boolean>(false);
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLLIElement>(null);
 
   // Handle logout and redirect to login page
   const handleLogout = () => {
@@ -90,11 +89,11 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className="navbar">
+    <nav className="bg-white shadow flex items-center justify-between px-6 py-3 relative">
       {/* Logo */}
-      <div className="nav-logo">
-        <Link to="/">
-          <img src="/icons/logo.png" alt="Home" className="logo-img" />
+      <div className="flex items-center">
+        <Link href="/">
+          <img src="/icons/logo.png" alt="Home" className="h-10 w-auto" />
         </Link>
       </div>
 
@@ -102,44 +101,42 @@ const Navbar: React.FC = () => {
       <form
         role="search"
         aria-label="Site Search"
-        className="search-bar"
+        className="relative flex-1 mx-6"
         onSubmit={handleSearchSubmit}
       >
-        <div className="search-input-wrapper">
-          <FontAwesomeIcon icon={faSearch} className="search-icon" />
+        <div className="flex items-center bg-gray-100 rounded px-2 py-1">
+          <FaSearch className="text-gray-500 mr-2" />
           <input
             type="text"
             name="query"
             placeholder="Search..."
             aria-label="Search Input"
-            className="searchInput"
-            id="searchInput"
+            className="flex-1 bg-transparent outline-none px-2 py-1"
             value={searchQuery}
             onChange={handleSearchChange}
             onBlur={handleSearchBlur}
           />
           <button
-            type="button"
-            className="search-button"
-            onClick={handleSearchSubmit}
+            type="submit"
+            className="ml-2 text-blue-600 hover:text-blue-800"
             aria-label="Search Button"
           >
-            <FontAwesomeIcon icon={faSearch} />
+            <FaSearch />
           </button>
         </div>
         {showDropdown && searchResults.length > 0 && (
-          <div className="search-dropdown">
+          <div className="absolute left-0 right-0 mt-2 bg-white border rounded shadow z-10">
             {searchResults.map((result) => (
               <Link
                 key={result._id}
-                to={`/items/${result._id}`}
-                className="search-result-item d-flex align-items-center gap-2"
+                href={`/products/${result._id}`}
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
                 onClick={() => setShowDropdown(false)}
               >
                 <img
                   src={result.imageUrl || "/images/placeholder_image.png"}
                   alt={result.name}
-                  className="search-result-image"
+                  className="w-8 h-8 object-cover rounded"
                 />
                 <span>{result.name}</span>
               </Link>
@@ -149,94 +146,83 @@ const Navbar: React.FC = () => {
       </form>
 
       {/* Navigation Menu */}
-      <ul className="nav-menu">
+      <ul className="flex items-center gap-6">
         {/* Account Dropdown or Login */}
         {isAuthenticated && user ? (
-          <NavDropdown
-            title={
-              <div
-                className="account-dropdown-wrapper"
-                onClick={toggleProfileDropdown}
-              >
-                <FontAwesomeIcon icon={faUser} className="me-2" />
-                Account
+          <li className="relative" ref={dropdownRef}>
+            <button
+              className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition-colors"
+              onClick={toggleProfileDropdown}
+            >
+              <FaUser className="text-blue-600" />
+              Account
+            </button>
+            {profileDropdown && (
+              <div className="absolute right-0 mt-2 bg-white border rounded shadow z-20 min-w-[180px]">
+                {isAdmin && (
+                  <>
+                    <Link
+                      href="/orders"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                      onClick={closeProfileDropdown}
+                    >
+                      <FaBox className="text-gray-600" />
+                      <strong>Orders</strong>
+                    </Link>
+                    <Link
+                      href="/products"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                      onClick={closeProfileDropdown}
+                    >
+                      <FaShoppingBag className="text-gray-600" />
+                      <strong>Items</strong>
+                    </Link>
+                    <Link
+                      href="/statistics"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                      onClick={closeProfileDropdown}
+                    >
+                      <FaChartBar className="text-gray-600" />
+                      <strong>Statistics</strong>
+                    </Link>
+                    <hr className="my-1" />
+                  </>
+                )}
+                <Link
+                  href="/account"
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                  onClick={closeProfileDropdown}
+                >
+                  <FaUser className="text-gray-600" />
+                  <strong>Profile</strong>
+                </Link>
+                <button
+                  onClick={() => {
+                    closeProfileDropdown();
+                    handleLogout();
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100"
+                >
+                  <FaSignOutAlt className="text-gray-600" />
+                  <strong>Logout</strong>
+                </button>
               </div>
-            }
-            id="account-dropdown"
-            align="end"
-            className="account-dropdown"
-            show={profileDropdown}
-            ref={dropdownRef}
-          >
-            {/* Admin Links */}
-            {isAdmin && (
-              <>
-                <NavDropdown.Item
-                  as={Link}
-                  to="/orders"
-                  onClick={closeProfileDropdown}
-                  className="dropdown-item"
-                >
-                  <FontAwesomeIcon icon={faBox} className="me-2" />
-                  <strong>Orders</strong>
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  as={Link}
-                  to="/items"
-                  onClick={closeProfileDropdown}
-                  className="dropdown-item"
-                >
-                  <FontAwesomeIcon icon={faShoppingBag} className="me-2" />
-                  <strong>Items</strong>
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  as={Link}
-                  to="/statistics"
-                  onClick={closeProfileDropdown}
-                  className="dropdown-item"
-                >
-                  <FontAwesomeIcon icon={faChartBar} className="me-2" />
-                  <strong>Statistics</strong>
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-              </>
             )}
-
-            {/* Profile and Logout */}
-            <NavDropdown.Item
-              as={Link}
-              to={`/account`}
-              onClick={closeProfileDropdown}
-              className="dropdown-item"
-            >
-              <FontAwesomeIcon icon={faUser} className="me-2" />
-              <strong>Profile</strong>
-            </NavDropdown.Item>
-            <NavDropdown.Item
-              onClick={() => {
-                closeProfileDropdown();
-                handleLogout();
-              }}
-              className="dropdown-item"
-            >
-              <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
-              <strong>Logout</strong>
-            </NavDropdown.Item>
-          </NavDropdown>
+          </li>
         ) : (
-          <li className="nav-item">
-            <Link to="/login" className="nav-link">
-              <FontAwesomeIcon icon={faUser} className="me-2" />
+          <li>
+            <Link href="/login" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition-colors">
+              <FaUser className="text-blue-600" />
               Login
             </Link>
           </li>
         )}
 
         {/* Cart */}
-        <li className="nav-item">
-          <Link to="/cart" className="nav-link">
-            <FontAwesomeIcon icon={faCartShopping} className="me-2" />
-            Cart <span className="cart-count">({cartCount})</span>
+        <li>
+          <Link href="/cart" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition-colors">
+            <FaShoppingCart className="text-blue-600" />
+            Cart <span className="ml-1 bg-blue-600 text-white rounded px-2 py-0.5 text-xs">{cartCount}</span>
           </Link>
         </li>
       </ul>
