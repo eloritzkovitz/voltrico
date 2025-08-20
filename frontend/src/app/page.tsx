@@ -3,7 +3,16 @@ import React, { useEffect, useState } from "react";
 import productService, { Product } from "../services/product-service";
 import ShopItem from "../components/ShopItem";
 import { useCart } from "../context/CartContext";
-import { FaThLarge, FaTv, FaLaptop, FaMobileAlt, FaBlender, FaUtensils, FaTools, FaLightbulb } from "react-icons/fa";
+import {
+  FaThLarge,
+  FaTv,
+  FaLaptop,
+  FaMobileAlt,
+  FaBlender,
+  FaUtensils,
+  FaTools,
+  FaLightbulb,
+} from "react-icons/fa";
 
 const categories = [
   { category: "all", label: "All", icon: <FaThLarge /> },
@@ -50,7 +59,9 @@ const MainPage: React.FC = () => {
         .then((data) => setProducts(data))
         .catch((error) => {
           console.error(error);
-          setErrorMessage("Failed to fetch products by category. Please try again later.");
+          setErrorMessage(
+            "Failed to fetch products by category. Please try again later."
+          );
         });
     }
   };
@@ -89,16 +100,24 @@ const MainPage: React.FC = () => {
       {/* Shop Items */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
         {errorMessage && (
-          <p className="col-span-full text-center text-red-600 font-medium">{errorMessage}</p>
+          <p className="col-span-full text-center text-red-600 font-medium">
+            {errorMessage}
+          </p>
         )}
-        {products.map((product) => (
-          <ShopItem
-            key={product._id}
-            product={product}
-            onAddToCart={handleAddToCart}
-            viewMode="grid"
-          />
-        ))}
+        {products.length === 0 ? (
+          <div className="col-span-full text-center text-gray-500 py-8">
+            No products available at the moment.
+          </div>
+        ) : (
+          products.map((product) => (
+            <ShopItem
+              key={product._id}
+              product={product}
+              onAddToCart={handleAddToCart}
+              viewMode="grid"
+            />
+          ))
+        )}
       </div>
     </div>
   );
