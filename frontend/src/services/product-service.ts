@@ -74,19 +74,6 @@ const getProductsByCriteria = async (criteria: {
   }
 };
 
-// Get products by query
-const getProductsByQuery = async (query: string): Promise<Product[]> => {
-  try {
-    const response = await apiClient.get<Product[]>("/products/search", {
-      params: { query },
-    });
-    return response.data;
-  } catch (error: any) {
-    console.error("Failed to fetch products by query:", error?.message || error);
-    return [];
-  }
-};
-
 // Create a new product
 const createProduct = async (productData: FormData): Promise<Product> => {
   const token = Cookies.get("accessToken");
@@ -139,7 +126,6 @@ export default {
   getProductById,
   getProductsByCategory,
   getProductsByCriteria,
-  getProductsByQuery,
   createProduct,
   updateProduct,
   deleteProduct,

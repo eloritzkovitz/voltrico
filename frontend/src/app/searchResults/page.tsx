@@ -15,7 +15,8 @@ import {
 } from "react-icons/fa";
 import ShopItem from "@/components/ShopItem";
 import { useCart } from "@/context/CartContext";
-import itemService, { Product } from "@/services/product-service";
+import { Product } from "@/services/product-service";
+import searchService from "@/services/search-service";
 
 const categories = [
   { category: "all", label: "All", icon: <FaThLarge /> },
@@ -43,13 +44,13 @@ const SearchResults: React.FC = () => {
 
   const query = searchParams[1] || "";
 
-  // Fetch items based on the search query
+  // Fetch products based on the search query
   useEffect(() => {
     const fetchSearchResults = async () => {
       setLoading(true);
       setError(null);
       try {
-        const results = await itemService.getProductsByQuery(query);
+        const results = await searchService.searchProducts(query);
         setItems(results);
         setFilteredItems(results);
       } catch (err) {
@@ -119,7 +120,8 @@ const SearchResults: React.FC = () => {
     <div className="container mx-auto mt-8 px-4">
       {query && (
         <h4 className="mb-4 text-xl font-semibold">
-          Showing search results for: <span className="font-normal">{query}</span>
+          Showing search results for:{" "}
+          <span className="font-normal">{query}</span>
         </h4>
       )}
 
@@ -167,7 +169,8 @@ const SearchResults: React.FC = () => {
                 const count =
                   button.category === "all"
                     ? items.length
-                    : items.filter((item) => item.category === button.category).length;
+                    : items.filter((item) => item.category === button.category)
+                        .length;
 
                 return (
                   <button
@@ -180,7 +183,8 @@ const SearchResults: React.FC = () => {
                     onClick={() => handleCategoryChange(button.category)}
                   >
                     <span className="text-lg">{button.icon}</span>
-                    {button.label} <span className="ml-auto text-xs">({count})</span>
+                    {button.label}{" "}
+                    <span className="ml-auto text-xs">({count})</span>
                   </button>
                 );
               })}
@@ -252,7 +256,11 @@ const SearchResults: React.FC = () => {
               >
                 {filteredItems.map((item) => (
                   <div key={item._id} className="mb-4">
-                    <ShopItem product={item} onAddToCart={handleAddToCart} viewMode={viewMode} />
+                    <ShopItem
+                      product={item}
+                      onAddToCart={handleAddToCart}
+                      viewMode={viewMode}
+                    />
                   </div>
                 ))}
               </div>
