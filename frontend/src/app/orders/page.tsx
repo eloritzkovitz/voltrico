@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import orderService, { Order } from "@/services/order-service";
 import OrdersTable from "@/components/OrdersTable";
+import orderService, { Order } from "@/services/order-service";
+import searchService from "@/services/search-service";
 
 const Orders: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -25,9 +26,7 @@ const Orders: React.FC = () => {
   const handleSearch = async () => {
     try {
       setLoading(true);
-      const filteredOrders = orders.filter((order) =>
-        order.customerId.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      const filteredOrders = await searchService.searchOrders(searchQuery);
       setOrders(filteredOrders);
     } catch (error) {
       console.error("Error searching orders:", error);
