@@ -182,7 +182,7 @@ const Navbar: React.FC = () => {
                   <>
                     <Link
                       href="/orders"
-                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 rounded-full"
                       onClick={closeProfileDropdown}
                     >
                       <FaBox className="text-gray-600" />
@@ -190,7 +190,7 @@ const Navbar: React.FC = () => {
                     </Link>
                     <Link
                       href="/products"
-                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 rounded-full"
                       onClick={closeProfileDropdown}
                     >
                       <FaShoppingBag className="text-gray-600" />
@@ -198,7 +198,7 @@ const Navbar: React.FC = () => {
                     </Link>
                     <Link
                       href="/statistics"
-                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 rounded-full"
                       onClick={closeProfileDropdown}
                     >
                       <FaChartBar className="text-gray-600" />
@@ -209,7 +209,7 @@ const Navbar: React.FC = () => {
                 )}
                 <Link
                   href="/account"
-                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 rounded-full"
                   onClick={closeProfileDropdown}
                 >
                   <FaUser className="text-gray-600" />
@@ -220,7 +220,7 @@ const Navbar: React.FC = () => {
                     closeProfileDropdown();
                     handleLogout();
                   }}
-                  className="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-100"
+                  className="flex items-center gap-2 px-4 py-2 w-full text-left hover:bg-gray-200 rounded-full"
                 >
                   <FaSignOutAlt className="text-gray-600" />
                   <strong>Logout</strong>
@@ -232,7 +232,7 @@ const Navbar: React.FC = () => {
           <li>
             <Link
               href="/login"
-              className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-200 transition-colors"
             >
               <FaUser className="text-blue-600" />
               Login
@@ -244,7 +244,7 @@ const Navbar: React.FC = () => {
         <li>
           <Link
             href="/cart"
-            className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-200 transition-colors"
           >
             <FaShoppingCart className="text-blue-600" />
             Cart{" "}
