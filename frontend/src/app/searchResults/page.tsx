@@ -1,33 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  FaThLarge,
-  FaTv,
-  FaLaptop,
-  FaMobileAlt,
-  FaBlender,
-  FaUtensils,
-  FaTools,
-  FaLightbulb,
-  FaTh,
-  FaBars,
-} from "react-icons/fa";
+import { FaTh, FaBars } from "react-icons/fa";
 import ShopItem from "@/components/ShopItem";
+import { productCategories } from "@/constants/productCategories";
 import { useCart } from "@/context/CartContext";
 import { Product } from "@/services/product-service";
 import searchService from "@/services/search-service";
-
-const categories = [
-  { category: "all", label: "All", icon: <FaThLarge /> },
-  { category: "TV", label: "TV", icon: <FaTv /> },
-  { category: "Computers", label: "Computers", icon: <FaLaptop /> },
-  { category: "Mobile", label: "Mobile", icon: <FaMobileAlt /> },
-  { category: "Appliances", label: "Appliances", icon: <FaBlender /> },
-  { category: "Kitchen", label: "Kitchen", icon: <FaUtensils /> },
-  { category: "Tools", label: "Tools", icon: <FaTools /> },
-  { category: "Lighting", label: "Lighting", icon: <FaLightbulb /> },
-];
 
 const SearchResults: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -165,7 +144,7 @@ const SearchResults: React.FC = () => {
           <div>
             <h5 className="font-semibold mb-2">Categories</h5>
             <div className="flex flex-col gap-2">
-              {categories.map((button) => {
+              {productCategories.map((button) => {
                 const count =
                   button.category === "all"
                     ? items.length
