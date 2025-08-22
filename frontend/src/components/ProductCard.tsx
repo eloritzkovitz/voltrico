@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { FaShoppingCart } from "react-icons/fa";
+import { DEFAULT_PRODUCT_IMAGE } from "@/constants/assets";
 import { Product } from "@/types/product";
 import "../styles/ProductCard.css";
 
@@ -17,9 +19,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, viewMod
           : "flex-row items-center gap-6"
       }`}
     >
-      <img
-        src={product.imageURL || "/images/placeholder_image.png"}
+      <Image
+        src={product.imageURL || DEFAULT_PRODUCT_IMAGE}
         alt={product.name}
+        width={viewMode === "grid" ? 128 : 96}
+        height={viewMode === "grid" ? 128 : 96}
         className={`${
           viewMode === "grid"
             ? "w-32 h-32 mb-4 object-cover rounded"

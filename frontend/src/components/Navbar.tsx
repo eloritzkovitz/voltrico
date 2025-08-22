@@ -1,10 +1,20 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { FaSearch, FaShoppingCart, FaUser, FaSignOutAlt, FaBox, FaShoppingBag, FaChartBar } from "react-icons/fa";
+import {
+  FaSearch,
+  FaShoppingCart,
+  FaUser,
+  FaSignOutAlt,
+  FaBox,
+  FaShoppingBag,
+  FaChartBar,
+} from "react-icons/fa";
+import { DEFAULT_PRODUCT_IMAGE } from "@/constants/assets";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
-import productService from "@/services/product-service";
+import searchService from "@/services/search-service";
 import "../styles/Navbar.css";
 
 const Navbar: React.FC = () => {
@@ -32,7 +42,7 @@ const Navbar: React.FC = () => {
 
     if (query.trim()) {
       try {
-        const results = await productService.getProductsByQuery(query);
+        const results = await searchService.searchProducts(query);
         setSearchResults(results);
         setShowDropdown(true);
       } catch (error) {
@@ -93,7 +103,14 @@ const Navbar: React.FC = () => {
       {/* Logo */}
       <div className="flex items-center">
         <Link href="/">
-          <img src="/icons/logo.png" alt="Home" className="h-10 w-auto" />
+          <Image
+            src="/icons/logo.png"
+            alt="Home"
+            width={40}
+            height={40}
+            className="h-10 w-auto"
+            priority
+          />
         </Link>
       </div>
 
@@ -133,9 +150,11 @@ const Navbar: React.FC = () => {
                 className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
                 onClick={() => setShowDropdown(false)}
               >
-                <img
-                  src={result.imageUrl || "/images/placeholder_image.png"}
+                <Image
+                  src={result.imageURL ?? DEFAULT_PRODUCT_IMAGE}
                   alt={result.name}
+                  width={32}
+                  height={32}
                   className="w-8 h-8 object-cover rounded"
                 />
                 <span>{result.name}</span>
@@ -211,7 +230,10 @@ const Navbar: React.FC = () => {
           </li>
         ) : (
           <li>
-            <Link href="/login" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition-colors">
+            <Link
+              href="/login"
+              className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition-colors"
+            >
               <FaUser className="text-blue-600" />
               Login
             </Link>
@@ -220,9 +242,15 @@ const Navbar: React.FC = () => {
 
         {/* Cart */}
         <li>
-          <Link href="/cart" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition-colors">
+          <Link
+            href="/cart"
+            className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition-colors"
+          >
             <FaShoppingCart className="text-blue-600" />
-            Cart <span className="ml-1 bg-blue-600 text-white rounded px-2 py-0.5 text-xs">{cartCount}</span>
+            Cart{" "}
+            <span className="ml-1 bg-blue-600 text-white rounded px-2 py-0.5 text-xs">
+              {cartCount}
+            </span>
           </Link>
         </li>
       </ul>

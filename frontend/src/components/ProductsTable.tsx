@@ -1,7 +1,9 @@
 "use client";
+import Image from "next/image";
 import { useState } from "react";
-import { Product } from "@/types/product";
 import EditProductModal from "./EditProduct";
+import { DEFAULT_PRODUCT_IMAGE } from "@/constants/assets";
+import { Product } from "@/types/product";
 
 interface ProductTableProps {
   products: Product[];
@@ -39,11 +41,12 @@ const ProductsTable: React.FC<ProductTableProps> = ({ products, onDelete, onEdit
               <tr key={product._id} className="border-t">
                 <td className="py-2 px-4">{product._id}</td>
                 <td className="py-2 px-4">
-                  <img
-                    src={product.imageURL || "/images/placeholder_image.png"}
+                  <Image
+                    src={product.imageURL || DEFAULT_PRODUCT_IMAGE}
                     alt={product.name}
+                    width={50}
+                    height={50}
                     className="rounded object-cover"
-                    style={{ width: "50px", height: "50px" }}
                   />
                 </td>
                 <td className="py-2 px-4">{product.category}</td>

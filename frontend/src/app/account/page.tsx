@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import { FaUser, FaWallet } from "react-icons/fa";
 import OrdersCard from "@/components/OrdersCard";
 import ProfileCard from "@/components/ProfileCard";
+import { DEFAULT_PRODUCT_IMAGE } from "@/constants/assets";
 import orderService from "@/services/order-service";
 import userService from "@/services/user-service";
 import { User } from "@/types/user";
-
 import "../styles/Account.css";
 
 const Account: React.FC = () => {
@@ -94,7 +94,7 @@ const Account: React.FC = () => {
         description: order.item?.description || "No description available",
         date: order.date || new Date().toISOString(),
         price: order.item?.price || 0,
-        image: order.item?.image || "/images/placeholder_image.png",
+        image: order.item?.imageURL || DEFAULT_PRODUCT_IMAGE,
       }));
       setOrders(formattedOrders);
     } catch (error) {

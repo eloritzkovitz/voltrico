@@ -1,5 +1,6 @@
-import React from "react";
+import Image from "next/image";
 import { FaWallet } from "react-icons/fa";
+import { DEFAULT_PRODUCT_IMAGE } from "@/constants/assets";
 import type { Order } from "@/types/order";
 
 interface OrderCardProps {
@@ -26,10 +27,13 @@ const OrdersCard: React.FC<OrderCardProps> = ({ orders, loading }) => {
               key={order.id || `${order.date}-${index}`}
               className="bg-gray-50 rounded-lg shadow h-full flex flex-col"
             >
-              <img
-                src={order.product.imageURL || "/images/placeholder_image.png"}
+              <Image
+                src={order.product.imageURL || DEFAULT_PRODUCT_IMAGE}
                 alt={order.product.name || "No name available"}
+                width={400}
+                height={192}
                 className="w-full h-48 object-cover rounded-t"
+                priority={index < 3}
               />
               <div className="p-4 flex-1 flex flex-col">
                 <h3 className="text-lg font-semibold mb-2">
@@ -43,7 +47,9 @@ const OrdersCard: React.FC<OrderCardProps> = ({ orders, loading }) => {
                 </p>
                 <p className="font-bold text-blue-700 mt-auto">
                   Price: $
-                  {order.product.price !== undefined ? order.product.price.toFixed(2) : "N/A"}
+                  {order.product.price !== undefined
+                    ? order.product.price.toFixed(2)
+                    : "N/A"}
                 </p>
               </div>
             </div>

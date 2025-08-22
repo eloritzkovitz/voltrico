@@ -1,8 +1,9 @@
 import React from "react";
+import Image from "next/image";
+import { DEFAULT_PRODUCT_IMAGE, EMPTY_CART_IMAGE } from "@/constants/assets";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import orderService from "@/services/order-service";
-import { Product } from "@/types/product";
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart, clearCart } = useCart();
@@ -44,10 +45,12 @@ const Cart: React.FC = () => {
         <h4 className="text-2xl font-semibold mb-4">Your Shopping Cart</h4>
         {cart.length === 0 ? (
           <div className="empty-cart text-center mt-4">
-            <img
-              src="/images/empty_cart.png"
+            <Image
+              src={EMPTY_CART_IMAGE}
               alt="Empty Cart"
-              className="mx-auto mb-4 w-20 h-20"
+              width={80}
+              height={80}
+              className="mx-auto mb-4 w-20 h-20 object-cover"
             />
             <h2 className="text-xl font-medium">Your cart is empty</h2>
           </div>
@@ -69,9 +72,11 @@ const Cart: React.FC = () => {
                   {cart.map((item) => (
                     <tr key={item._id} className="border-t">
                       <td className="py-2 px-4">
-                        <img
-                          src={item.imageURL || "/images/placeholder_image.png"}
+                        <Image
+                          src={item.imageURL || DEFAULT_PRODUCT_IMAGE}
                           alt={item.name}
+                          width={48}
+                          height={48}
                           className="w-12 h-12 object-cover rounded"
                         />
                       </td>
