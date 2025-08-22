@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {graphColors, groupOptions} from "@/constants/statistics";
+import {GRAPH_COLORS, GROUP_OPTIONS} from "@/constants/statistics";
 import itemService, { Product } from "@/services/product-service";
 import {
   PieChart,
@@ -82,7 +82,7 @@ const Statistics: React.FC = () => {
             aria-label="Group by option"
             className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            {groupOptions.map((opt) => (
+            {GROUP_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
           </select>
@@ -108,7 +108,7 @@ const Statistics: React.FC = () => {
                     }
                   >
                     {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={graphColors[index % graphColors.length]} />
+                      <Cell key={`cell-${index}`} fill={GRAPH_COLORS[index % GRAPH_COLORS.length]} />
                     ))}
                   </Pie>
                   <Tooltip />
@@ -125,7 +125,7 @@ const Statistics: React.FC = () => {
                   <Legend />
                   <Bar dataKey="count" fill="#0088FE">
                     {chartData.map((entry, index) => (
-                      <Cell key={`bar-cell-${index}`} fill={graphColors[index % graphColors.length]} />
+                      <Cell key={`bar-cell-${index}`} fill={GRAPH_COLORS[index % GRAPH_COLORS.length]} />
                     ))}
                   </Bar>
                 </BarChart>

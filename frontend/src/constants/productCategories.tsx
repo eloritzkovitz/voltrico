@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 
 // List of product categories
-export const productCategories = [
+export const PRODUCT_CATEGORIES = [
   { category: "All", label: "All", icon: <FaThLarge /> },
   { category: "TV", label: "TV", icon: <FaTv /> },
   { category: "Computers", label: "Computers", icon: <FaLaptop /> },
@@ -22,6 +22,6 @@ export const productCategories = [
 ];
 
 // List of product category names (excluding "All")
-export const productCategoriesList = productCategories
+export const PRODUCT_CATEGORIES_NAMES = PRODUCT_CATEGORIES
   .filter(cat => cat.category !== "All")
   .map(cat => cat.category);

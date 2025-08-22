@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { FaTh, FaBars } from "react-icons/fa";
 import ShopItem from "@/components/ShopItem";
-import { productCategories } from "@/constants/productCategories";
+import { PRODUCT_CATEGORIES } from "@/constants/productCategories";
 import { useCart } from "@/context/CartContext";
 import { Product } from "@/services/product-service";
 import searchService from "@/services/search-service";
@@ -144,7 +144,7 @@ const SearchResults: React.FC = () => {
           <div>
             <h5 className="font-semibold mb-2">Categories</h5>
             <div className="flex flex-col gap-2">
-              {productCategories.map((button) => {
+              {PRODUCT_CATEGORIES.map((button) => {
                 const count =
                   button.category === "all"
                     ? items.length
