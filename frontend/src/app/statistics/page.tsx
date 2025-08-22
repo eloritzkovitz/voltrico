@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import {graphColors, groupOptions} from "@/constants/statistics";
 import itemService, { Product } from "@/services/product-service";
 import {
   PieChart,
@@ -13,19 +14,6 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
-
-const COLORS = [
-  "#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28BFE",
-  "#FF6699", "#33CC99", "#FFCC00", "#FF6666", "#66CCFF"
-];
-
-const groupOptions = [
-  { value: "category", label: "Category" },
-  { value: "madeIn", label: "Made In" },
-  { value: "color", label: "Color" },
-  { value: "distributor", label: "Brand" },
-  { value: "quality", label: "Quality" },
-];
 
 const Statistics: React.FC = () => {
   const [groupByOption, setGroupByOption] = useState<string>("category");
@@ -120,7 +108,7 @@ const Statistics: React.FC = () => {
                     }
                   >
                     {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`cell-${index}`} fill={graphColors[index % graphColors.length]} />
                     ))}
                   </Pie>
                   <Tooltip />
@@ -137,7 +125,7 @@ const Statistics: React.FC = () => {
                   <Legend />
                   <Bar dataKey="count" fill="#0088FE">
                     {chartData.map((entry, index) => (
-                      <Cell key={`bar-cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`bar-cell-${index}`} fill={graphColors[index % graphColors.length]} />
                     ))}
                   </Bar>
                 </BarChart>
