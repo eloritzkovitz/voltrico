@@ -3,8 +3,8 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import { handleGoogleResponse, handleGoogleError } from "@/services/google-auth";
+import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 import userService from "@/services/user-service";
 import { User } from "@/types/user";
 
@@ -16,8 +16,13 @@ interface FormData {
 }
 
 const Signup: FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
   const router = useRouter();
+  const { handleGoogle, errorMessage: googleErrorMessage } = useGoogleAuth();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [resultMessage, setResultMessage] = useState<string | null>(null);
 
@@ -45,19 +50,12 @@ const Signup: FC = () => {
       });
   };
 
-  // Google OAuth response handlers
-  const googleResponseMessage = (credentialResponse: CredentialResponse) => {
-    handleGoogleResponse(credentialResponse, () => {}, setErrorMessage, (path: string) => router.push(path));
-  };
-
-  const googleErrorMessage = () => {
-    handleGoogleError(setErrorMessage);
-  };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h1 className="text-2xl font-bold mb-6 text-center">Register to Voltrico</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          Register to Voltrico
+        </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Register to join Voltrico
@@ -68,11 +66,15 @@ const Signup: FC = () => {
                 type="text"
                 id="inputFirstName"
                 placeholder="First Name"
-                {...register("firstName", { required: "First name is required." })}
+                {...register("firstName", {
+                  required: "First name is required.",
+                })}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {errors.firstName && (
-                <span className="text-red-600 text-sm">{errors.firstName.message}</span>
+                <span className="text-red-600 text-sm">
+                  {errors.firstName.message}
+                </span>
               )}
             </div>
             <div className="flex-1">
@@ -80,11 +82,15 @@ const Signup: FC = () => {
                 type="text"
                 id="inputLastName"
                 placeholder="Last Name"
-                {...register("lastName", { required: "Last name is required." })}
+                {...register("lastName", {
+                  required: "Last name is required.",
+                })}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {errors.lastName && (
-                <span className="text-red-600 text-sm">{errors.lastName.message}</span>
+                <span className="text-red-600 text-sm">
+                  {errors.lastName.message}
+                </span>
               )}
             </div>
           </div>
@@ -97,13 +103,16 @@ const Signup: FC = () => {
                 required: "Email is required.",
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Invalid email address. Please enter a valid email address.",
+                  message:
+                    "Invalid email address. Please enter a valid email address.",
                 },
               })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
             {errors.email && (
-              <span className="text-red-600 text-sm">{errors.email.message}</span>
+              <span className="text-red-600 text-sm">
+                {errors.email.message}
+              </span>
             )}
           </div>
           <div>
@@ -121,7 +130,9 @@ const Signup: FC = () => {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
             {errors.password && (
-              <span className="text-red-600 text-sm">{errors.password.message}</span>
+              <span className="text-red-600 text-sm">
+                {errors.password.message}
+              </span>
             )}
           </div>
           <button
@@ -131,7 +142,10 @@ const Signup: FC = () => {
             Register
           </button>
           <div className="flex justify-center mt-2">
-            <GoogleLogin onSuccess={googleResponseMessage} onError={googleErrorMessage} />
+            <GoogleLogin
+              onSuccess={handleGoogle}
+              onError={() => handleGoogle()}
+            />
           </div>
         </form>
         {resultMessage && (
@@ -142,6 +156,11 @@ const Signup: FC = () => {
         {errorMessage && (
           <div className="mt-4 text-red-600 text-center font-medium">
             {errorMessage}
+          </div>
+        )}
+        {googleErrorMessage && (
+          <div className="mt-4 text-red-600 text-center font-medium">
+            {googleErrorMessage}
           </div>
         )}
         <div className="mt-6 text-center">
