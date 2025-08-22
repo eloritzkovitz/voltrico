@@ -11,7 +11,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  .popup .AREAForm {
+  .popup {
     display: flex;
     flex-direction: column;
   }

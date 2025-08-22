@@ -99,7 +99,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className="bg-white shadow flex items-center justify-between px-6 py-3 relative">
+    <nav className="shadow flex items-center justify-between px-6 py-3 relative">
       {/* Logo */}
       <div className="flex items-center">
         <Link href="/">
@@ -121,7 +121,7 @@ const Navbar: React.FC = () => {
         className="relative flex-1 mx-6"
         onSubmit={handleSearchSubmit}
       >
-        <div className="flex items-center bg-gray-100 rounded px-2 py-1">
+        <div className="flex items-center bg-white rounded-full border border-gray-300 px-4 py-1">
           <FaSearch className="text-gray-500 mr-2" />
           <input
             type="text"
