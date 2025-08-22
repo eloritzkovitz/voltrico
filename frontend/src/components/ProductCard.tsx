@@ -13,7 +13,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, viewMode }) => {
   return (
     <div
-      className={`shop-item bg-white rounded-lg shadow p-4 flex ${
+      className={`product-card bg-white rounded-lg shadow p-4 flex ${
         viewMode === "grid"
           ? "flex-col items-center"
           : "flex-row items-center gap-6"
