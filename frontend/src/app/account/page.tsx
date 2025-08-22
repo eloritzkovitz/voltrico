@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FaUser, FaWallet } from "react-icons/fa";
-import userService, { User } from "@/services/user-service";
-import orderService from "@/services/order-service";
-import ProfileCard from "@/components/ProfileCard";
 import OrdersCard from "@/components/OrdersCard";
+import ProfileCard from "@/components/ProfileCard";
+import orderService from "@/services/order-service";
+import userService from "@/services/user-service";
+import { User } from "@/types/user";
+
 import "../styles/Account.css";
 
 const Account: React.FC = () => {

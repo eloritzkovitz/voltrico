@@ -1,23 +1,8 @@
 import apiClient, { CanceledError } from "./api-client";
 import Cookies from "js-cookie";
+import { User } from "../types/user";
 
 export { CanceledError }
-
-// User interface
-export interface User {
-  _id?: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  phone: string;
-  address: string;  
-  profilePicture?: string;
-  joinDate?: string;  
-  refreshToken?: string[];
-  purchases?: [{ type: string, ref: 'Purchase' }]
-  role?: 'customer' | 'admin';  
-}
 
 // Google sign in
 const signInWithGoogle = (idToken: string) => {

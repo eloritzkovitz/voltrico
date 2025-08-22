@@ -1,14 +1,5 @@
 import apiClient from "./api-client";
-
-export interface Order {
-  orderId: string;
-  customerId: string;
-  productId: string;
-  date: string;
-  product?: {
-    name: string;
-  };
-}
+import type { Order } from "@/types/order";
 
 // Create a new order
 const createOrder = async (orderData: Omit<Order, "orderId">): Promise<Order> => {

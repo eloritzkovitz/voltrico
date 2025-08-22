@@ -1,9 +1,9 @@
-export interface IProduct {
-  _id?: string;
+export interface Product {
+  _id: string;
   name: string;
-  brand: string;
+  brand?: string;
   model?: string;
-  description: string;
+  description?: string;
   price: number;
   category: string;
   color?: string;
@@ -16,4 +16,5 @@ export interface IProduct {
   quality?: string;
   imageURL?: string;
   features?: string[];
+  stock?: number;
 }

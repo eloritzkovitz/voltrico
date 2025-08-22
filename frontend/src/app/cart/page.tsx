@@ -2,6 +2,7 @@ import React from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import orderService from "@/services/order-service";
+import { Product } from "@/types/product";
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart, clearCart } = useCart();
@@ -20,18 +21,16 @@ const Cart: React.FC = () => {
         return;
       }
 
-      // Create orders for all items in the cart
       for (const item of cart) {
         await orderService.createOrder({
           customerId: user._id ?? "",
           productId: item._id,
           date: new Date().toISOString(),
+          product: item,
         });
       }
 
-      // Clear the cart after successful purchase
       clearCart();
-
       alert("Thank you for your purchase!");
     } catch (error) {
       console.error("Error during purchase:", error);

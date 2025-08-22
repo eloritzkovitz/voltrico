@@ -1,14 +1,6 @@
 import React from "react";
 import { FaWallet } from "react-icons/fa";
-
-interface Order {
-  id: string;
-  name: string;
-  description: string;
-  date: string;
-  price: number;
-  image?: string;
-}
+import type { Order } from "@/types/order";
 
 interface OrderCardProps {
   orders: Order[];
@@ -35,25 +27,32 @@ const OrdersCard: React.FC<OrderCardProps> = ({ orders, loading }) => {
               className="bg-gray-50 rounded-lg shadow h-full flex flex-col"
             >
               <img
-                src={order.image || "/images/placeholder_image.png"}
-                alt={order.name || "No name available"}
+                src={order.product.imageURL || "/images/placeholder_image.png"}
+                alt={order.product.name || "No name available"}
                 className="w-full h-48 object-cover rounded-t"
               />
               <div className="p-4 flex-1 flex flex-col">
-                <h3 className="text-lg font-semibold mb-2">{order.name || "No name available"}</h3>
-                <p className="text-gray-600 mb-2">{order.description || "No description available"}</p>
+                <h3 className="text-lg font-semibold mb-2">
+                  {order.product.name || "No name available"}
+                </h3>
+                <p className="text-gray-600 mb-2">
+                  {order.product.description || "No description available"}
+                </p>
                 <p className="text-sm text-gray-500 mb-1">
                   Date: {new Date(order.date).toLocaleDateString()}
                 </p>
                 <p className="font-bold text-blue-700 mt-auto">
-                  Price: ${order.price.toFixed(2)}
+                  Price: $
+                  {order.product.price !== undefined ? order.product.price.toFixed(2) : "N/A"}
                 </p>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center py-8 text-gray-500">No order history available.</div>
+        <div className="text-center py-8 text-gray-500">
+          No order history available.
+        </div>
       )}
     </div>
   );

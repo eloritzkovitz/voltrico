@@ -1,7 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {GRAPH_COLORS, GROUP_OPTIONS} from "@/constants/statistics";
-import itemService, { Product } from "@/services/product-service";
 import {
   PieChart,
   Pie,
@@ -14,6 +12,9 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
+import {GRAPH_COLORS, GROUP_OPTIONS} from "@/constants/statistics";
+import productService from "@/services/product-service";
+import { Product } from "@/types/product";
 
 const Statistics: React.FC = () => {
   const [groupByOption, setGroupByOption] = useState<string>("category");
@@ -26,7 +27,7 @@ const Statistics: React.FC = () => {
     const fetchAllItems = async () => {
       setLoading(true);
       try {
-        const data = await itemService.getAllProducts();
+        const data = await productService.getAllProducts();
         setItems(data);
       } catch (error) {
         console.error("Error fetching products:", error);

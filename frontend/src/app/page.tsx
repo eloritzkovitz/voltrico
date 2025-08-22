@@ -1,29 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import productService, { Product } from "../services/product-service";
-import ShopItem from "../components/ShopItem";
-import { useCart } from "../context/CartContext";
-import {
-  FaThLarge,
-  FaTv,
-  FaLaptop,
-  FaMobileAlt,
-  FaBlender,
-  FaUtensils,
-  FaTools,
-  FaLightbulb,
-} from "react-icons/fa";
-
-const categories = [
-  { category: "all", label: "All", icon: <FaThLarge /> },
-  { category: "TV", label: "TV", icon: <FaTv /> },
-  { category: "Computers", label: "Computers", icon: <FaLaptop /> },
-  { category: "Mobile", label: "Mobile", icon: <FaMobileAlt /> },
-  { category: "Appliances", label: "Appliances", icon: <FaBlender /> },
-  { category: "Kitchen", label: "Kitchen", icon: <FaUtensils /> },
-  { category: "Tools", label: "Tools", icon: <FaTools /> },
-  { category: "Lighting", label: "Lighting", icon: <FaLightbulb /> },
-];
+import ProductCard from "@/components/ProductCard";
+import { PRODUCT_CATEGORIES } from "@/constants/productCategories";
+import { useCart } from "@/context/CartContext";
+import productService from "@/services/product-service";
+import { Product } from "@/types/product";
 
 const MainPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -80,7 +61,7 @@ const MainPage: React.FC = () => {
     <div className="container mx-auto mt-8 px-4">
       {/* Category Buttons */}
       <div className="flex flex-wrap justify-center gap-3 mb-6">
-        {categories.map((button) => (
+        {PRODUCT_CATEGORIES.map((button) => (
           <button
             key={button.category}
             className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-colors
@@ -110,7 +91,7 @@ const MainPage: React.FC = () => {
           </div>
         ) : (
           products.map((product) => (
-            <ShopItem
+            <ProductCard
               key={product._id}
               product={product}
               onAddToCart={handleAddToCart}

@@ -1,4 +1,4 @@
-import { Order } from "@/services/order-service";
+import { Order } from "@/types/order";
 
 interface OrdersTableProps {
   orders: Order[];
@@ -23,7 +23,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => {
               <td className="py-2 px-4">{order.orderId}</td>
               <td className="py-2 px-4">{order.customerId}</td>
               <td className="py-2 px-4">{order.productId}</td>
-              <td className="py-2 px-4">{order.product?.name || "No name available"}</td>
+              <td className="py-2 px-4">{order.product.name || "No name available"}</td>
               <td className="py-2 px-4">{new Date(order.date).toLocaleDateString()}</td>
             </tr>
           ))}

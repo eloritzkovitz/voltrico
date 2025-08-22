@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Product } from "../services/product-service";
+import { Product } from "@/types/product";
 import EditProductModal from "./EditProduct";
 
 interface ProductTableProps {
@@ -40,7 +40,7 @@ const ProductsTable: React.FC<ProductTableProps> = ({ products, onDelete, onEdit
                 <td className="py-2 px-4">{product._id}</td>
                 <td className="py-2 px-4">
                   <img
-                    src={product.img || "/images/placeholder_image.png"}
+                    src={product.imageURL || "/images/placeholder_image.png"}
                     alt={product.name}
                     className="rounded object-cover"
                     style={{ width: "50px", height: "50px" }}

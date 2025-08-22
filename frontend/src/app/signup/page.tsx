@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { handleGoogleResponse, handleGoogleError } from "@/services/google-auth";
-import userService, { User } from "@/services/user-service";
+import userService from "@/services/user-service";
+import { User } from "@/types/user";
 
 interface FormData {
   firstName: string;

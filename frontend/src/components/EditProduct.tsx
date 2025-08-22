@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { PRODUCT_CATEGORIES_NAMES } from "@/constants/productCategories";
-import productService, { Product } from "@/services/product-service";
+import productService from "@/services/product-service";
+import { Product } from "@/types/product";
 
 interface EditProductModalProps {
   show: boolean;

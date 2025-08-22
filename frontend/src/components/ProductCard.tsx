@@ -1,14 +1,14 @@
 import { FaShoppingCart } from "react-icons/fa";
-import { Product } from "@/services/product-service";
-import "../styles/ShopItem.css";
+import { Product } from "@/types/product";
+import "../styles/ProductCard.css";
 
-interface ShopItemProps {
+interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
   viewMode: "grid" | "list";
 }
 
-const ShopItem: React.FC<ShopItemProps> = ({ product, onAddToCart, viewMode }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, viewMode }) => {
   return (
     <div
       className={`shop-item bg-white rounded-lg shadow p-4 flex ${
@@ -18,7 +18,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ product, onAddToCart, viewMode }) =
       }`}
     >
       <img
-        src={product.img || "/images/placeholder_image.png"}
+        src={product.imageURL || "/images/placeholder_image.png"}
         alt={product.name}
         className={`${
           viewMode === "grid"
@@ -44,4 +44,4 @@ const ShopItem: React.FC<ShopItemProps> = ({ product, onAddToCart, viewMode }) =
   );
 };
 
-export default ShopItem;
+export default ProductCard;

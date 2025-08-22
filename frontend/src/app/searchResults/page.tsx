@@ -2,11 +2,11 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { FaTh, FaBars } from "react-icons/fa";
-import ShopItem from "@/components/ShopItem";
+import ProductCard from "@/components/ProductCard";
 import { PRODUCT_CATEGORIES } from "@/constants/productCategories";
 import { useCart } from "@/context/CartContext";
-import { Product } from "@/services/product-service";
 import searchService from "@/services/search-service";
+import { Product } from "@/types/product";
 
 const SearchResults: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -235,7 +235,7 @@ const SearchResults: React.FC = () => {
               >
                 {filteredItems.map((item) => (
                   <div key={item._id} className="mb-4">
-                    <ShopItem
+                    <ProductCard
                       product={item}
                       onAddToCart={handleAddToCart}
                       viewMode={viewMode}
