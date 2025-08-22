@@ -35,7 +35,11 @@
 }
 
 html {
-  overflow-y: scroll;
+  overflow-y: scroll;  
+}
+
+html, body {
+  font-family: 'VoltricoFont', sans-serif;
 }
 
 .page-container {
@@ -56,106 +60,8 @@ html {
 
 /* Footer styling */
 .footer {
-  background-color: var(--bar-color);
-  color: #f1f1f1;
+  background-color: var(--bar-color);  
   text-align: center;
   padding: 10px 0;
   width: 100%;
-}
-
-/* Category buttons styling */
-.category-buttons {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.category-btn {
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  border: none;
-  background-color: #f0f0f0;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-size: 16px;
-}
-
-.category-btn img {
-  margin-right: 8px;
-  width: 24px;
-  height: 24px;
-}
-
-.category-btn:hover {
-  background-color: #e0e0e0;
-}
-
-.category-btn.active-category {
-  background-color: #007bff;
-  color: #ffffff;
-  border-color: #0056b3;
-}
-
-/* Old styles (temporary) */
-
-aside {
-  width: fit-content;
-  padding: 10px;
-  background-color: #f4f4f4;
-  border: 1px solid #ddd;  
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-aside:hover {
-  background-color: #e0e0e0;
-  transform: scale(1.05);
-}
-
-aside h2 {
-  margin-top: 0;
-  color: black;
-}
-aside ul {
-  list-style-type: none;
-  padding: 0;
-}
-aside ul li {
-  margin-bottom: 10px;
-}
-aside ul li a {
-  text-decoration: none; 
-  color: #007bff; 
-  font-weight: bold;
-}
-aside ul li a:hover {
-  background-color: #e0e0e0;
-  text-decoration: underline;  
-}
-
-h1 {
-  text-align: center;
-  font-family: 'AREAFont', sans-serif;
-}
-
-p {
-  font-family: 'AREAFont', sans-serif;  
-}
-
-.form-group {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.charts-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-top: 50px;
-}
-
-.chart {
-  flex: 1;
 }

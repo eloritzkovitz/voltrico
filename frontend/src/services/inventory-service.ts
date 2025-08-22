@@ -1,9 +1,5 @@
 import apiClient from "./api-client";
-
-export interface InventoryItem {
-  itemId: string;
-  stock: number;
-}
+import { InventoryItem } from "@/types/inventory";
 
 // Get stock for an item
 export const getStock = async (itemId: string): Promise<InventoryItem> => {

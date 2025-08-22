@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <CartProvider>
               <div className="app-container">
                 <Navbar />
-                <div className="page-content">{children}</div>
+                <main className="page-content bg-white">{children}</main>
                 <Footer />
               </div>
             </CartProvider>

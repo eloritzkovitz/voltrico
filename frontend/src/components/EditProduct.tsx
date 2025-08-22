@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import { categories } from "@/constants/categories";
-import productService, { Product } from "@/services/product-service";
+import { PRODUCT_CATEGORIES_NAMES } from "@/constants/productCategories";
+import productService from "@/services/product-service";
+import { Product } from "@/types/product";
 
 interface EditProductModalProps {
   show: boolean;
@@ -91,7 +92,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
               <option value="" disabled>
                 Select a category
               </option>
-              {categories.map((cat) => (
+              {PRODUCT_CATEGORIES_NAMES.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>

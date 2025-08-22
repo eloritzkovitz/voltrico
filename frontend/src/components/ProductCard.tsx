@@ -1,25 +1,29 @@
+import Image from "next/image";
 import { FaShoppingCart } from "react-icons/fa";
-import { Product } from "@/services/product-service";
-import "../styles/ShopItem.css";
+import { DEFAULT_PRODUCT_IMAGE } from "@/constants/assets";
+import { Product } from "@/types/product";
+import "../styles/ProductCard.css";
 
-interface ShopItemProps {
+interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
   viewMode: "grid" | "list";
 }
 
-const ShopItem: React.FC<ShopItemProps> = ({ product, onAddToCart, viewMode }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, viewMode }) => {
   return (
     <div
-      className={`shop-item bg-white rounded-lg shadow p-4 flex ${
+      className={`product-card bg-white rounded-lg shadow p-4 flex ${
         viewMode === "grid"
           ? "flex-col items-center"
           : "flex-row items-center gap-6"
       }`}
     >
-      <img
-        src={product.img || "/images/placeholder_image.png"}
+      <Image
+        src={product.imageURL || DEFAULT_PRODUCT_IMAGE}
         alt={product.name}
+        width={viewMode === "grid" ? 128 : 96}
+        height={viewMode === "grid" ? 128 : 96}
         className={`${
           viewMode === "grid"
             ? "w-32 h-32 mb-4 object-cover rounded"
@@ -44,4 +48,4 @@ const ShopItem: React.FC<ShopItemProps> = ({ product, onAddToCart, viewMode }) =
   );
 };
 
-export default ShopItem;
+export default ProductCard;

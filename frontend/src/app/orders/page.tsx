@@ -1,8 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import OrdersTable from "@/components/OrdersTable";
-import orderService, { Order } from "@/services/order-service";
+import orderService from "@/services/order-service";
 import searchService from "@/services/search-service";
+import { Order } from "@/types/order";
 
 const Orders: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);

@@ -1,85 +1,49 @@
-"use client"
+"use client";
 import { createContext, useContext, useState, useEffect } from "react";
-
-interface CartItem {
-  _id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  imageURL?: string;
-}
-
-interface CartContextType {
-  cart: CartItem[];
-  cartCount: number;
-  addToCart: (item: CartItem) => void;
-  removeFromCart: (itemId: string) => void;
-  clearCart: () => void;
-}
+import type { CartItem, CartContextType } from "@/types/cart";
+import { addToCartHelper, removeFromCartHelper } from "@/utils/cartHelpers";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load cart from localStorage on client only
+  // Load cart from localStorage (client only)
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedCart = localStorage.getItem("cart");
-      setCart(storedCart ? JSON.parse(storedCart) : []);
+      try {
+        const storedCart = localStorage.getItem("cart");
+        setCart(storedCart ? (JSON.parse(storedCart) as CartItem[]) : []);
+      } catch {
+        setCart([]);
+      }
       setIsInitialized(true);
     }
   }, []);
 
+  // Save the cart to localStorage whenever it changes (client only)
+  useEffect(() => {
+    if (typeof window !== "undefined" && isInitialized) {
+      try {
+        localStorage.setItem("cart", JSON.stringify(cart));
+      } catch {}
+    }
+  }, [cart, isInitialized]);
+
   // Calculate the total number of items in the cart
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
-  // Add an item to the cart or increment its quantity if it already exists
+  // Use add to cart helper
   const addToCart = (item: CartItem) => {
-    setCart((prevCart) => {
-      const existingItemIndex = prevCart.findIndex((cartItem) => cartItem._id === item._id);
-
-      if (existingItemIndex !== -1) {
-        // Increment the quantity of the existing item by 1
-        const updatedCart = [...prevCart];
-        updatedCart[existingItemIndex] = {
-          ...updatedCart[existingItemIndex],
-          quantity: updatedCart[existingItemIndex].quantity + 1,
-        };
-        return updatedCart;
-      } else {
-        // Add the new item to the cart with a quantity of 1
-        return [...prevCart, { ...item, quantity: 1 }];
-      }
-    });
+    setCart((prevCart) => addToCartHelper(prevCart, item));
   };
 
-  // Remove an item from the cart
+  // Use remove from cart helper
   const removeFromCart = (itemId: string) => {
-    setCart((prevCart) => {
-      const existingItemIndex = prevCart.findIndex((cartItem) => cartItem._id === itemId);
-
-      if (existingItemIndex !== -1) {
-        const updatedCart = [...prevCart];
-        const existingItem = updatedCart[existingItemIndex];
-
-        if (existingItem.quantity > 1) {
-          // Decrease the quantity by 1
-          updatedCart[existingItemIndex] = {
-            ...existingItem,
-            quantity: existingItem.quantity - 1,
-          };
-        } else {
-          // Remove the item if the quantity is 1
-          updatedCart.splice(existingItemIndex, 1);
-        }
-
-        return updatedCart;
-      }
-
-      return prevCart;
-    });
+    setCart((prevCart) => removeFromCartHelper(prevCart, itemId));
   };
 
   // Clear cart content
@@ -87,20 +51,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCart([]);
   };
 
-  // Save the cart to localStorage whenever it changes (client only)
-  useEffect(() => {
-    if (typeof window !== "undefined" && isInitialized) {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
-  }, [cart, isInitialized]);
-
   return (
-    <CartContext.Provider value={{ cart, cartCount, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider
+      value={{ cart, cartCount, addToCart, removeFromCart, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );
 };
 
+// Custom hook to use the cart context
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {

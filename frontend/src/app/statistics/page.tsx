@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import itemService, { Product } from "@/services/product-service";
+import { useState, useEffect } from "react";
 import {
   PieChart,
   Pie,
@@ -13,19 +12,9 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
-
-const COLORS = [
-  "#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A28BFE",
-  "#FF6699", "#33CC99", "#FFCC00", "#FF6666", "#66CCFF"
-];
-
-const groupOptions = [
-  { value: "category", label: "Category" },
-  { value: "madeIn", label: "Made In" },
-  { value: "color", label: "Color" },
-  { value: "distributor", label: "Brand" },
-  { value: "quality", label: "Quality" },
-];
+import {GRAPH_COLORS, GROUP_OPTIONS} from "@/constants/statistics";
+import productService from "@/services/product-service";
+import { Product } from "@/types/product";
 
 const Statistics: React.FC = () => {
   const [groupByOption, setGroupByOption] = useState<string>("category");
@@ -38,7 +27,7 @@ const Statistics: React.FC = () => {
     const fetchAllItems = async () => {
       setLoading(true);
       try {
-        const data = await itemService.getAllProducts();
+        const data = await productService.getAllProducts();
         setItems(data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -94,7 +83,7 @@ const Statistics: React.FC = () => {
             aria-label="Group by option"
             className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            {groupOptions.map((opt) => (
+            {GROUP_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
           </select>
@@ -120,7 +109,7 @@ const Statistics: React.FC = () => {
                     }
                   >
                     {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`cell-${index}`} fill={GRAPH_COLORS[index % GRAPH_COLORS.length]} />
                     ))}
                   </Pie>
                   <Tooltip />
@@ -137,7 +126,7 @@ const Statistics: React.FC = () => {
                   <Legend />
                   <Bar dataKey="count" fill="#0088FE">
                     {chartData.map((entry, index) => (
-                      <Cell key={`bar-cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`bar-cell-${index}`} fill={GRAPH_COLORS[index % GRAPH_COLORS.length]} />
                     ))}
                   </Bar>
                 </BarChart>

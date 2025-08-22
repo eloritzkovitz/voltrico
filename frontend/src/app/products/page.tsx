@@ -1,8 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import productService, { Product } from "@/services/product-service";
+import { useEffect, useState } from "react";
 import CreateProductModal from "@/components/CreateProduct";
 import ProductsTable from "@/components/ProductsTable";
+import productService from "@/services/product-service";
+import searchService from "@/services/search-service";
+import { Product } from "@/types/product";
 import "@/styles/Products.css";
 
 const Products: React.FC = () => {
@@ -28,7 +30,7 @@ const Products: React.FC = () => {
   const handleSearch = async () => {
     try {
       setLoading(true);
-      const data = await productService.getProductsByQuery(searchQuery);
+      const data = await searchService.searchProducts(searchQuery);
       setProducts(data);
     } catch (error) {
       console.error("Error searching products:", error);
