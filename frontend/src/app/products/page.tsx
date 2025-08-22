@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CreateProductModal from "@/components/CreateProduct";
 import ProductsTable from "@/components/ProductsTable";
 import productService from "@/services/product-service";

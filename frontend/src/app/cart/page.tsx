@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 import Image from "next/image";
 import { DEFAULT_PRODUCT_IMAGE, EMPTY_CART_IMAGE } from "@/constants/assets";
 import { useAuth } from "@/context/AuthContext";

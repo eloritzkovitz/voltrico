@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import OrdersTable from "@/components/OrdersTable";
 import orderService from "@/services/order-service";
 import searchService from "@/services/search-service";
