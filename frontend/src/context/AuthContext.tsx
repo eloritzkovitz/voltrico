@@ -1,17 +1,8 @@
 "use client"
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import Cookies from "js-cookie";
-import userService, { User } from "@/services/user-service";
-
-interface AuthContextType {
-  isAuthenticated: boolean;
-  isAdmin: boolean;
-  user: User | null;
-  loading: boolean;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
-  login: (accessToken: string, refreshToken: string) => void;
-  logout: () => void;  
-}
+import userService from "@/services/user-service";
+import type { User, AuthContextType } from "@/types/user";
+import { setAuthTokens, removeAuthTokens, getAccessToken, isAdmin as isAdminHelper } from "@/utils/authHelpers";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -22,14 +13,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const token = Cookies.get("accessToken");
+    const token = getAccessToken();
     if (token) {
       userService
         .getUserData()
         .then((fetchedUser) => {          
           setUser(fetchedUser);
           setIsAuthenticated(true);
-          setIsAdmin(fetchedUser.role === "admin");
+          setIsAdmin(isAdminHelper(fetchedUser));
         })
         .catch(() => {
           setIsAuthenticated(false);
@@ -46,20 +37,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Authenticate user on login
   const login = (accessToken: string, refreshToken: string) => {
-    Cookies.set("accessToken", accessToken, { expires: 7 }); 
-    Cookies.set("refreshToken", refreshToken, { expires: 7 });
+    setAuthTokens(accessToken, refreshToken);
     setIsAuthenticated(true);
     userService.getUserData().then((fetchedUser) => {
       setUser(fetchedUser);
-      setIsAdmin(fetchedUser.role === "admin");
+      setIsAdmin(isAdminHelper(fetchedUser));
     });
   };
 
   // Remove authentication on logout
   const logout = () => {
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
-    setIsAuthenticated(false); 
+    removeAuthTokens();
+    setIsAuthenticated(false);
     setIsAdmin(false);
     setUser(null);   
   };
@@ -71,6 +60,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   );
 };
 
+// Custom hook to use the authentication context
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
