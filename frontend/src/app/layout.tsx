@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import "./globals.css";
+import "../styles/Account.css";
+import "../styles/Cart.css";
+import "../styles/Navbar.css";
+import "../styles/NotFoundPage.css";
+import "../styles/ProductCard.css";
+import "../styles/Products.css";
 
 export const metadata: Metadata = {
   title: "Voltrico",

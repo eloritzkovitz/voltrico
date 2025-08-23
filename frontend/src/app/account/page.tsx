@@ -7,7 +7,6 @@ import { DEFAULT_PRODUCT_IMAGE } from "@/constants/assets";
 import orderService from "@/services/order-service";
 import userService from "@/services/user-service";
 import { User } from "@/types/user";
-import "../styles/Account.css";
 
 const Account: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);

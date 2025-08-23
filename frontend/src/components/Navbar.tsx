@@ -15,7 +15,6 @@ import { DEFAULT_PRODUCT_IMAGE } from "@/constants/assets";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import searchService from "@/services/search-service";
-import "../styles/Navbar.css";
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
