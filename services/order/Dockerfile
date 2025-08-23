@@ -3,7 +3,6 @@ WORKDIR /app
 
 # Copy package files first for better cache
 COPY services/order/package*.json ./
-COPY voltrico-libs-*.tgz ./
 
 # Install dependencies
 RUN npm install
