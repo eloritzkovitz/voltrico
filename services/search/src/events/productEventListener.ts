@@ -1,6 +1,6 @@
 import { elasticClient } from "../elastic/elasticClient";
-import { IProduct } from "voltrico-libs";
-import { rabbitMQService } from "voltrico-libs";
+import { IProduct } from "@eloritzkovitz/voltrico-libs";
+import { rabbitMQService } from "@eloritzkovitz/voltrico-libs";
 
 export async function listenForProductEvents() {
   // Wait for the channel to be ready

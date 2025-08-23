@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IUser } from "voltrico-libs";
+import { IUser } from "@eloritzkovitz/voltrico-libs";
 
 const userSchema = new mongoose.Schema<IUser>({
   firstName: { type: String, required: true },

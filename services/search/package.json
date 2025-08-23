@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
+    "@eloritzkovitz/voltrico-libs": "^1.0.1",
     "@elastic/elasticsearch": "9.1.0",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
@@ -21,8 +22,7 @@
     "node": "^23.11.0",
     "path-to-regexp": "^8.2.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1",
-    "voltrico-libs": "file:./voltrico-libs-1.0.0.tgz"
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/js": "9.32.0",

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { IOrder } from "voltrico-libs";
+import { IOrder } from "@eloritzkovitz/voltrico-libs";
 
 @Entity()
 export class Order implements IOrder {

@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { AppDataSource } from "../server";
 import { Order } from "../models/Order";
-import { rabbitMQService } from "voltrico-libs";
+import { rabbitMQService } from "@eloritzkovitz/voltrico-libs";
 
 // Create a new order
 const createOrder = async (req: Request, res: Response): Promise<void> => {
