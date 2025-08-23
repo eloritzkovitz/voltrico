@@ -47,11 +47,7 @@ Voltrico is a microservices-based e-commerce platform. Users can browse and sear
 - Each service has its own Dockerfile and can be scaled independently.
 - Environment variables are used for configuration.
 
----
-
 **To run locally:**
 1. Clone the repository.
 2. Run `docker compose up --build` from the project root.
 3. Access the API Gateway at [http://localhost:3000](http://localhost:3000).
-
----
