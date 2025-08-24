@@ -5,6 +5,8 @@ WORKDIR /app
 # Install dependencies and build the app
 COPY package*.json ./
 COPY tsconfig*.json ./
+COPY postcss.config.mjs ./
+COPY next.config.ts ./
 COPY public ./public
 COPY src ./src
 RUN npm install
@@ -19,10 +21,9 @@ COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/src ./src
 
 EXPOSE 80
 ENV NODE_ENV=production
 ENV PORT=80
 
-CMD ["npm", "start"]
+CMD ["npx", "next", "start"]

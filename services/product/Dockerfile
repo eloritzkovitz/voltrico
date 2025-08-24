@@ -1,16 +1,28 @@
-FROM node:20
+FROM node:20 AS builder
 WORKDIR /app
 
-# Copy package files first for better cache
+# Copy package files and install all dependencies
 COPY services/product/package*.json ./
-
-# Install dependencies
+COPY services/product/tsconfig.json ./
 RUN npm install
 
-# Copy the rest of the source code
-COPY services/product ./
-
-# Build the service
+# Copy source code and build
+COPY services/product/src ./src
 RUN npm run build
 
-CMD ["npm", "run", "dev"]
+# --- Production image ---
+FROM node:20 AS production
+WORKDIR /app
+
+# Copy only package files and install production dependencies
+COPY services/product/package*.json ./
+RUN npm install --only=production
+
+# Copy built files from builder
+COPY --from=builder /app/dist ./dist
+
+# Copy any needed config files
+COPY services/product/nodemon.json ./
+COPY services/product/eslint.config.js ./
+
+CMD ["node", "dist/app.js"]
