@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { IProduct } from "@eloritzkovitz/voltrico-libs";
+import { IProduct } from "../interfaces/IProduct";
 
 const productSchema = new Schema<IProduct>({
   name: { type: String, required: true },

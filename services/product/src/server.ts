@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import path from "path";
 import fs from "fs";
 import productRoutes from "./routes/productRoutes";
-import { rabbitMQService } from "voltrico-libs";
+import { rabbitMQService } from "@eloritzkovitz/server-essentials";
 
 const app = express();
 

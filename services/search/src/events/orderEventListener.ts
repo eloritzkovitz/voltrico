@@ -1,6 +1,6 @@
 import { elasticClient } from "../elastic/elasticClient";
-import { IOrder } from "@eloritzkovitz/voltrico-libs";
-import { rabbitMQService } from "@eloritzkovitz/voltrico-libs";
+import { IOrder } from "../interfaces/IOrder";
+import { rabbitMQService } from "@eloritzkovitz/server-essentials";
 
 export async function listenForOrderEvents() {
   const channel = (rabbitMQService as any).channel;

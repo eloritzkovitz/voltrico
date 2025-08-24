@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
-    "@eloritzkovitz/voltrico-libs": "^1.0.1",
+    "@eloritzkovitz/server-essentials": "1.0.2",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
     "@types/multer": "^1.4.12",
@@ -24,7 +24,7 @@
     "multer": "^1.4.5-lts.2",
     "node": "^23.11.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"    
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/js": "9.32.0",

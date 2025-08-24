@@ -9,8 +9,8 @@
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
-    "@eloritzkovitz/voltrico-libs": "^1.0.1",
     "@elastic/elasticsearch": "9.1.0",
+    "@eloritzkovitz/server-essentials": "1.0.2",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
     "@types/multer": "^1.4.12",

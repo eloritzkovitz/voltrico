@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { OAuth2Client } from "google-auth-library";
 import userModel from "../models/User";
-import { generateToken, verifyRefreshToken } from "@eloritzkovitz/voltrico-libs";
+import { generateToken, verifyRefreshToken } from "@eloritzkovitz/server-essentials";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
