@@ -18,7 +18,7 @@ dotenv.config({
   })(),
 });
 
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3003;
 
 initApp().then((app) => {
   app.listen(port, () => {

@@ -37,7 +37,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "3004"
+		port = "3005"
 	}
 	log.Printf("Inventory service running on port %s", port)
 	log.Fatal(http.ListenAndServe(":"+port, r))
