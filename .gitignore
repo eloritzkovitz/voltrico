@@ -6,10 +6,13 @@
 # Environment files
 *.env
 *.pem
+*.npmrc
 
 #node
 node_modules/
 dist/
+logs/
+uploads/
 
 # Symbolication related
 app.*.symbols

@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { AppDataSource } from "../server";
 import { Order } from "../models/Order";
-import { rabbitMQService } from "voltrico-libs";
+import { rabbitMQService } from "@eloritzkovitz/server-essentials";
 
 // Create a new order
 const createOrder = async (req: Request, res: Response): Promise<void> => {
@@ -23,11 +23,16 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
     await orderRepo.save(order);
 
     // Notify the customer via RabbitMQ
-    await rabbitMQService.notifyReceiver(
-      customerId,
-      "Your order has been placed!",
-      "noreply@voltrico.com",
-      "Voltrico"
+    await rabbitMQService.publishNotification(
+      "notifications",
+      {
+        receiverId: customerId,
+        message: "Your order has been placed!",
+        from: "noreply@voltrico.com",
+        sender: "Voltrico",
+        orderId: order.orderId,
+        date: order.date
+      }
     );
 
     res.status(201).json(order);

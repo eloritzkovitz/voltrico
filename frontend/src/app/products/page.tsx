@@ -5,7 +5,6 @@ import ProductsTable from "@/components/ProductsTable";
 import productService from "@/services/product-service";
 import searchService from "@/services/search-service";
 import { Product } from "@/types/product";
-import "@/styles/Products.css";
 
 const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);

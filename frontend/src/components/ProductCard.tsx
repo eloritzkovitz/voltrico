@@ -2,7 +2,6 @@ import Image from "next/image";
 import { FaShoppingCart } from "react-icons/fa";
 import { DEFAULT_PRODUCT_IMAGE } from "@/constants/assets";
 import { Product } from "@/types/product";
-import "../styles/ProductCard.css";
 
 interface ProductCardProps {
   product: Product;

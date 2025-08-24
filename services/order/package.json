@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
+    "@eloritzkovitz/server-essentials": "1.0.3",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
     "@types/multer": "^1.4.12",
@@ -24,8 +25,7 @@
     "reflect-metadata": "0.2.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "typeorm": "0.3.25",
-    "voltrico-libs": "file:./voltrico-libs-1.0.0.tgz"
+    "typeorm": "0.3.25"
   },
   "devDependencies": {
     "@eslint/js": "9.32.0",

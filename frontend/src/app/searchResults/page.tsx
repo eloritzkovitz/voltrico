@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import CategoryButtons from "@/components/CategoryButtons";
 import ProductList from "@/components/ProductList";
@@ -8,12 +8,12 @@ import searchService from "@/services/search-service";
 import { Product } from "@/types/product";
 
 const SearchResults: React.FC = () => {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query") || "";
+
   const [items, setItems] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const query = searchParams[1] || "";
+  const [error, setError] = useState<string | null>(null);  
 
   // Use the hook for product list management
   const {
@@ -79,4 +79,10 @@ const SearchResults: React.FC = () => {
   );
 };
 
-export default SearchResults;
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchResults />
+    </Suspense>
+  );
+}

@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import productController from "../controllers/productController";
-import { authenticate, requireAdmin } from "voltrico-libs";
+import { authenticate, requireAdmin } from "@eloritzkovitz/server-essentials";
 
 const upload = multer().none();
 

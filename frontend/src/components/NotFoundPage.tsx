@@ -1,5 +1,4 @@
 import Link from "next/link";
-import "../styles/NotFoundPage.css";
 
 const NotFoundPage: React.FC = () => {
   return (

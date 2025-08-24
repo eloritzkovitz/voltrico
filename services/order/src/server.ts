@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import { DataSource } from "typeorm";
 import { Order } from "./models/Order";
 import orderRoutes from "./routes/orderRoutes";
-import { rabbitMQService } from "voltrico-libs";
+import { rabbitMQService } from "@eloritzkovitz/server-essentials";
 
 const app = express();
 

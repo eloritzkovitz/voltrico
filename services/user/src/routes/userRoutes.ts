@@ -1,7 +1,7 @@
 import express from "express";
 import usersController from "../controllers/userController";
-import { authenticate } from "voltrico-libs";
-import { upload } from "voltrico-libs";
+import { authenticate } from "@eloritzkovitz/server-essentials";
+import { upload } from "@eloritzkovitz/server-essentials";
 
 const router = express.Router();
 
