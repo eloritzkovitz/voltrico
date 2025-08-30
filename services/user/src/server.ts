@@ -32,8 +32,8 @@ app.use((req, res, next) => {
 });
 
 // Serve the API routes
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
 app.get("/about", (req, res) => {
   res.send("This is the User Service API for Voltrico.");

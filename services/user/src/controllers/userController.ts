@@ -5,13 +5,9 @@ import userModel from "../models/User";
 import { deleteFile } from "@eloritzkovitz/server-essentials";
 
 // Get user data
-const getUserData = async (req: Request & { user?: { _id: string } }, res: Response): Promise<void> => {
-  try {
-    const requestedUserId = req.params.id;
-    const authenticatedUserId = req.user?._id;
-
-    // Use the requested ID if available, otherwise fallback to the authenticated user
-    const userId = requestedUserId || authenticatedUserId;
+const getUserData = async (req: Request, res: Response): Promise<void> => {
+  try {    
+    const userId = (res as any).user?.id;    
 
     const user = await userModel.findById(userId).select("-password");
     if (!user) {

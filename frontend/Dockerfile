@@ -2,6 +2,13 @@
 FROM node:20 AS build
 WORKDIR /app
 
+# Set environment variables
+ARG NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+
+ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
 # Install dependencies and build the app
 COPY package*.json ./
 COPY tsconfig*.json ./

@@ -31,9 +31,9 @@ func main() {
 	StartRabbitMQConsumer(db)
 
 	r := mux.NewRouter()
-	r.HandleFunc("/api/inventory/{id}", getStock).Methods("GET")
-	r.HandleFunc("/api/inventory/{id}", setStock).Methods("PUT")
-	r.HandleFunc("/api/inventory/{id}/update", updateStock).Methods("POST")
+	r.HandleFunc("/inventory/{id}", getStock).Methods("GET")
+	r.HandleFunc("/inventory/{id}", setStock).Methods("PUT")
+	r.HandleFunc("/inventory/{id}/update", updateStock).Methods("POST")
 
 	port := os.Getenv("PORT")
 	if port == "" {
