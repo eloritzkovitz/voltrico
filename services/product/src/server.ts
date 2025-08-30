@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 // Serve the API routes
-app.use("/api/products", productRoutes);
+app.use("/products", productRoutes);
 
 app.get("/about", (req, res) => {
   res.send("This is the Product Service API for Voltrico.");

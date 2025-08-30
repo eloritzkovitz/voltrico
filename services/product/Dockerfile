@@ -1,4 +1,4 @@
-FROM node:20 AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy package files and install all dependencies
@@ -11,7 +11,7 @@ COPY services/product/src ./src
 RUN npm run build
 
 # --- Production image ---
-FROM node:20 AS production
+FROM node:20-alpine AS production
 WORKDIR /app
 
 # Copy only package files and install production dependencies
@@ -20,9 +20,5 @@ RUN npm install --only=production
 
 # Copy built files from builder
 COPY --from=builder /app/dist ./dist
-
-# Copy any needed config files
-COPY services/product/nodemon.json ./
-COPY services/product/eslint.config.js ./
 
 CMD ["node", "dist/app.js"]

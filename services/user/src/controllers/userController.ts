@@ -2,16 +2,13 @@ import { Request, Response } from "express";
 import path from "path";
 import bcrypt from "bcrypt";
 import userModel from "../models/User";
+import { getUserId } from "../utils/requestHelpers";
 import { deleteFile } from "@eloritzkovitz/server-essentials";
 
 // Get user data
-const getUserData = async (req: Request & { user?: { _id: string } }, res: Response): Promise<void> => {
+const getUserData = async (req: Request, res: Response): Promise<void> => {
   try {
-    const requestedUserId = req.params.id;
-    const authenticatedUserId = req.user?._id;
-
-    // Use the requested ID if available, otherwise fallback to the authenticated user
-    const userId = requestedUserId || authenticatedUserId;
+    const userId = getUserId(req);
 
     const user = await userModel.findById(userId).select("-password");
     if (!user) {

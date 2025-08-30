@@ -57,6 +57,8 @@ services:
     build:
       context: .
       dockerfile: services/user/Dockerfile
+    ports:
+      - "${USER_SERVICE_PORT}:3002"
     environment:
           PORT: ${USER_SERVICE_PORT}
           DB_CONNECTION: ${USER_DB_CONNECTION}
@@ -74,6 +76,8 @@ services:
     build:
       context: .
       dockerfile: services/product/Dockerfile
+    ports:
+      - "${PRODUCT_SERVICE_PORT}:3003"
     environment:
       PORT: ${PRODUCT_SERVICE_PORT}
       DB_CONNECTION: ${PRODUCT_DB_CONNECTION}
@@ -86,6 +90,8 @@ services:
     build:
       context: .
       dockerfile: services/order/Dockerfile
+    ports:
+      - "${ORDER_SERVICE_PORT}:3004"
     environment:
       PORT: ${ORDER_SERVICE_PORT}
       DB_HOST: ${ORDER_DB_HOST}
@@ -102,6 +108,8 @@ services:
     build:
       context: .
       dockerfile: services/inventory/Dockerfile
+    ports:
+      - "${INVENTORY_SERVICE_PORT}:3005"
     environment:
       PORT: ${INVENTORY_SERVICE_PORT}
       DB_HOST: ${INVENTORY_DB_HOST}
@@ -118,6 +126,8 @@ services:
     build:
       context: .
       dockerfile: services/search/Dockerfile
+    ports:
+      - "${SEARCH_SERVICE_PORT}:3006"
     environment:
       PORT: ${SEARCH_SERVICE_PORT}
       ELASTIC_URL: ${ELASTIC_URL}
@@ -135,9 +145,19 @@ services:
       - product-service
       - order-service
       - inventory-service
-    
+    environment:
+      USER_SERVICE_URL: ${USER_SERVICE_URL}
+      PRODUCT_SERVICE_URL: ${PRODUCT_SERVICE_URL}
+      ORDER_SERVICE_URL: ${ORDER_SERVICE_URL}
+      INVENTORY_SERVICE_URL: ${INVENTORY_SERVICE_URL}
+      SEARCH_SERVICE_URL: ${SEARCH_SERVICE_URL}
+
   frontend:
-    build: ./frontend   
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL}
+        NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
     environment:
       NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL}
       NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CLIENT_ID}

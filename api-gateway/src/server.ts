@@ -1,20 +1,17 @@
 import express from "express";
-import bodyParser from "body-parser";
-import userRoutes from "./routes/userRoutes";
-import itemRoutes from "./routes/productRoutes";
-import orderRoutes from "./routes/orderRoutes";
-import inventoryRoutes from "./routes/inventoryRoutes";
+import cors from "cors";
+import httpProxy from "http-proxy";
+import { setProxyRoutes } from "./proxyRoutes";
 
 const app = express();
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const proxy = httpProxy.createProxyServer();
+setProxyRoutes(app, proxy);
 
-// Proxy routes
-app.use("/api/users", userRoutes);
-app.use("/api/products", itemRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/inventory", inventoryRoutes);
+proxy.on("proxyReq", (proxyReq, req, res, options) => {
+  console.log(`Forwarded request to ${options.target}: ${req.method} ${req.url}`);
+});
 
 app.get("/", (req, res) => {
   res.send("Voltrico API Gateway is running.");
