@@ -12,7 +12,7 @@ export function setProxyRoutes(app: Application, proxy: httpProxy) {
   const routes = [
     {
       apiPath: "/api/auth",
-      target: process.env.AUTH_SERVICE_URL ?? "",
+      target: process.env.USER_SERVICE_URL ?? "",
       rewritePrefix: "/auth",
       serviceName: "user (auth)",
     },
