@@ -9,13 +9,14 @@
     "outDir": "dist",
     "strict": true,
     "resolveJsonModule": true,
-    "types": ["jest", "node"],
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "types": ["jest", "node"]
   },
   "lib": ["es2015"],
   "include": [
-    "src",
-    "tests"
+    "src",    
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }

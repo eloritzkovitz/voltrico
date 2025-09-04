@@ -4,11 +4,19 @@
     "esModuleInterop": true,
     "target": "es6",
     "moduleResolution": "node",
+    "sourceMap": true,
+    "rootDir": "src",
     "outDir": "dist",
     "strict": true,
-    "types": ["node", "express"]
+    "resolveJsonModule": true,
+    "types": ["node"]
   },
+  "lib": ["es2015"],
   "include": [
-    "src"
+    "src",    
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }

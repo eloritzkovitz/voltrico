@@ -13,7 +13,10 @@
   },
   "lib": ["es2015"],
   "include": [
-    "src",
-    "tests"
+    "src",    
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }
