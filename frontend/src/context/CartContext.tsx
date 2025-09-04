@@ -1,7 +1,13 @@
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
-import type { CartItem, CartContextType } from "@/types/cart";
-import { addToCartHelper, removeFromCartHelper } from "@/utils/cartHelpers";
+import { useAuth } from "@/context/AuthContext";
+import {
+  getCart,
+  addCartItem,
+  removeCartItem,
+  clearCart,
+} from "@/services/cart-service";
+import type { CartItem, CartContextType, Cart } from "@/types/cart";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -9,58 +15,68 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const { user, isAuthenticated } = useAuth();
 
-  // Load cart from localStorage (client only)
+  // Use userId if authenticated, otherwise use a guest session ID
+  const userId: string = isAuthenticated && user && user._id ? user._id : "guest-session-id";
+
+  // Load cart from backend when userId changes
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    const fetchCart = async () => {
       try {
-        const storedCart = localStorage.getItem("cart");
-        setCart(storedCart ? (JSON.parse(storedCart) as CartItem[]) : []);
+        const data: Cart = await getCart(userId);
+        setCart(data.items || []);
       } catch {
         setCart([]);
       }
-      setIsInitialized(true);
-    }
-  }, []);
+    };
+    fetchCart();
+  }, [userId]);
 
-  // Save the cart to localStorage whenever it changes (client only)
-  useEffect(() => {
-    if (typeof window !== "undefined" && isInitialized) {
-      try {
-        localStorage.setItem("cart", JSON.stringify(cart));
-      } catch {}
-    }
-  }, [cart, isInitialized]);
+  // Add item to cart via backend
+  const addToCart = async (item: CartItem) => {
+    try {
+      const data: Cart = await addCartItem(userId, item);
+      setCart(data.items || []);
+    } catch {}
+  };
 
-  // Calculate the total number of items in the cart
+  // Remove item from cart via backend
+  const removeFromCart = async (itemId: string) => {
+    try {
+      const itemIndex = cart.findIndex((item) => item.productId === itemId);
+      if (itemIndex === -1) return;
+      const data: Cart = await removeCartItem(userId, itemIndex);
+      setCart(data.items || []);
+    } catch {}
+  };
+
+  // Clear cart via backend
+  const clearCartHandler = async () => {
+    try {
+      const data: Cart = await clearCart(userId);
+      setCart(data.items || []);
+    } catch {}
+  };
+
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
-
-  // Use add to cart helper
-  const addToCart = (item: CartItem) => {
-    setCart((prevCart) => addToCartHelper(prevCart, item));
-  };
-
-  // Use remove from cart helper
-  const removeFromCart = (itemId: string) => {
-    setCart((prevCart) => removeFromCartHelper(prevCart, itemId));
-  };
-
-  // Clear cart content
-  const clearCart = () => {
-    setCart([]);
-  };
 
   return (
     <CartContext.Provider
-      value={{ cart, cartCount, addToCart, removeFromCart, clearCart }}
+      value={{
+        cart,
+        cartCount,
+        addToCart,
+        removeFromCart,
+        clearCart: clearCartHandler,
+      }}
     >
       {children}
     </CartContext.Provider>
   );
 };
 
-// Custom hook to use the cart context
+// Custom hook to use the CartContext
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
