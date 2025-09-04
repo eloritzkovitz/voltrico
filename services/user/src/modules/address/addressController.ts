@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import userModel from "../models/User";
-import { isAuthorized, userResponse } from "../utils/userUtils";
+import userModel from "../user/User";
+import { isAuthorized, userResponse } from "../../utils/userUtils";
 import { getUserId, handleError, logger } from "@eloritzkovitz/server-essentials";
 
 // Add address to user

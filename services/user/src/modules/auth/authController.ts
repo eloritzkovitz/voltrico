@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { OAuth2Client } from "google-auth-library";
-import userModel from "../models/User";
-import { userResponse } from "../utils/userUtils";
+import userModel from "../user/User";
+import { userResponse } from "../../utils/userUtils";
 import {
   handleError,
   logger,

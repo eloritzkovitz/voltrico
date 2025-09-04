@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { IUser } from "../interfaces/IUser";
-import addressSchema from "./Address";
-import paymentMethodSchema from "./PaymentMethod";
+import { IUser } from "../../interfaces/IUser";
+import addressSchema from "../../models/Address";
+import paymentMethodSchema from "../../models/PaymentMethod";
 
 const userSchema = new mongoose.Schema<IUser>({
   firstName: { type: String, required: true },

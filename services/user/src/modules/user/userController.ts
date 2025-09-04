@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import userModel from "../models/User";
-import { isAuthorized, userResponse } from "../utils/userUtils";
+import userModel from "./User";
+import { isAuthorized, userResponse } from "../../utils/userUtils";
 import { getUserId, handleError, logger } from "@eloritzkovitz/server-essentials";
 
 // Get user data
