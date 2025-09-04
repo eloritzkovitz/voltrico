@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema<IUser>({
   password: { type: String, required: true },
   phone: { type: String },
   address: { type: String },  
-  profilePicture: { type: String, default: "" },
   joinDate: { type: String, required: true },  
   refreshToken: { type: [String], default: [] },
   role: { type: String, enum: ['customer', 'admin'], default: 'customer' },

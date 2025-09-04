@@ -6,7 +6,6 @@ export interface IUser {
   password: string;
   phone: string;
   address: string;  
-  profilePicture?: string;
   joinDate?: string;  
   refreshToken?: string[];
   role: 'customer' | 'admin';

@@ -1,7 +1,6 @@
 import express from "express";
 import usersController from "../controllers/userController";
 import { authenticate } from "@eloritzkovitz/server-essentials";
-import { upload } from "@eloritzkovitz/server-essentials";
 
 const router = express.Router();
 
@@ -60,10 +59,7 @@ router.get("/me", authenticate, usersController.getUserData);
  *               lastName:
  *                 type: string
  *               password:
- *                 type: string
- *               profilePicture:
- *                 type: string
- *                 format: binary
+ *                 type: string 
  *     responses:
  *       200:
  *         description: User updated successfully
@@ -80,12 +76,7 @@ router.get("/me", authenticate, usersController.getUserData);
  *       500:
  *         description: Server error
  */
-router.put(
-  "/me",
-  authenticate,
-  upload.single("profilePicture"),
-  usersController.updateUser
-);
+router.put("/me", authenticate, usersController.updateUser);
 
 /**
  * @swagger
