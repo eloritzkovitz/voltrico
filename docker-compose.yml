@@ -86,12 +86,27 @@ services:
       - rabbitmq
       - mongo-db
 
+  cart-service:
+    build:
+      context: .
+      dockerfile: services/cart/Dockerfile
+    ports:
+      - "${CART_SERVICE_PORT}:3004"
+    environment:
+      PORT: ${CART_SERVICE_PORT}
+      DB_CONNECTION: ${CART_DB_CONNECTION}
+      RABBITMQ_URL: ${RABBITMQ_URL}
+      NOTIFICATIONS_QUEUE: ${NOTIFICATIONS_QUEUE}
+    depends_on:
+      - rabbitmq
+      - mongo-db
+
   order-service:
     build:
       context: .
       dockerfile: services/order/Dockerfile
     ports:
-      - "${ORDER_SERVICE_PORT}:3004"
+      - "${ORDER_SERVICE_PORT}:3005"
     environment:
       PORT: ${ORDER_SERVICE_PORT}
       DB_HOST: ${ORDER_DB_HOST}
@@ -109,7 +124,7 @@ services:
       context: .
       dockerfile: services/inventory/Dockerfile
     ports:
-      - "${INVENTORY_SERVICE_PORT}:3005"
+      - "${INVENTORY_SERVICE_PORT}:3006"
     environment:
       PORT: ${INVENTORY_SERVICE_PORT}
       DB_HOST: ${INVENTORY_DB_HOST}
@@ -127,7 +142,7 @@ services:
       context: .
       dockerfile: services/search/Dockerfile
     ports:
-      - "${SEARCH_SERVICE_PORT}:3006"
+      - "${SEARCH_SERVICE_PORT}:3007"
     environment:
       PORT: ${SEARCH_SERVICE_PORT}
       ELASTIC_URL: ${ELASTIC_URL}
@@ -139,15 +154,17 @@ services:
   api-gateway:
     build: ./api-gateway
     ports:
-      - "${API_GATEWAY_PORT}:3000"
+      - "${API_GATEWAY_PORT}:3001"
     depends_on:
       - user-service
       - product-service
+      - cart-service
       - order-service
       - inventory-service
     environment:
       USER_SERVICE_URL: ${USER_SERVICE_URL}
       PRODUCT_SERVICE_URL: ${PRODUCT_SERVICE_URL}
+      CART_SERVICE_URL: ${CART_SERVICE_URL}
       ORDER_SERVICE_URL: ${ORDER_SERVICE_URL}
       INVENTORY_SERVICE_URL: ${INVENTORY_SERVICE_URL}
       SEARCH_SERVICE_URL: ${SEARCH_SERVICE_URL}

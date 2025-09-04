@@ -1,0 +1,29 @@
+import mongoose, { Schema } from "mongoose";
+import { ICart } from "../interfaces/ICart";
+import { ICartItem } from "../interfaces/ICartItem";
+
+const cartItemSchema = new Schema<ICartItem>({
+  productId: { type: String, required: true },
+  name: { type: String },
+  price: { type: Number },
+  quantity: { type: Number, required: true },
+}, { _id: false });
+
+const cartSchema = new Schema<ICart>({
+  userId: { type: String },
+  sessionId: { type: String },
+  items: { type: [cartItemSchema], default: [] },
+  couponCode: { type: String },
+  total: { type: Number },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+cartSchema.pre("save", function (next) {
+  this.updatedAt = new Date();
+  next();
+});
+
+const Cart = mongoose.model<ICart>("Cart", cartSchema);
+
+export default Cart;

@@ -35,6 +35,12 @@ export function setProxyRoutes(app: Application, proxy: httpProxy) {
       serviceName: "product",
     },
     {
+      apiPath: "/api/cart",
+      target: process.env.CART_SERVICE_URL ?? "",
+      rewritePrefix: "/cart",
+      serviceName: "cart",
+    },
+    {
       apiPath: "/api/orders/search",
       target: process.env.SEARCH_SERVICE_URL ?? "",
       rewritePrefix: "/search/orders",

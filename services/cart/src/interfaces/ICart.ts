@@ -4,9 +4,9 @@ export interface ICart {
   _id?: string;
   userId?: string;
   sessionId?: string;
-  items: ICartItem[];
-  createdAt?: string;
-  updatedAt?: string;
+  items: ICartItem[];  
   couponCode?: string;
   total?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

@@ -9,14 +9,14 @@ export interface IUser {
   password: string;
   phone: string;
   gender?: string;
-  dateOfBirth?: string;  
+  dateOfBirth?: string;
   addresses?: IAddress[];
-  paymentMethods?: IPaymentMethod[];  
-  role: 'customer' | 'admin';
+  paymentMethods?: IPaymentMethod[];
+  role: "customer" | "admin";
   emailVerified?: boolean;
   newsletterSubscribed?: boolean;
   refreshToken?: string[];
-  createdAt?: string;
-  updatedAt?: string;
-  lastLogin?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  lastLogin?: Date;
 }
