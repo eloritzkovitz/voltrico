@@ -11,7 +11,7 @@ export interface IUser {
   gender?: string;
   dateOfBirth?: string;  
   addresses?: IAddress[];
-  paymentOptions?: IPaymentMethod[];  
+  paymentMethods?: IPaymentMethod[];  
   role: 'customer' | 'admin';
   emailVerified?: boolean;
   newsletterSubscribed?: boolean;

@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema<IUser>({
   gender: { type: String },
   dateOfBirth: { type: String },
   addresses: { type: [addressSchema], default: [] },
-  paymentOptions: { type: [paymentMethodSchema], default: [] },  
+  paymentMethods: { type: [paymentMethodSchema], default: [] },  
   refreshToken: { type: [String], default: [] },
   role: { type: String, enum: ['customer', 'admin'], default: 'customer' },
   emailVerified: { type: Boolean, default: false },
