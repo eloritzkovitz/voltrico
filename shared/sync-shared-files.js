@@ -8,10 +8,11 @@ const path = require("path");
 
 // Map interfaces by service needs
 const interfaceMap = {
+  cart: ["ICart.ts", "ICartItem.ts"],
   order: ["IOrder.ts"],
   product: ["IProduct.ts"],
   search: ["IOrder.ts", "IProduct.ts"],
-  user: ["IUser.ts"]
+  user: ["IUser.ts", "IAddress.ts", "IPaymentMethod.ts"],
 };
 
 // Directory containing the shared interface files

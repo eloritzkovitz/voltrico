@@ -45,7 +45,8 @@ const updateUser = async (req: Request & { user?: { _id: string; role: string } 
     if (req.body.firstName !== undefined) user.firstName = req.body.firstName;
     if (req.body.lastName !== undefined) user.lastName = req.body.lastName;
     if (req.body.phone !== undefined) user.phone = req.body.phone;
-    if (req.body.address !== undefined) user.address = req.body.address;
+    if (req.body.gender !== undefined) user.gender = req.body.gender;
+    if (req.body.dateOfBirth !== undefined) user.dateOfBirth = req.body.dateOfBirth;
     if (req.body.password) {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(req.body.password, salt);

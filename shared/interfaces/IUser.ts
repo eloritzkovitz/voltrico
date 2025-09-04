@@ -1,3 +1,6 @@
+import { IAddress } from "./IAddress";
+import { IPaymentMethod } from "./IPaymentMethod";
+
 export interface IUser {
   _id?: string;
   firstName: string;
@@ -5,8 +8,15 @@ export interface IUser {
   email: string;
   password: string;
   phone: string;
-  address: string;  
-  joinDate?: string;  
-  refreshToken?: string[];
+  gender?: string;
+  dateOfBirth?: string;  
+  addresses?: IAddress[];
+  paymentOptions?: IPaymentMethod[];  
   role: 'customer' | 'admin';
+  emailVerified?: boolean;
+  newsletterSubscribed?: boolean;
+  refreshToken?: string[];
+  createdAt?: string;
+  updatedAt?: string;
+  lastLogin?: string;
 }
