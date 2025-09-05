@@ -2,11 +2,11 @@ import express, { Express } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import { createServerRouter, httpLogger, logger, rabbitMQService } from "@eloritzkovitz/server-essentials";
 import authRoutes from "./modules/auth/authRoutes";
 import userRoutes from "./modules/user/userRoutes";
 import addressRoutes from "./modules/address/addressRoutes";
 import paymentMethodRoutes from "./modules/paymentMethod/paymentMethodRoutes";
-import { createServerRouter, httpLogger, logger, rabbitMQService } from "@eloritzkovitz/server-essentials";
 
 const app = express();
 
@@ -26,6 +26,7 @@ app.use("/users", paymentMethodRoutes);
 
 // Serve info/health routes
 app.use("/", createServerRouter(() => mongoose.connection.readyState === 1 ? "up" : "down"));
+
 app.get("/about", (req, res) => {
   res.send("This is the User Service API for Voltrico.");
 });

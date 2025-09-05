@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import initApp from "./server";
 import { logger } from "@eloritzkovitz/server-essentials";
+import initApp from "./server";
 
 // Load the appropriate .env file based on NODE_ENV
 const env = process.env.NODE_ENV || "dev";
@@ -19,15 +19,15 @@ dotenv.config({
   })(),
 });
 
-const port: number = Number(process.env.PORT) || 3002;
+const port: number = Number(process.env.PORT) || 3004;
 
 initApp()
   .then((app) => {
     app.listen(port, () => {
-      logger.info(`User service running on port ${port} (Environment: ${env})`);
+      logger.info(`Cart service running on port ${port} (Environment: ${env})`);
     });
   })
   .catch((err) => {
-    logger.error("Failed to start User service: %o", err);
+    logger.error("Failed to start cart service: %o", err);
     process.exit(1);
   });

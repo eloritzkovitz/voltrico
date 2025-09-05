@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import initApp from "./server";
 import { logger } from "@eloritzkovitz/server-essentials";
+import initApp from "./server";
 
 // Load the appropriate .env file based on NODE_ENV
 const env = process.env.NODE_ENV || "dev";
@@ -28,6 +28,6 @@ initApp()
     });
   })
   .catch((err) => {
-    logger.error("Failed to start User service: %o", err);
+    logger.error("Failed to start user service: %o", err);
     process.exit(1);
   });

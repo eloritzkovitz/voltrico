@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import { logger } from "@eloritzkovitz/server-essentials";
 import initApp from "./server";
 
 // Load the appropriate .env file based on NODE_ENV
@@ -18,10 +19,15 @@ dotenv.config({
   })(),
 });
 
-const port = process.env.PORT || 3005;
+const port: number = Number(process.env.PORT) || 3002;
 
-initApp().then((app) => {
-  app.listen(port, () => {
-    console.log(`Order service running on port ${port} (Environment: ${env})`);
+initApp()
+  .then((app) => {
+    app.listen(port, () => {
+      logger.info(`Order service running on port ${port} (Environment: ${env})`);
+    });
+  })
+  .catch((err) => {
+    logger.error("Failed to start order service: %o", err);
+    process.exit(1);
   });
-});

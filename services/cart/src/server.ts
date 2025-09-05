@@ -2,8 +2,8 @@ import express, { Express } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import cartRoutes from "./routes/cartRoutes";
 import { createServerRouter, httpLogger, logger, rabbitMQService } from "@eloritzkovitz/server-essentials";
+import cartRoutes from "./routes/cartRoutes";
 
 const app = express();
 

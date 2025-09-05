@@ -1,18 +1,52 @@
 import express from "express";
-import searchRoutes from "./routes/searchRoutes";
-import { rabbitMQService } from "@eloritzkovitz/server-essentials";
+import cors from "cors";
+import { createServerRouter, httpLogger, rabbitMQService } from "@eloritzkovitz/server-essentials";
+import { elasticClient } from "./elastic/elasticClient";
 import { listenForProductEvents } from "./events/productEventListener";
 import { listenForOrderEvents } from "./events/orderEventListener";
+import searchRoutes from "./routes/searchRoutes";
 
 const app = express();
 app.use(express.json());
 
-// Serve the API Routes
+// Middleware setup
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(httpLogger);
+
+// Serve API Routes
 app.use("/search", searchRoutes);
 
-// --- App Initialization ---
+// Serve info/health routes
+app.use(
+  "/",
+  createServerRouter(() => {
+    let status = "down";
+    elasticClient
+      .ping()
+      .then(() => {
+        status = "up";
+      })
+      .catch(() => {
+        status = "down";
+      });
+    return status;
+  })
+);
+
+app.get("/about", (req, res) => {
+  res.send("This is the Search Service API for Voltrico.");
+});
+
+// Initialize application
 export default async function initApp() {
-  try {    
+  try { 
+    // Ensure connection to Elasticsearch
+    await elasticClient.ping();
+    console.log("Connected to Elasticsearch");   
+    
+    // Connect to RabbitMQ
     await rabbitMQService.init();
     console.log("Connected to RabbitMQ");
 

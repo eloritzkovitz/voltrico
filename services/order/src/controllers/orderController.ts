@@ -1,16 +1,18 @@
 import axios from "axios";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
+import { handleError, logger, rabbitMQService } from "@eloritzkovitz/server-essentials";
 import { AppDataSource } from "../server";
 import { Order } from "../models/Order";
-import { rabbitMQService } from "@eloritzkovitz/server-essentials";
 
 // Create a new order
-const createOrder = async (req: Request, res: Response): Promise<void> => {
+const createOrder = async (req: Request, res: Response): Promise<void> => {  
   try {
     const { customerId, productId } = req.body;
+    logger.info("Create order request", { customerId, productId });
+
     if (!customerId || !productId) {
-      res.status(400).json({ message: "Customer ID and Product ID are required" });
+      handleError(res, "customerId and productId are required", undefined, 400);
       return;
     }
     const orderRepo = AppDataSource.getRepository(Order);
@@ -35,16 +37,17 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
       }
     );
 
+    logger.info("Order created and notification sent", { orderId: order.orderId });
     res.status(201).json(order);
   } catch (error) {
-    console.error("Error creating order:", error);
-    res.status(500).json({ message: "Internal server error" });
+    handleError(res, "Error creating order", error);
   }
 };
 
 // Get all orders with customer and product details
 const getAllOrders = async (req: Request, res: Response): Promise<void> => {
   try {
+    logger.info("Get all orders request");
     const orderRepo = AppDataSource.getRepository(Order);
     const orders = await orderRepo.find();
 
@@ -72,6 +75,7 @@ const getAllOrders = async (req: Request, res: Response): Promise<void> => {
           );
           product = productRes.data;
         } catch (err) {
+          handleError(res, "Error fetching product details", err);
           product = { id: order.productId, error: "Could not fetch product" };
         }
 
@@ -85,10 +89,10 @@ const getAllOrders = async (req: Request, res: Response): Promise<void> => {
       })
     );
 
+    logger.info("Fetched all orders", { count: formattedOrders.length });
     res.json(formattedOrders);
   } catch (error) {
-    console.error("Error fetching orders:", error);
-    res.status(500).json({ message: "Internal server error" });
+    handleError(res, "Error fetching orders", error);
   }
 };
 

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { elasticClient } from "../elastic/elasticClient";
+import { handleError, logger } from "@eloritzkovitz/server-essentials";
 
 // Search products
 const searchProducts = async (req: Request, res: Response) => {
@@ -16,6 +17,17 @@ const searchProducts = async (req: Request, res: Response) => {
     filter.push({ range: { price: range } });
   }
 
+  logger.info("Product search request", {
+    query,
+    category,
+    priceMin,
+    priceMax,
+    page,
+    limit,
+    sortBy,
+    order,
+  });
+
   try {
     const result = await elasticClient.search({
       index: "products",
@@ -29,12 +41,13 @@ const searchProducts = async (req: Request, res: Response) => {
         },
       },
     });
+    logger.info("Product search successful", { total: result.hits.total });
     res.json({
       total: result.hits.total,
       products: result.hits.hits.map((hit: any) => hit._source),
     });
   } catch (err) {
-    res.status(500).json({ message: (err as Error).message });
+    handleError(res, "Product search failed", err);
   }
 };
 
@@ -53,6 +66,17 @@ export const searchOrders = async (req: Request, res: Response) => {
     filter.push({ range: { date: range } });
   }
 
+  logger.info("Order search request", {
+    status,
+    customerId,
+    dateFrom,
+    dateTo,
+    page,
+    limit,
+    sortBy,
+    order,
+  });
+
   try {
     const result = await elasticClient.search({
       index: "orders",
@@ -66,12 +90,13 @@ export const searchOrders = async (req: Request, res: Response) => {
         },
       },
     });
+    logger.info("Order search successful", { total: result.hits.total });
     res.json({
       total: result.hits.total,
       orders: result.hits.hits.map((hit: any) => hit._source),
     });
   } catch (err) {
-    res.status(500).json({ message: (err as Error).message });
+    handleError(res, "Order search failed", err);
   }
 };
 
