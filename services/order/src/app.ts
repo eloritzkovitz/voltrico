@@ -19,7 +19,7 @@ dotenv.config({
   })(),
 });
 
-const port: number = Number(process.env.PORT) || 3002;
+const port: number = Number(process.env.PORT) || 3005;
 
 initApp()
   .then((app) => {
