@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",    
+    "moduleResolution": "NodeNext", 
+    "target": "es2022",          
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "types": [ "jest", "node" ],
+    "baseUrl": "../../",
+    "paths": {
+      "@shared/interfaces/*": ["shared/interfaces/*"]
+    }
+  },  
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    { "path": "../../shared" }
+  ]
+}
