@@ -10,7 +10,6 @@ const app = express();
 dotenv.config();
 
 // Middleware setup
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(httpLogger);
