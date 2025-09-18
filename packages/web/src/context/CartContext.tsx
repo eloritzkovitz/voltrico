@@ -10,6 +10,10 @@ import {
 import type { ICart as Cart } from "@shared/interfaces/ICart.js";
 import type { ICartItem as CartItem } from "@shared/interfaces/ICartItem.js";
 import type { CartContextType } from "@/types/cart";
+import {
+  getOrCreateGuestSessionId,
+  clearGuestSessionId,
+} from "@/utils/guestSessionHelpers";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -20,7 +24,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const { user, isAuthenticated } = useAuth();
 
   // Use userId if authenticated, otherwise use a guest session ID
-  const userId: string = isAuthenticated && user && user._id ? user._id : "guest-session-id";
+  const userId: string =
+    isAuthenticated && user && user._id
+      ? user._id
+      : getOrCreateGuestSessionId();
+
+  // Clear guest session ID when user logs in
+  useEffect(() => {
+    if (isAuthenticated && user && user._id) {
+      clearGuestSessionId();
+    }
+  }, [isAuthenticated, user]);
 
   // Load cart from backend when userId changes
   useEffect(() => {

@@ -1,12 +1,18 @@
 import apiClient from "./api-client";
+import Cookies from "js-cookie";
 import type { ICart as Cart } from "@shared/interfaces/ICart";
 import type { ICartItem as CartItem } from "@shared/interfaces/ICartItem";
-import Cookies from "js-cookie";
+import { getOrCreateGuestSessionId } from "@/utils/guestSessionHelpers";
 
 // Helper to build auth headers from cookie
 const authHeaders = () => {
   const token = Cookies.get("accessToken");
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  if (token) {
+    return { Authorization: `Bearer ${token}` };
+  }
+  // If not authenticated, send guest session ID
+  const guestSessionId = getOrCreateGuestSessionId();
+  return guestSessionId ? { "x-guest-session-id": guestSessionId } : {};
 };
 
 // Get cart by userId or sessionId
