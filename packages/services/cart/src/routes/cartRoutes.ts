@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticate } from "@eloritzkovitz/server-essentials";
+import { optionalAuthenticate } from "@eloritzkovitz/server-essentials";
 import {
   getCart,
   addCartItem,
@@ -33,7 +33,7 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.get("/:id", authenticate, getCart);
+router.get("/:id", optionalAuthenticate, getCart);
 
 /**
  * @swagger
@@ -57,7 +57,7 @@ router.get("/:id", authenticate, getCart);
  *       500:
  *         description: Server error
  */
-router.post("/:id/items", authenticate, addCartItem);
+router.post("/:id/items", optionalAuthenticate, addCartItem);
 
 /**
  * @swagger
@@ -81,7 +81,7 @@ router.post("/:id/items", authenticate, addCartItem);
  *       500:
  *         description: Server error
  */
-router.put("/:id/items/:itemIndex", authenticate, updateCartItem);
+router.put("/:id/items/:itemIndex", optionalAuthenticate, updateCartItem);
 
 /**
  * @swagger
@@ -99,7 +99,7 @@ router.put("/:id/items/:itemIndex", authenticate, updateCartItem);
  *       500:
  *         description: Server error
  */
-router.delete("/:id/items/:itemIndex", authenticate, removeCartItem);
+router.delete("/:id/items/:itemIndex", optionalAuthenticate, removeCartItem);
 
 /**
  * @swagger
@@ -117,6 +117,6 @@ router.delete("/:id/items/:itemIndex", authenticate, removeCartItem);
  *       500:
  *         description: Server error
  */
-router.post("/:id/clear", authenticate, clearCart);
+router.post("/:id/clear", optionalAuthenticate, clearCart);
 
 export default router;
