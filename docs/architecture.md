@@ -2,7 +2,6 @@
 
 This document provides a high-level overview of the Voltrico application's architecture, design patterns, and major components.
 
-
 ## Architectural Pattern
 
 Voltrico follows a **microservices architecture** with a clear separation of concerns and independent deployment for each service:
@@ -13,7 +12,6 @@ Voltrico follows a **microservices architecture** with a clear separation of con
 - **Polyglot Persistence:** Each service uses the database best suited to its needs (MongoDB, PostgreSQL, Elasticsearch).
 - **Shared Libraries:** Contains reusable code (models, middleware, utilities) to ensure consistency and reduce duplication across microservices.
 
-
 ## Main Layers & Responsibilities
 
 | Layer                 | Responsibilities                                                                                  |
@@ -23,6 +21,7 @@ Voltrico follows a **microservices architecture** with a clear separation of con
 | **Shared Libraries**  | Common TypeScript interfaces, utilities, middleware, and shared logic used across services.       |
 | **User Service**      | User registration, authentication, profile management, and user data storage.                     |
 | **Product Service**   | Product catalog management, CRUD operations, and product data storage.                            |
+| **Cart Service**      | Manages user shopping carts, cart item CRUD, and cart persistence.                                |
 | **Order Service**     | Order creation, management, and order history.                                                    |
 | **Inventory Service** | Stock management, inventory updates, and synchronization with product/orders.                     |
 | **Search Service**    | Full-text search, filtering, and aggregation for products and orders using Elasticsearch.         |

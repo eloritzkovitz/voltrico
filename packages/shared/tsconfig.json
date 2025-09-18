@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "module": "nodenext",
+    "moduleResolution": "NodeNext",
+    "target": "es2022",
+    "paths": {
+      "@shared/interfaces/*": ["interfaces/*"]
+    }
+  },
+  "include": ["interfaces"]
+}

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",    
+    "moduleResolution": "NodeNext", 
+    "target": "es2022",          
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "types": ["node"]
+  },
+  "lib": ["es2015"],
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
