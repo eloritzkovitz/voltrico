@@ -74,9 +74,10 @@ services:
           RABBITMQ_URL: ${RABBITMQ_URL}
           NOTIFICATIONS_QUEUE: ${NOTIFICATIONS_QUEUE}
     depends_on:
-      - rabbitmq:
-          condition: service_healthy
-      - mongo-db
+      rabbitmq:
+        condition: service_healthy
+      mongo-db:
+        condition: service_started
 
   product-service:
     build:
@@ -89,9 +90,10 @@ services:
       DB_CONNECTION: ${PRODUCT_DB_CONNECTION}
       RABBITMQ_URL: ${RABBITMQ_URL}      
     depends_on:
-      - rabbitmq:
-          condition: service_healthy
-      - mongo-db
+      rabbitmq:
+        condition: service_healthy
+      mongo-db:
+        condition: service_started
 
   cart-service:
     build:
@@ -105,9 +107,10 @@ services:
       RABBITMQ_URL: ${RABBITMQ_URL}
       NOTIFICATIONS_QUEUE: ${NOTIFICATIONS_QUEUE}
     depends_on:
-      - rabbitmq:
-          condition: service_healthy
-      - mongo-db
+      rabbitmq:
+        condition: service_healthy
+      mongo-db:
+        condition: service_started
 
   order-service:
     build:
@@ -124,9 +127,10 @@ services:
       DB_NAME: ${ORDER_DB_NAME}
       RABBITMQ_URL: ${RABBITMQ_URL}
     depends_on:
-      - rabbitmq:
-          condition: service_healthy
-      - order-db 
+      rabbitmq:
+        condition: service_healthy
+      order-db:
+        condition: service_started
   
   inventory-service:
     build:
@@ -143,9 +147,10 @@ services:
       DB_NAME: ${INVENTORY_DB_NAME}
       RABBITMQ_URL: ${RABBITMQ_URL}
     depends_on:
-      - rabbitmq:
-          condition: service_healthy
-      - inventory-db
+      rabbitmq:
+        condition: service_healthy
+      inventory-db:
+        condition: service_started
   
   search-service:
     build:
@@ -158,9 +163,10 @@ services:
       ELASTIC_URL: ${ELASTIC_URL}
       RABBITMQ_URL: ${RABBITMQ_URL}
     depends_on:
-      - rabbitmq:
-          condition: service_healthy
-      - elasticsearch
+      rabbitmq:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_started
 
   api-gateway:
     build:
