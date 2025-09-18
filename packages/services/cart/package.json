@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
-    "@eloritzkovitz/server-essentials": "1.0.12",
+    "@eloritzkovitz/server-essentials": "1.0.13",
     "axios": "1.12.2",
     "cors": "2.8.5",
     "dotenv": "17.2.2",
