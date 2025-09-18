@@ -8,6 +8,11 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
@@ -69,7 +74,8 @@ services:
           RABBITMQ_URL: ${RABBITMQ_URL}
           NOTIFICATIONS_QUEUE: ${NOTIFICATIONS_QUEUE}
     depends_on:
-      - rabbitmq
+      - rabbitmq:
+          condition: service_healthy
       - mongo-db
 
   product-service:
@@ -83,7 +89,8 @@ services:
       DB_CONNECTION: ${PRODUCT_DB_CONNECTION}
       RABBITMQ_URL: ${RABBITMQ_URL}      
     depends_on:
-      - rabbitmq
+      - rabbitmq:
+          condition: service_healthy
       - mongo-db
 
   cart-service:
@@ -98,7 +105,8 @@ services:
       RABBITMQ_URL: ${RABBITMQ_URL}
       NOTIFICATIONS_QUEUE: ${NOTIFICATIONS_QUEUE}
     depends_on:
-      - rabbitmq
+      - rabbitmq:
+          condition: service_healthy
       - mongo-db
 
   order-service:
@@ -116,7 +124,8 @@ services:
       DB_NAME: ${ORDER_DB_NAME}
       RABBITMQ_URL: ${RABBITMQ_URL}
     depends_on:
-      - rabbitmq
+      - rabbitmq:
+          condition: service_healthy
       - order-db 
   
   inventory-service:
@@ -134,7 +143,8 @@ services:
       DB_NAME: ${INVENTORY_DB_NAME}
       RABBITMQ_URL: ${RABBITMQ_URL}
     depends_on:
-      - rabbitmq
+      - rabbitmq:
+          condition: service_healthy
       - inventory-db
   
   search-service:
@@ -148,7 +158,8 @@ services:
       ELASTIC_URL: ${ELASTIC_URL}
       RABBITMQ_URL: ${RABBITMQ_URL}
     depends_on:
-      - rabbitmq
+      - rabbitmq:
+          condition: service_healthy
       - elasticsearch
 
   api-gateway:
