@@ -1,0 +1,16 @@
+.git
+.gitignore
+*.md
+*.log
+*.swp
+*.swo
+*.DS_Store
+test/
+*.test
+*.out
+*.exe
+*.bak
+*.tmp
+node_modules
+vendor
+.env
