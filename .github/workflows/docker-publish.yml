@@ -29,7 +29,9 @@ jobs:
           context: .
           file: packages/services/user/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-user-service:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-user-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-user-service:${{ github.sha }}
 
       # Product Service
       - name: Build and push product-service
@@ -38,7 +40,9 @@ jobs:
           context: .
           file: packages/services/product/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-product-service:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-product-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-product-service:${{ github.sha }}
 
       # Cart Service
       - name: Build and push cart-service
@@ -47,7 +51,9 @@ jobs:
           context: .
           file: packages/services/cart/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-cart-service:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-cart-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-cart-service:${{ github.sha }}
 
       # Order Service
       - name: Build and push order-service
@@ -56,7 +62,9 @@ jobs:
           context: .
           file: packages/services/order/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-order-service:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-order-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-order-service:${{ github.sha }}
 
       # Inventory Service
       - name: Build and push inventory-service
@@ -65,7 +73,9 @@ jobs:
           context: .
           file: packages/services/inventory/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-inventory-service:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-inventory-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-inventory-service:${{ github.sha }}
 
       # Search Service
       - name: Build and push search-service
@@ -74,7 +84,9 @@ jobs:
           context: .
           file: packages/services/search/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-search-service:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-search-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-search-service:${{ github.sha }}
 
       # API Gateway
       - name: Build and push api-gateway
@@ -83,7 +95,9 @@ jobs:
           context: .
           file: packages/api-gateway/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-api-gateway:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-api-gateway:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-api-gateway:${{ github.sha }}
 
       # Web
       - name: Build and push web
@@ -92,4 +106,6 @@ jobs:
           context: .
           file: packages/web/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-web:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-web:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-web:${{ github.sha }}
