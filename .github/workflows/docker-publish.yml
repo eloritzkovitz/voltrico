@@ -29,7 +29,7 @@ jobs:
           context: .
           file: packages/services/user/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-user-service:latest
 
       # Product Service
       - name: Build and push product-service
@@ -38,7 +38,7 @@ jobs:
           context: .
           file: packages/services/product/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/product-service:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-product-service:latest
 
       # Cart Service
       - name: Build and push cart-service
@@ -47,7 +47,7 @@ jobs:
           context: .
           file: packages/services/cart/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cart-service:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-cart-service:latest
 
       # Order Service
       - name: Build and push order-service
@@ -56,7 +56,7 @@ jobs:
           context: .
           file: packages/services/order/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/order-service:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-order-service:latest
 
       # Inventory Service
       - name: Build and push inventory-service
@@ -65,7 +65,7 @@ jobs:
           context: .
           file: packages/services/inventory/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/inventory-service:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-inventory-service:latest
 
       # Search Service
       - name: Build and push search-service
@@ -74,7 +74,7 @@ jobs:
           context: .
           file: packages/services/search/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/search-service:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-search-service:latest
 
       # API Gateway
       - name: Build and push api-gateway
@@ -83,7 +83,7 @@ jobs:
           context: .
           file: packages/api-gateway/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-api-gateway:latest
 
       # Web
       - name: Build and push web
@@ -92,4 +92,4 @@ jobs:
           context: .
           file: packages/web/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/web:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/voltrico-web:latest
