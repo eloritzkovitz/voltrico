@@ -23,6 +23,10 @@ RUN npx tsc -b packages/shared packages/services/product
 FROM node:20-alpine AS production
 WORKDIR /app
 
+# Create non-root user and set ownership
+RUN addgroup -S app && adduser -S app -G app \
+    && chown -R app:app /app
+
 # Copy only package files and install production dependencies
 COPY packages/services/product/package*.json ./packages/services/product/
 COPY package.json ./
@@ -32,9 +36,6 @@ RUN npm install --only=production
 # Copy built files from builder
 COPY --from=builder /app/packages/services/product/dist ./dist
 
-# Create non-root user and set ownership
-RUN addgroup -S app && adduser -S app -G app \
-    && chown -R app:app /app
 USER app
 
 CMD ["node", "dist/app.js"]

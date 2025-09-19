@@ -30,6 +30,10 @@ RUN npm run build --workspace packages/web
 FROM node:20-alpine AS production
 WORKDIR /app
 
+# Create non-root user and set ownership
+RUN addgroup -S app && adduser -S app -G app \
+    && chown -R app:app /app
+
 # Copy package files and install only production dependencies
 COPY packages/web/package.json ./
 RUN npm install --omit=dev --ignore-scripts
@@ -42,9 +46,6 @@ EXPOSE 80
 ENV NODE_ENV=production
 ENV PORT=80
 
-# Create non-root user and set ownership
-RUN addgroup -S app && adduser -S app -G app \
-    && chown -R app:app /app
 USER app
 
 CMD ["npx", "next", "start"]

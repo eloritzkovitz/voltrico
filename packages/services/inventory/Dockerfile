@@ -15,12 +15,13 @@ RUN go build -o inventory-service .
 FROM alpine:3.20
 WORKDIR /app
 
-# Copy the built binary and .env file
-COPY --from=builder /app/inventory-service .
-
 # Create non-root user and set ownership
 RUN addgroup -S app && adduser -S app -G app \
     && chown -R app:app /app
+
+# Copy the built binary and .env file
+COPY --from=builder /app/inventory-service .
+
 USER app
 
 CMD ["./inventory-service"]
