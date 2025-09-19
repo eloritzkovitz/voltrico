@@ -32,4 +32,9 @@ RUN npm install --only=production
 # Copy built files from builder
 COPY --from=builder /app/packages/services/order/dist ./dist
 
+# Create non-root user and set ownership
+RUN addgroup -S app && adduser -S app -G app \
+    && chown -R app:app /app
+USER app
+
 CMD ["node", "dist/app.js"]

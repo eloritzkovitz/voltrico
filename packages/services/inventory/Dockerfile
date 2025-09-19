@@ -18,4 +18,9 @@ WORKDIR /app
 # Copy the built binary and .env file
 COPY --from=builder /app/inventory-service .
 
+# Create non-root user and set ownership
+RUN addgroup -S app && adduser -S app -G app \
+    && chown -R app:app /app
+USER app
+
 CMD ["./inventory-service"]
