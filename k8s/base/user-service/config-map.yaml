@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-service-config
+data:
+  PORT: "3002"
+  TOKEN_EXPIRES: "1h"
+  REFRESH_TOKEN_EXPIRES: "7d"
+  GOOGLE_CLIENT_ID: ""
+  NOTIFICATIONS_QUEUE: "notifications"

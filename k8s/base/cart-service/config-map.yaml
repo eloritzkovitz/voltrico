@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cart-service-config
+data:
+  PORT: "3004"
+  NOTIFICATIONS_QUEUE: "notifications"

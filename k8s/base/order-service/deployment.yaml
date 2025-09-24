@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+        - name: order-service
+          image: myregistry/order-service:latest
+          ports:
+            - containerPort: 3005
+          envFrom:
+            - configMapRef:
+                name: order-service-config
+            - secretRef:
+                name: order-service-secrets
