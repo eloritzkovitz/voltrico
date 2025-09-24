@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service
+  name: voltrico-user-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-service
+      app: voltrico-user-service
   template:
     metadata:
       labels:
-        app: user-service
+        app: voltrico-user-service
     spec:
       containers:
-        - name: user-service
-          image: myregistry/user-service:latest
+        - name: voltrico-user-service
+          image: eloritz/voltrico-user-service:latest
           ports:
             - containerPort: 3002
           envFrom:
             - configMapRef:
-                name: user-service-config
+                name: voltrico-user-service-config
             - secretRef:
-                name: user-service-secrets
+                name: voltrico-user-service-secrets

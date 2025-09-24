@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: search-service
+  name: voltrico-search-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: search-service
+      app: voltrico-search-service
   template:
     metadata:
       labels:
-        app: search-service
+        app: voltrico-search-service
     spec:
       containers:
-        - name: search-service
-          image: myregistry/search-service:latest
+        - name: voltrico-search-service
+          image: eloritz/voltrico-search-service:latest
           ports:
             - containerPort: 3007
           envFrom:
             - configMapRef:
-                name: search-service-config
+                name: voltrico-search-service-config
             - secretRef:
-                name: search-service-secrets
+                name: voltrico-search-service-secrets

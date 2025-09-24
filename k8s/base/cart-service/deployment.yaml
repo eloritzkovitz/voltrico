@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cart-service
+  name: voltrico-cart-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cart-service
+      app: voltrico-cart-service
   template:
     metadata:
       labels:
-        app: cart-service
+        app: voltrico-cart-service
     spec:
       containers:
-        - name: cart-service
-          image: myregistry/cart-service:latest
+        - name: voltrico-cart-service
+          image: eloritz/voltrico-cart-service:latest
           ports:
             - containerPort: 3004
           envFrom:
             - configMapRef:
-                name: cart-service-config
+                name: voltrico-cart-service-config
             - secretRef:
-                name: cart-service-secrets
+                name: voltrico-cart-service-secrets

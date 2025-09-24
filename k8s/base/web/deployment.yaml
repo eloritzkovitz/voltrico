@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webapp
+  name: voltrico-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: webapp
+      app: voltrico-web
   template:
     metadata:
       labels:
-        app: webapp
+        app: voltrico-web
     spec:
       containers:
-        - name: webapp
-          image: myregistry/web:latest
+        - name: voltrico-web
+          image: eloritz/voltrico-web:latest
           ports:
             - containerPort: 80
           envFrom:
             - configMapRef:
-                name: webapp-config
+                name: voltrico-web-config
             - secretRef:
-                name: webapp-secrets
+                name: voltrico-web-secrets

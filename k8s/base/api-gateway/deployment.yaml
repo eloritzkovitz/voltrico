@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-gateway
+  name: voltrico-api-gateway
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api-gateway
+      app: voltrico-api-gateway
   template:
     metadata:
       labels:
-        app: api-gateway
+        app: voltrico-api-gateway
     spec:
       containers:
-        - name: api-gateway
-          image: myregistry/api-gateway:latest
+        - name: voltrico-api-gateway
+          image: eloritz/voltrico-api-gateway:latest
           ports:
             - containerPort: 3001
           envFrom:
             - configMapRef:
-                name: api-gateway-config
+                name: voltrico-api-gateway-config
             - secretRef:
-                name: api-gateway-secrets
+                name: voltrico-api-gateway-secrets

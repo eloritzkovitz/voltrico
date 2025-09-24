@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: user-service-config
+  name: voltrico-user-service-config
 data:
   PORT: "3002"
   TOKEN_EXPIRES: "1h"

@@ -1,6 +1,6 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: inventory-service-config
+  name: voltrico-inventory-service-config
 data:
   PORT: "3006"

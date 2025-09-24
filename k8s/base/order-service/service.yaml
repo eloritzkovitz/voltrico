@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: order-service
+  name: voltrico-order-service
 spec:
   selector:
-    app: order-service
+    app: voltrico-order-service
   ports:
     - port: 3005
       targetPort: 3005
