@@ -3,4 +3,7 @@ kind: ConfigMap
 metadata:
   name: voltrico-search-service-config
 data:
-  PORT: "3007"
+  SEARCH_SERVICE_PORT: "3007"
+  SEARCH_SERVICE_URL: "http://search-service:3007"
+  ELASTIC_URL: "http://elasticsearch:9200"
+  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE"

@@ -3,8 +3,8 @@ kind: ConfigMap
 metadata:
   name: voltrico-user-service-config
 data:
-  PORT: "3002"
-  TOKEN_EXPIRES: "1h"
-  REFRESH_TOKEN_EXPIRES: "7d"
-  GOOGLE_CLIENT_ID: ""
-  NOTIFICATIONS_QUEUE: "notifications"
+  TOKEN_EXPIRES: "7d"
+  REFRESH_TOKEN_EXPIRES: "15m"
+  USER_SERVICE_PORT: "3002"
+  USER_SERVICE_URL: "http://user-service:3002"
+  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE"

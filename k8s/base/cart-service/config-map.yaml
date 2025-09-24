@@ -3,5 +3,6 @@ kind: ConfigMap
 metadata:
   name: voltrico-cart-service-config
 data:
-  PORT: "3004"
-  NOTIFICATIONS_QUEUE: "notifications"
+  CART_SERVICE_PORT: "3004"
+  CART_SERVICE_URL: "http://cart-service:3004"
+  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE"

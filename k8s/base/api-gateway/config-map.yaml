@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: voltrico-api-gateway-config
 data:
-  PORT: "3001"
+  API_GATEWAY_PORT: "3001"
   USER_SERVICE_URL: "http://user-service:3002"
   PRODUCT_SERVICE_URL: "http://product-service:3003"
   CART_SERVICE_URL: "http://cart-service:3004"

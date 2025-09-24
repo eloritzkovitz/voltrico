@@ -2,5 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: voltrico-product-service-config
-data:
-  PORT: "3003"
+data:  
+  PRODUCT_SERVICE_PORT: "3003"
+  PRODUCT_SERVICE_URL: "http://product-service:3003"
+  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE"

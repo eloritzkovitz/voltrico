@@ -3,4 +3,8 @@ kind: ConfigMap
 metadata:
   name: voltrico-inventory-service-config
 data:
-  PORT: "3006"
+  INVENTORY_SERVICE_PORT: "3006"
+  INVENTORY_SERVICE_URL: "http://inventory-service:3006"
+  INVENTORY_DB_HOST: "inventory-db"
+  INVENTORY_DB_PORT: "5432"
+  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE"
