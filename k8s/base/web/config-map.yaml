@@ -4,4 +4,4 @@ metadata:
   name: voltrico-web-config
 data:
   WEB_PORT: "3000"
-  NEXT_PUBLIC_BACKEND_URL: "http://localhost:3001"
+  NEXT_PUBLIC_BACKEND_URL: "http://myapp.local/api"
