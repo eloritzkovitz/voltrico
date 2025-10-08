@@ -19,6 +19,4 @@ spec:
             - containerPort: 80
           envFrom:
             - configMapRef:
-                name: voltrico-web-config
-            - secretRef:
-                name: voltrico-web-secrets
+                name: web-config

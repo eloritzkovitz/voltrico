@@ -1,10 +1,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: voltrico-order-service-config
-data:  
-  ORDER_SERVICE_PORT: "3005"
-  ORDER_SERVICE_URL: "http://order-service:3005"
-  ORDER_DB_HOST: "order-db"
-  ORDER_DB_PORT: "5432"
-  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE"
+  name: order-config
+data:
+  # Application Port
+  PORT: "3005"
+  
+  # Database Connection Details (Host and Port)
+  DB_HOST: "order-db" 
+  DB_PORT: "5432"     
+  
+  # Messaging Queue URL
+  RABBITMQ_URL: "amqp://rabbitmq" 
+  DB_NAME: "orders" 

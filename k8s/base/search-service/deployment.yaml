@@ -19,6 +19,4 @@ spec:
             - containerPort: 3007
           envFrom:
             - configMapRef:
-                name: voltrico-search-service-config
-            - secretRef:
-                name: voltrico-search-service-secrets
+                name: search-config

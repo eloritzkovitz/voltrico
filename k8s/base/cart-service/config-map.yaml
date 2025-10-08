@@ -1,8 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: voltrico-cart-service-config
+  name: cart-config 
 data:
-  CART_SERVICE_PORT: "3004"
-  CART_SERVICE_URL: "http://cart-service:3004"
-  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE"
+  PORT: "3004"
+  DB_CONNECTION: "mongodb://mongo-db:27017/voltrico-cart"
+  RABBITMQ_URL: "amqp://rabbitmq" 
+  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE" 

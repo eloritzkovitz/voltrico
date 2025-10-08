@@ -19,6 +19,15 @@ spec:
             - containerPort: 3006
           envFrom:
             - configMapRef:
-                name: voltrico-inventory-service-config
-            - secretRef:
-                name: inventory-service-secrets
+                name: invetory-config
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: inventory-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: inventory-secret
+                  key: DB_PASSWORD

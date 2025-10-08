@@ -19,6 +19,4 @@ spec:
             - containerPort: 3001
           envFrom:
             - configMapRef:
-                name: voltrico-api-gateway-config
-            - secretRef:
-                name: voltrico-api-gateway-secrets
+                name: api-gateway-config

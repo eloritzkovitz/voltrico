@@ -19,6 +19,4 @@ spec:
             - containerPort: 3004
           envFrom:
             - configMapRef:
-                name: voltrico-cart-service-config
-            - secretRef:
-                name: voltrico-cart-service-secrets
+                name: cart-config 
