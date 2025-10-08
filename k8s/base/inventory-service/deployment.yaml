@@ -19,7 +19,7 @@ spec:
             - containerPort: 3006
           envFrom:
             - configMapRef:
-                name: invetory-config
+                name: inventory-config
           env:
             - name: DB_USER
               valueFrom:
