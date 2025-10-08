@@ -1,10 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: voltrico-user-service-config
+  name: user-config
 data:
+  PORT: "3002"
+  DB_CONNECTION: "mongodb://mongo-db:27017/voltrico-users"
+  RABBITMQ_URL: "amqp://rabbitmq"
+  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE"
   TOKEN_EXPIRES: "7d"
   REFRESH_TOKEN_EXPIRES: "15m"
-  USER_SERVICE_PORT: "3002"
-  USER_SERVICE_URL: "http://user-service:3002"
-  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE"
