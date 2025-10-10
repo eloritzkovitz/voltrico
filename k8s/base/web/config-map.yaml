@@ -5,4 +5,4 @@ metadata:
 data:
   NEXT_PUBLIC_BACKEND_URL: "http://voltrico.local" 
   NEXT_PUBLIC_GOOGLE_CLIENT_ID: "737828125009-va5ipflbrj4m61j0a3iu188iafjpj8g1.apps.googleusercontent.com" 
-  WEB_PORT: "80"
+  WEB_PORT: "3000"
