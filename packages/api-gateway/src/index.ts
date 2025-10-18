@@ -6,8 +6,11 @@ import { httpLogger, logger } from "@eloritzkovitz/server-essentials";
 
 const app = express();
 
+// Use environment variable for CORS origin, fallback to localhost for dev
+const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:3000";
+
 // Middleware setup
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(httpLogger);
 
 // Set up proxy routes
