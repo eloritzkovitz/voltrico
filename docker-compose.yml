@@ -181,6 +181,7 @@ services:
       - order-service
       - inventory-service
     environment:
+      CORS_ORIGIN: ${CORS_ORIGIN}
       USER_SERVICE_URL: ${USER_SERVICE_URL}
       PRODUCT_SERVICE_URL: ${PRODUCT_SERVICE_URL}
       CART_SERVICE_URL: ${CART_SERVICE_URL}
