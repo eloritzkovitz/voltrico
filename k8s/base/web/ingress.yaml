@@ -5,6 +5,10 @@ metadata:
   namespace: default
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+      - voltrico.local
+    secretName: voltrico-tls
   rules:
   - host: voltrico.local
     http:
@@ -15,4 +19,4 @@ spec:
           service:
             name: voltrico-web
             port:
-              number: 80
+              number: 3000
