@@ -1,0 +1,15 @@
+the url for nginx-controller : https://github.com/kubernetes/ingress-nginx 
+last version : https://github.com/kubernetes/ingress-nginx/releases/tag/controller-v1.13.2
+
+commands to install : 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.13.2/deploy/static/provider/cloud/deploy.yaml
+
+verify pods : 
+kubectl get pods -n ingress-nginx
+
+check service : 
+kubectl get svc -n ingress-nginx
+
+special case minikube : 
+minikube addons enable ingress
+minikube tunnel

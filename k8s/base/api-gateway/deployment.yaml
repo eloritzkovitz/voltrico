@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voltrico-api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: voltrico-api-gateway
+  template:
+    metadata:
+      labels:
+        app: voltrico-api-gateway
+    spec:
+      containers:
+        - name: voltrico-api-gateway
+          image: eloritz/voltrico-api-gateway:latest
+          ports:
+            - containerPort: 3001
+          envFrom:
+            - configMapRef:
+                name: api-gateway-config

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cart-config 
+data:
+  PORT: "3004"
+  DB_CONNECTION: "mongodb://mongo-db:27017/voltrico-cart"
+  RABBITMQ_URL: "amqp://rabbitmq" 
+  NOTIFICATIONS_QUEUE: "NOTIFICATIONS_QUEUE" 
