@@ -4,11 +4,11 @@ metadata:
   name: api-gateway-config
 data:
   API_GATEWAY_PORT: "3001"
-  USER_SERVICE_URL: "http://user-service:3002"
-  PRODUCT_SERVICE_URL: "http://product-service:3003"
-  CART_SERVICE_URL: "http://cart-service:3004"
-  ORDER_SERVICE_URL: "http://order-service:3005"
-  INVENTORY_SERVICE_URL: "http://inventory-service:3006"
-  SEARCH_SERVICE_URL: "http://search-service:3007"
+  USER_SERVICE_URL: "http://voltrico-user-service:3002"
+  PRODUCT_SERVICE_URL: "http://voltrico-product-service:3003"
+  CART_SERVICE_URL: "http://voltrico-cart-service:3004"
+  ORDER_SERVICE_URL: "http://voltrico-order-service:3005"
+  INVENTORY_SERVICE_URL: "http://voltrico-inventory-service:3006"
+  SEARCH_SERVICE_URL: "http://voltrico-search-service:3007"
   CORS_ORIGIN: "https://voltrico.local"
 
