@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voltrico-api-gateway
+spec:
+  replicas: {{ .Values.apiGateway.replicas }}
+  selector:
+    matchLabels:
+      app: voltrico-api-gateway
+  template:
+    metadata:
+      labels:
+        app: voltrico-api-gateway
+    spec:
+      containers:
+        - name: voltrico-api-gateway
+          image: "{{ .Values.global.imageRegistry }}/{{ .Values.apiGateway.image }}:{{ .Values.apiGateway.tag }}"
+          ports:
+            - containerPort: {{ .Values.apiGateway.port }}
+          envFrom:
+            - configMapRef:
+                name: api-gateway-config

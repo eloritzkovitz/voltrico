@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voltrico-search-service
+spec:
+  replicas: {{ .Values.search.replicas }}
+  selector:
+    matchLabels:
+      app: voltrico-search-service
+  template:
+    metadata:
+      labels:
+        app: voltrico-search-service
+    spec:
+      containers:
+        - name: voltrico-search-service
+          image: "{{ .Values.global.imageRegistry }}/{{ .Values.search.image }}:{{ .Values.search.tag }}"
+          ports:
+            - containerPort: {{ .Values.search.port }}
+          envFrom:
+            - configMapRef:
+                name: search-config
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: voltrico-rabbitmq-secrets
+                  key: RABBITMQ_DEFAULT_USER
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: voltrico-rabbitmq-secrets
+                  key: RABBITMQ_DEFAULT_PASS
+            - name: RABBITMQ_URL
+              value: "amqp://$(RABBITMQ_DEFAULT_USER):$(RABBITMQ_DEFAULT_PASS)@rabbitmq:5672"

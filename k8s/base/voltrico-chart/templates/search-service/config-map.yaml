@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: search-config
+data:
+  PORT: {{ .Values.search.port | quote }}
+  ELASTIC_URL: "http://elasticsearch:9200"

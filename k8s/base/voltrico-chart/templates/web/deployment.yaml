@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voltrico-web
+spec:
+  replicas: {{ .Values.web.replicas }}
+  selector:
+    matchLabels:
+      app: voltrico-web
+  template:
+    metadata:
+      labels:
+        app: voltrico-web
+    spec:
+      containers:
+        - name: voltrico-web
+          image: "{{ .Values.global.imageRegistry }}/{{ .Values.web.image }}:{{ .Values.web.tag }}"
+          ports:
+            - containerPort: {{ .Values.web.containerPort }}
+          envFrom:
+            - configMapRef:
+                name: web-config
