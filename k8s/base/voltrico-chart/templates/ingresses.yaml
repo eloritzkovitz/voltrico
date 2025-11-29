@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  annotations: {}
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - voltrico.local
+      secretName: voltrico-tls
+  rules:
+    - host: voltrico.local
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: voltrico-api-gateway
+                port:
+                  number: {{ .Values.apiGateway.port }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: voltrico-ingress
+  namespace: default
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+      - voltrico.local
+    secretName: voltrico-tls
+  rules:
+  - host: voltrico.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: voltrico-web
+            port:
+              number: {{ .Values.web.port }}

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: voltrico-order-service
+spec:
+  selector:
+    app: voltrico-order-service
+  ports:
+    - port: {{ .Values.order.service.port }}
+      targetPort: {{ .Values.order.service.port }}
+  type: ClusterIP

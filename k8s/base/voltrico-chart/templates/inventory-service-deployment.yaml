@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voltrico-inventory-service
+spec:
+  replicas: {{ .Values.inventory.service.replicas }}
+  selector:
+    matchLabels:
+      app: voltrico-inventory-service
+  template:
+    metadata:
+      labels:
+        app: voltrico-inventory-service
+    spec:
+      containers:
+        - name: voltrico-inventory-service
+          image: "{{ .Values.global.imageRegistry }}/{{ .Values.inventory.service.image }}:{{ .Values.inventory.service.tag }}"
+          ports:
+            - containerPort: {{ .Values.inventory.service.port }}
+          envFrom:
+            - configMapRef:
+                name: inventory-config
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: inventory-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: inventory-secret
+                  key: DB_PASSWORD
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: voltrico-rabbitmq-secrets
+                  key: RABBITMQ_DEFAULT_USER
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: voltrico-rabbitmq-secrets
+                  key: RABBITMQ_DEFAULT_PASS
+            - name: RABBITMQ_URL
+              value: "amqp://$(RABBITMQ_DEFAULT_USER):$(RABBITMQ_DEFAULT_PASS)@rabbitmq:5672"

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voltrico-user-service
+spec:
+  replicas: {{ .Values.user.service.replicas }}
+  selector:
+    matchLabels:
+      app: voltrico-user-service
+  template:
+    metadata:
+      labels:
+        app: voltrico-user-service
+    spec:
+      containers:
+      - name: user-service
+        image: "{{ .Values.global.imageRegistry }}/{{ .Values.user.service.image }}:{{ .Values.user.service.tag }}"
+        ports:
+          - containerPort: {{ .Values.user.service.port }}
+        envFrom:
+          - configMapRef:
+              name: user-config
+        env:
+          - name: TOKEN_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: user-secret
+                key: TOKEN_SECRET
+          - name: GOOGLE_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: user-secret
+                key: GOOGLE_CLIENT_ID
+          - name: RABBITMQ_DEFAULT_USER
+            valueFrom:
+              secretKeyRef:
+                name: voltrico-rabbitmq-secrets
+                key: RABBITMQ_DEFAULT_USER
+          - name: RABBITMQ_DEFAULT_PASS
+            valueFrom:
+              secretKeyRef:
+                name: voltrico-rabbitmq-secrets
+                key: RABBITMQ_DEFAULT_PASS
+          - name: RABBITMQ_URL
+            value: "amqp://$(RABBITMQ_DEFAULT_USER):$(RABBITMQ_DEFAULT_PASS)@rabbitmq:5672"

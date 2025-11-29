@@ -1,0 +1,130 @@
+# Default values for voltrico.
+# This file contains the standard configuration (images, ports, replicas).
+# 
+# SECRETS HANDLING:
+# The 'secrets' block below contains PLACEHOLDERS.
+# Do not put real passwords here.
+# Instead, put them in 'secrets.yaml' and run:
+# helm install voltrico . -f values.yaml -f secrets.yaml
+
+global:
+  imageRegistry: eloritz
+
+# ----------------------------------------------------------------
+# CORE SERVICES
+# ----------------------------------------------------------------
+
+apiGateway:
+  replicas: 1
+  image: voltrico-api-gateway
+  tag: latest
+  port: 3001
+
+cart:
+  replicas: 1
+  image: voltrico-cart-service
+  tag: latest
+  port: 3004
+
+product:
+  replicas: 1
+  image: voltrico-product-service
+  tag: latest
+  port: 3003
+
+search:
+  replicas: 1
+  image: voltrico-search-service
+  tag: latest
+  port: 3007
+
+web:
+  replicas: 1
+  image: voltrico-web
+  tag: latest
+  port: 3000        # Service Port
+  containerPort: 80 # Container Port
+
+# ----------------------------------------------------------------
+# DOMAIN SERVICES & DATABASES
+# ----------------------------------------------------------------
+
+inventory:
+  service:
+    replicas: 1
+    image: voltrico-inventory-service
+    tag: latest
+    port: 3006
+  db:
+    replicas: 1
+    image: postgres:16
+    storage: 1Gi
+    port: 5432
+
+order:
+  service:
+    replicas: 1
+    image: voltrico-order-service
+    tag: latest
+    port: 3005
+  db:
+    replicas: 1
+    image: postgres:16
+    storage: 1Gi
+    port: 5432
+    dbName: orders
+
+user:
+  service:
+    replicas: 1
+    image: voltrico-user-service
+    tag: latest
+    port: 3002
+
+mongo:
+  replicas: 1
+  image: mongo:6.0
+  storage: 1Gi
+  port: 27017
+
+# ----------------------------------------------------------------
+# INFRASTRUCTURE
+# ----------------------------------------------------------------
+
+rabbitmq:
+  replicas: 1
+  image: rabbitmq:3-management
+  port: 5672
+  managementPort: 15672
+
+elasticsearch:
+  replicas: 1
+  image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+  port: 9200
+  storage: 1Gi
+
+# ----------------------------------------------------------------
+# SECRETS PLACEHOLDERS
+# ----------------------------------------------------------------
+# These values are overridden by secrets.yaml at runtime.
+secrets:
+  inventory:
+    dbUser: "postgres"
+    dbPassword: "changeme"
+    dbName: "inventory"
+  
+  order:
+    dbUser: "postgres"
+    dbPassword: "changeme"
+  
+  mongo:
+    rootUser: "root"
+    rootPassword: "changeme"
+  
+  rabbitmq:
+    defaultUser: "user"
+    defaultPass: "password"
+  
+  user:
+    tokenSecret: "super_secret_token_key"
+    googleClientId: "your-google-client-id"

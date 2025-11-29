@@ -37,3 +37,6 @@ app.*.map.json
 .buildlog/
 .history
 .svn/
+
+# Local Helm Secrets
+secrets.yaml

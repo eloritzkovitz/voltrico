@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: voltrico-user-service
+spec:
+  selector:
+    app: voltrico-user-service
+  ports:
+    - port: {{ .Values.user.service.port }}
+      targetPort: {{ .Values.user.service.port }}
+  type: ClusterIP
