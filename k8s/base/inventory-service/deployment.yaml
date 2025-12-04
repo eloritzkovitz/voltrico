@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voltrico-inventory-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: voltrico-inventory-service
+  template:
+    metadata:
+      labels:
+        app: voltrico-inventory-service
+    spec:
+      containers:
+        - name: voltrico-inventory-service
+          image: eloritz/voltrico-inventory-service:latest
+          ports:
+            - containerPort: 3006
+          envFrom:
+            - configMapRef:
+                name: inventory-config
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: inventory-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: inventory-secret
+                  key: DB_PASSWORD

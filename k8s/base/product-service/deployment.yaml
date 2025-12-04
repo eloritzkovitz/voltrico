@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voltrico-product-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: voltrico-product-service
+  template:
+    metadata:
+      labels:
+        app: voltrico-product-service
+    spec:
+      containers:
+        - name: voltrico-product-service
+          image: eloritz/voltrico-product-service:latest
+          ports:
+            - containerPort: 3003
+          envFrom:
+            - configMapRef:
+                name: product-config
