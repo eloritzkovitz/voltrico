@@ -2,12 +2,15 @@ import mongoose, { Schema } from "mongoose";
 import { ICart } from "@shared/interfaces/ICart.js";
 import { ICartItem } from "@shared/interfaces/ICartItem.js";
 
-const cartItemSchema = new Schema<ICartItem>({
-  productId: { type: String, required: true },
-  name: { type: String },
-  price: { type: Number },
-  quantity: { type: Number, required: true },
-}, { _id: false });
+const cartItemSchema = new Schema<ICartItem>(
+  {
+    productId: { type: String, required: true },
+    name: { type: String },
+    price: { type: Number },
+    quantity: { type: Number, required: true },
+  },
+  { _id: false }
+);
 
 const cartSchema = new Schema<ICart>({
   userId: { type: String },
@@ -19,10 +22,13 @@ const cartSchema = new Schema<ICart>({
   updatedAt: { type: Date, default: Date.now },
 });
 
-cartSchema.pre("save", function (next) {
-  this.updatedAt = new Date();
-  next();
-});
+cartSchema.pre(
+  "save" as any,
+  function (this: mongoose.Document & ICart, next: (err?: any) => void) {
+    this.updatedAt = new Date();
+    next();
+  }
+);
 
 const Cart = mongoose.model<ICart>("Cart", cartSchema);
 
