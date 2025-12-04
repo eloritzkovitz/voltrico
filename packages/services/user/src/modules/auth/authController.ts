@@ -37,8 +37,8 @@ const googleSignIn = async (req: Request, res: Response) => {
         firstName: given_name,
         lastName: family_name,
         email,
-        password: sub, // Use Google sub as a placeholder password        
-        joinDate: new Date().toISOString(),
+        password: sub,
+        createdAt: new Date().toISOString(),
       });
     } else {
       logger.info("User found for email %s", email);
@@ -47,7 +47,12 @@ const googleSignIn = async (req: Request, res: Response) => {
     // Generate tokens
     const tokens = generateToken(user._id, user.role);
     if (!tokens) {
-      handleError(res, `Token generation failed for user: ${email}`, undefined, 500);
+      handleError(
+        res,
+        `Token generation failed for user: ${email}`,
+        undefined,
+        500
+      );
       return;
     }
 
@@ -76,13 +81,13 @@ const register = async (req: Request, res: Response) => {
   try {
     const password = req.body.password;
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);    
+    const hashedPassword = await bcrypt.hash(password, salt);
     const user = await userModel.create({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      password: hashedPassword,      
-      joinDate: new Date().toISOString(),
+      password: hashedPassword,
+      createdAt: new Date().toISOString(),
     });
 
     logger.info("User registered successfully: %s", user.email);
@@ -98,7 +103,12 @@ const login = async (req: Request, res: Response) => {
   try {
     const user = await userModel.findOne({ email: req.body.email });
     if (!user) {
-      handleError(res, `Login failed: User not found for email ${req.body.email}`, undefined, 400);
+      handleError(
+        res,
+        `Login failed: User not found for email ${req.body.email}`,
+        undefined,
+        400
+      );
       return;
     }
     const validPassword = await bcrypt.compare(
@@ -106,7 +116,12 @@ const login = async (req: Request, res: Response) => {
       user.password
     );
     if (!validPassword) {
-      handleError(res, `Login failed: Invalid password for email ${req.body.email}`, undefined, 400);
+      handleError(
+        res,
+        `Login failed: Invalid password for email ${req.body.email}`,
+        undefined,
+        400
+      );
       return;
     }
     if (!process.env.TOKEN_SECRET) {
@@ -117,7 +132,12 @@ const login = async (req: Request, res: Response) => {
     // generate token
     const tokens = generateToken(user._id, user.role);
     if (!tokens) {
-      handleError(res, `Login failed: Token generation error for user ${user.email}`, undefined, 500);
+      handleError(
+        res,
+        `Login failed: Token generation error for user ${user.email}`,
+        undefined,
+        500
+      );
       return;
     }
     if (!user.refreshToken) {
@@ -168,7 +188,12 @@ const refresh = async (req: Request, res: Response) => {
     const tokens = generateToken(user._id, user.role);
 
     if (!tokens) {
-      handleError(res, `Token refresh failed: Token generation error for user ${user.email}`, undefined, 500);      
+      handleError(
+        res,
+        `Token refresh failed: Token generation error for user ${user.email}`,
+        undefined,
+        500
+      );
       return;
     }
     if (!user.refreshToken) {
@@ -189,8 +214,8 @@ const refresh = async (req: Request, res: Response) => {
 
 export default {
   googleSignIn,
-  register,  
-  login,  
+  register,
+  login,
   logout,
   refresh,
 };
